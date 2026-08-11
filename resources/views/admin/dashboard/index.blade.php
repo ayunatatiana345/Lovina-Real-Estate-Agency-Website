@@ -181,6 +181,9 @@
             <a href="{{ route('admin.inquiries.index') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; text-decoration: none; color: #334155; font-weight: 600;">
                 <i data-lucide="mail" style="width: 18px; height: 18px; color: #334155;"></i> View Inquiries
             </a>
+            <a href="{{ route('admin.cms.index') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; text-decoration: none; color: #334155; font-weight: 600;">
+                <i data-lucide="monitor" style="width: 18px; height: 18px; color: #334155;"></i> Manage Website Content
+            </a>
             <a href="{{ route('admin.settings.index') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #FEF3C7; border-radius: 8px; text-decoration: none; color: #92400E; font-weight: 600;">
                 <i data-lucide="settings" style="width: 18px; height: 18px; color: #92400E;"></i> General Settings
             </a>

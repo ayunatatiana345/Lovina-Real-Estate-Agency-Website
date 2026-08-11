@@ -2,6 +2,47 @@
 
 @section('title', 'About Us - ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency'))
 
+@section('head_extra')
+<style>
+    .about-story-container {
+        max-width: 800px;
+        margin: 0 auto 64px auto;
+    }
+    .about-story-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .about-story-container p.body-text {
+        text-align: justify;
+        line-height: 1.8;
+        color: var(--text-primary);
+    }
+    .about-grid-container {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 32px;
+        align-items: stretch;
+        margin-bottom: 64px;
+    }
+    .about-card {
+        background-color: var(--light-gray);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    
+    @media (max-width: 768px) {
+        .about-grid-container {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
 <section class="section-spacing bg-light-blue" style="padding-top: 60px; padding-bottom: 60px;">
     <div class="container">
@@ -12,23 +53,28 @@
 
 <section class="section-spacing bg-white">
     <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-bottom: 64px;">
-            <div>
-                <h2>{{ $story['title'] ?? 'Our Story' }}</h2>
-                <p class="body-text" style="line-height: 1.8; color: var(--text-primary); margin-bottom: 24px;">
-                    {{ $story['description'] ?? 'Founded in Lovina, PT Lovina North Bali Real Estate Agency has established itself as the leading property agency dedicated to North Bali real estate.' }}
+        <!-- Our Story -->
+        <div class="about-story-container">
+            <h2>{{ $story['title'] ?? 'Our Story' }}</h2>
+            <p class="body-text">
+                {{ $story['description'] ?? 'Founded in Lovina, PT Lovina North Bali Real Estate Agency has established itself as the leading property agency dedicated to North Bali real estate.' }}
+            </p>
+        </div>
+
+        <!-- Our Vision & Our Mission -->
+        <div class="about-grid-container">
+            <!-- Our Vision -->
+            <div class="about-card">
+                <h3 style="margin-bottom: 20px;">Our Vision</h3>
+                <p class="body-text" style="line-height: 1.8; color: var(--text-secondary);">
+                    {{ $story['vision'] ?? 'To be the most trusted and transparent real estate agency in North Bali.' }}
                 </p>
-                <div style="background-color: var(--accent-lavender); border-left: 4px solid var(--primary-navy); padding: 20px; border-radius: 4px;">
-                    <div style="font-weight: 700; color: var(--primary-navy); margin-bottom: 4px;">Our Vision</div>
-                    <p style="font-size: 16px; color: var(--text-secondary);">
-                        {{ $story['vision'] ?? 'To be the most trusted and transparent real estate agency in North Bali.' }}
-                    </p>
-                </div>
             </div>
 
-            <div style="background-color: var(--light-gray); border-radius: var(--radius-lg); padding: 40px; border: 1px solid var(--border);">
+            <!-- Our Mission -->
+            <div class="about-card">
                 <h3 style="margin-bottom: 20px;">Our Mission</h3>
-                <ul style="list-style: none; padding-left: 0;">
+                <ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
                     @if(isset($story['mission']) && is_array($story['mission']))
                         @foreach($story['mission'] as $m)
                             <li style="margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; font-size: 16px;">

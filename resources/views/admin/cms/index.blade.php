@@ -171,15 +171,15 @@
                 </div>
             </div>
 
-            <!-- Cara Kerja Helper Box -->
+            <!-- How It Works Helper Box -->
             <div style="background-color: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 10px; padding: 16px; margin-top: 20px;">
-                <div style="font-size: 12px; font-weight: 700; color: #1E3A8A; margin-bottom: 8px; text-transform: uppercase;">CARA KERJA</div>
+                <div style="font-size: 12px; font-weight: 700; color: #1E3A8A; margin-bottom: 8px; text-transform: uppercase;">HOW IT WORKS</div>
                 <ol style="margin-left: 16px; font-size: 12px; color: #475569; line-height: 1.6;">
-                    <li>Pilih section di sebelah kiri.</li>
-                    <li>Section akan terbuka dan menampilkan form input.</li>
-                    <li>Ubah konten sesuai kebutuhan.</li>
-                    <li>Klik <strong>Save All Changes</strong> untuk menyimpan.</li>
-                    <li>Lihat live preview di sebelah kanan.</li>
+                    <li>Select a section from the left.</li>
+                    <li>The section will open and display its input form.</li>
+                    <li>Edit the content as needed.</li>
+                    <li>Click "Save All Changes" to save your changes.</li>
+                    <li>View the live preview on the right.</li>
                 </ol>
             </div>
         </div>
@@ -201,8 +201,18 @@
                 <div class="form-group">
                     <label class="form-label">Hero Background Image</label>
                     <div style="display: flex; gap: 16px; align-items: flex-start;">
-                        <div style="width: 140px; height: 90px; border-radius: 8px; overflow: hidden; background-color: #E2E8F0; border: 1px solid #CBD5E1;">
-                            <img src="{{ asset('storage/' . ($hero['background_image'] ?? 'cms/hero-bg.jpg')) }}" id="prev-hero-img-thumb" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80'">
+                        @php
+                            $hasHeroImage = !empty($hero['background_image']) && \Illuminate\Support\Facades\Storage::disk('public')->exists($hero['background_image']);
+                        @endphp
+                        <div id="hero-img-thumb-container" style="width: 140px; height: 90px; border-radius: 8px; overflow: hidden; background-color: #F8FAFC; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center;">
+                            @if($hasHeroImage)
+                                <img src="{{ asset('storage/' . $hero['background_image']) }}" id="prev-hero-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">
+                            @else
+                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748B; font-family: 'Poppins', sans-serif;" id="hero-img-placeholder">
+                                    <i data-lucide="image" style="width: 24px; height: 24px; color: #64748B; margin-bottom: 4px;"></i>
+                                    <span style="font-size: 11px; font-weight: 500;">No image uploaded</span>
+                                </div>
+                            @endif
                         </div>
                         <div>
                             <input type="file" name="hero_bg" id="hero_bg" class="form-control" accept="image/*" style="margin-bottom: 8px;">
@@ -1082,6 +1092,24 @@ function updateAboutPreview() {
     if (visionDesc && document.getElementById('prev-ab-vision-desc')) {
         document.getElementById('prev-ab-vision-desc').textContent = visionDesc.value;
     }
+}
+
+// Live local file preview for Hero BG image upload
+const heroBgInput = document.getElementById('hero_bg');
+if (heroBgInput) {
+    heroBgInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const container = document.getElementById('hero-img-thumb-container');
+                if (container) {
+                    container.innerHTML = `<img src="${evt.target.result}" id="prev-hero-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 }
 </script>
 @endsection
