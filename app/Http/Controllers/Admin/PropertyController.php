@@ -39,7 +39,7 @@ class PropertyController extends Controller
             $query->where('name', 'like', "%{$search}%");
         }
 
-        $properties = $query->latest()->paginate(10)->withQueryString();
+        $properties = $query->latest()->paginate(30)->withQueryString();
 
         return view('admin.properties.index', compact('properties', 'categories', 'locations', 'settings'));
     }

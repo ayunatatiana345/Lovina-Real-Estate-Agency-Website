@@ -40,8 +40,8 @@
             <div>
                 <span class="property-category-tag" style="font-size: 16px;">{{ $property->category->name }} &bull; {{ $property->ownership_type }}</span>
                 <h1 style="margin-bottom: 8px;">{{ $property->name }}</h1>
-                <div style="font-size: 18px; color: var(--text-secondary);">
-                    📍 {{ $property->location->name }}, Buleleng Regency, North Bali
+                <div style="font-size: 18px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
+                    <i data-lucide="map-pin" class="lucide-icon lucide-icon-sm" style="color: var(--text-secondary);"></i> {{ $property->location->name }}, Buleleng Regency, North Bali
                 </div>
             </div>
 
@@ -53,17 +53,42 @@
             </div>
         </div>
 
-        <!-- Image Gallery Grid -->
+        @php
+            $mainCover = $property->images->firstWhere('is_cover', true) ?? $property->images->first();
+            $hasMainImage = $mainCover && file_exists(public_path('storage/' . $mainCover->image_path));
+        @endphp
         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 48px;">
-            <div style="height: 480px; border-radius: var(--radius-md); overflow: hidden; background-color: var(--light-gray);">
-                <img src="{{ $property->primary_image_url }}" alt="{{ $property->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="height: 480px; border-radius: var(--radius-md); overflow: hidden; background-color: var(--light-gray); display: flex; align-items: center; justify-content: center;">
+                @if($hasMainImage)
+                    <img src="{{ asset('storage/' . $mainCover->image_path) }}" alt="{{ $property->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                @else
+                    <div style="width: 100%; height: 100%; background-color: #F3F4F6; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="home" style="width: 96px; height: 96px; color: #9CA3AF; stroke-width: 1px;"></i>
+                    </div>
+                @endif
             </div>
             <div style="display: flex; flex-direction: column; gap: 16px;">
-                @foreach($property->images->take(2) as $img)
+                @php
+                    $galleryImages = $property->images->where('is_cover', false)->take(2);
+                    $actualGallery = [];
+                    foreach($galleryImages as $gi) {
+                        if(file_exists(public_path('storage/' . $gi->image_path))) {
+                            $actualGallery[] = $gi;
+                        }
+                    }
+                @endphp
+                @forelse($actualGallery as $img)
                     <div style="height: 232px; border-radius: var(--radius-md); overflow: hidden; background-color: var(--light-gray);">
                         <img src="{{ asset('storage/' . $img->image_path) }}" alt="{{ $property->name }}" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
-                @endforeach
+                @empty
+                    <div style="height: 232px; border-radius: var(--radius-md); background-color: #F3F4F6; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="home" style="width: 48px; height: 48px; color: #9CA3AF; stroke-width: 1.5px;"></i>
+                    </div>
+                    <div style="height: 232px; border-radius: var(--radius-md); background-color: #F3F4F6; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="home" style="width: 48px; height: 48px; color: #9CA3AF; stroke-width: 1.5px;"></i>
+                    </div>
+                @endforelse
             </div>
         </div>
 
@@ -76,39 +101,57 @@
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
                         <div>
                             <div class="caption">Bedrooms</div>
-                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy);">🛏 {{ $property->bedrooms }}</div>
+                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy); display: flex; align-items: center; gap: 6px;">
+                                <i data-lucide="bed" class="lucide-icon" style="color: var(--primary-navy);"></i> {{ $property->bedrooms }}
+                            </div>
                         </div>
                         <div>
                             <div class="caption">Bathrooms</div>
-                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy);">🚿 {{ $property->bathrooms }}</div>
+                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy); display: flex; align-items: center; gap: 6px;">
+                                <i data-lucide="bath" class="lucide-icon" style="color: var(--primary-navy);"></i> {{ $property->bathrooms }}
+                            </div>
                         </div>
                         <div>
                             <div class="caption">Land Size</div>
-                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy);">📐 {{ $property->land_size }} m²</div>
+                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy); display: flex; align-items: center; gap: 6px;">
+                                <i data-lucide="maximize" class="lucide-icon" style="color: var(--primary-navy);"></i> {{ $property->land_size }} m²
+                            </div>
                         </div>
                         <div>
                             <div class="caption">Building Size</div>
-                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy);">🏛 {{ $property->building_size }} m²</div>
+                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy); display: flex; align-items: center; gap: 6px;">
+                                <i data-lucide="building" class="lucide-icon" style="color: var(--primary-navy);"></i> {{ $property->building_size }} m²
+                            </div>
                         </div>
                         <div>
                             <div class="caption">Garage</div>
-                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy);">🚗 {{ $property->garage }} Cars</div>
+                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy); display: flex; align-items: center; gap: 6px;">
+                                <i data-lucide="car" class="lucide-icon" style="color: var(--primary-navy);"></i> {{ $property->garage }} Cars
+                            </div>
                         </div>
                         <div>
                             <div class="caption">Swimming Pool</div>
-                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy);">🏊‍♂️ {{ $property->swimming_pool ? 'Yes (Private)' : 'No' }}</div>
+                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-navy); display: flex; align-items: center; gap: 6px;">
+                                <i data-lucide="waves" class="lucide-icon" style="color: var(--primary-navy);"></i> {{ $property->swimming_pool ? 'Yes (Private)' : 'No' }}
+                            </div>
                         </div>
                         <div>
                             <div class="caption">Electricity</div>
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text-primary);">⚡ {{ $property->electricity ?? 'Standard' }}</div>
+                            <div style="font-size: 18px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
+                                <i data-lucide="zap" class="lucide-icon" style="color: var(--primary-navy);"></i> {{ $property->electricity ?? 'Standard' }}
+                            </div>
                         </div>
                         <div>
                             <div class="caption">Water Supply</div>
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text-primary);">💧 {{ $property->water_supply ?? 'PDAM / Well' }}</div>
+                            <div style="font-size: 18px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
+                                <i data-lucide="droplets" class="lucide-icon" style="color: var(--primary-navy);"></i> {{ $property->water_supply ?? 'PDAM / Well' }}
+                            </div>
                         </div>
                         <div>
                             <div class="caption">Ownership Title</div>
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text-primary);">📜 {{ $property->ownership_type }}</div>
+                            <div style="font-size: 18px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
+                                <i data-lucide="file-text" class="lucide-icon" style="color: var(--primary-navy);"></i> {{ $property->ownership_type }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,7 +167,9 @@
                 <div style="margin-bottom: 40px;">
                     <h3 style="margin-bottom: 16px;">Location & Area</h3>
                     <div style="background-color: var(--light-blue); border-radius: var(--radius-md); padding: 24px;">
-                        <h4 style="color: var(--primary-navy); margin-bottom: 8px;">📍 {{ $property->location->name }} Area Overview</h4>
+                        <h4 style="color: var(--primary-navy); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                            <i data-lucide="map-pin" class="lucide-icon lucide-icon-sm" style="color: var(--primary-navy);"></i> {{ $property->location->name }} Area Overview
+                        </h4>
                         <p style="font-size: 16px; color: var(--text-primary); margin-bottom: 16px;">
                             {{ $property->location->description }}
                         </p>
@@ -141,6 +186,7 @@
                     <form action="{{ route('inquiry.store') }}" method="POST" id="inquiryForm">
                         @csrf
                         <input type="hidden" name="property_id" value="{{ $property->id }}">
+                        <input type="hidden" name="source" value="Property Detail Page">
 
                         <div class="form-group">
                             <label class="form-label" for="customer_name">Full Name *</label>

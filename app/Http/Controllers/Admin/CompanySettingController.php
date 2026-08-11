@@ -28,11 +28,12 @@ class CompanySettingController extends Controller
             'whatsapp' => 'required|string|max:100',
             'email' => 'required|email|max:255',
             'address' => 'required|string',
-            'instagram_url' => 'nullable|url',
-            'facebook_url' => 'nullable|url',
-            'youtube_url' => 'nullable|url',
+            'instagram_url' => 'nullable|string',
+            'facebook_url' => 'nullable|string',
+            'whatsapp_url' => 'nullable|string',
+            'youtube_url' => 'nullable|string',
             'google_maps_embed_url' => 'nullable|string',
-            'google_maps_direction_url' => 'nullable|url',
+            'google_maps_direction_url' => 'nullable|string',
             'seo_meta_title' => 'nullable|string|max:255',
             'seo_meta_description' => 'nullable|string',
         ]);
@@ -44,11 +45,25 @@ class CompanySettingController extends Controller
             $data['logo_primary'] = $request->file('logo_primary')->store('branding', 'public');
         }
 
-        if ($request->hasFile('office_photo')) {
-            if ($settings->office_photo) {
-                Storage::disk('public')->delete($settings->office_photo);
+        if ($request->hasFile('logo_alt')) {
+            if ($settings->logo_alt) {
+                Storage::disk('public')->delete($settings->logo_alt);
             }
-            $data['office_photo'] = $request->file('office_photo')->store('branding', 'public');
+            $data['logo_alt'] = $request->file('logo_alt')->store('branding', 'public');
+        }
+
+        if ($request->hasFile('favicon')) {
+            if ($settings->favicon) {
+                Storage::disk('public')->delete($settings->favicon);
+            }
+            $data['favicon'] = $request->file('favicon')->store('branding', 'public');
+        }
+
+        if ($request->hasFile('seo_social_image')) {
+            if ($settings->seo_social_image) {
+                Storage::disk('public')->delete($settings->seo_social_image);
+            }
+            $data['seo_social_image'] = $request->file('seo_social_image')->store('branding', 'public');
         }
 
         $settings->update($data);

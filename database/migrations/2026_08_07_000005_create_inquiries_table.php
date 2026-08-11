@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('property_id')->nullable()->constrained('properties')->onDelete('set null');
             $table->string('subject')->nullable();
             $table->text('message');
+            $table->string('source')->default('Contact Us Form');
             $table->enum('status', ['new', 'in_progress', 'responded', 'closed'])->default('new');
             $table->text('admin_notes')->nullable();
             $table->timestamps();

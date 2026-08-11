@@ -21,7 +21,7 @@ class LocationController extends Controller
             $query->where('name', 'like', "%{$request->search}%");
         }
 
-        $locations = $query->latest()->paginate(10)->withQueryString();
+        $locations = $query->latest()->get();
 
         return view('admin.locations.index', compact('locations', 'settings'));
     }

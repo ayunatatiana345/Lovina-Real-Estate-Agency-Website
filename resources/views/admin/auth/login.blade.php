@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - PT Lovina North Bali</title>
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <style>
         body {
             background-color: #F0F4F9;
@@ -42,7 +43,7 @@
 
         @if($errors->has('login'))
             <div style="background-color: #FEE2E2; border: 1px solid #FCA5A5; color: #991B1B; padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 24px; text-align: left; display: flex; align-items: center; gap: 8px;" id="login-error-alert">
-                <span>⚠️</span>
+                <i data-lucide="alert-triangle" style="width: 18px; height: 18px; color: #991B1B;"></i>
                 <span>{{ $errors->first('login') }}</span>
             </div>
         @endif
@@ -53,7 +54,9 @@
             <div style="text-align: left; margin-bottom: 20px;">
                 <label for="email" style="display: block; font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 6px;">Email Address</label>
                 <div style="position: relative;">
-                    <span style="position: absolute; left: 14px; top: 12px; color: #94A3B8;">✉️</span>
+                    <span style="position: absolute; left: 14px; top: 12px; color: #94A3B8; display: flex; align-items: center;">
+                        <i data-lucide="mail" style="width: 18px; height: 18px; color: #94A3B8;"></i>
+                    </span>
                     <input type="email" name="email" id="email" value="{{ old('email') }}" style="width: 100%; padding: 12px 14px 12px 42px; border: 1px solid #CBD5E1; border-radius: 8px; font-family: inherit; font-size: 14px;" placeholder="Enter your email" required autofocus>
                 </div>
             </div>
@@ -61,9 +64,13 @@
             <div style="text-align: left; margin-bottom: 20px;">
                 <label for="password" style="display: block; font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 6px;">Password</label>
                 <div style="position: relative;">
-                    <span style="position: absolute; left: 14px; top: 12px; color: #94A3B8;">🔒</span>
+                    <span style="position: absolute; left: 14px; top: 12px; color: #94A3B8; display: flex; align-items: center;">
+                        <i data-lucide="lock" style="width: 18px; height: 18px; color: #94A3B8;"></i>
+                    </span>
                     <input type="password" name="password" id="password" style="width: 100%; padding: 12px 42px 12px 42px; border: 1px solid #CBD5E1; border-radius: 8px; font-family: inherit; font-size: 14px;" placeholder="••••••••" required>
-                    <button type="button" id="togglePasswordBtn" style="position: absolute; right: 14px; top: 12px; background: none; border: none; cursor: pointer; color: #94A3B8;">👁️</button>
+                    <button type="button" id="togglePasswordBtn" style="position: absolute; right: 14px; top: 12px; background: none; border: none; cursor: pointer; color: #94A3B8; display: flex; align-items: center;">
+                        <i data-lucide="eye" style="width: 18px; height: 18px; color: #94A3B8;"></i>
+                    </button>
                 </div>
             </div>
 
@@ -74,8 +81,8 @@
                 </label>
             </div>
 
-            <button type="submit" id="btn-admin-login" style="width: 100%; padding: 14px; background-color: #2563EB; color: #FFFFFF; border: none; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 600; cursor: pointer;">
-                🔓 Login
+            <button type="submit" id="btn-admin-login" style="width: 100%; padding: 14px; background-color: #2563EB; color: #FFFFFF; border: none; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                Login <i data-lucide="log-in" style="width: 18px; height: 18px; color: #FFFFFF;"></i>
             </button>
         </form>
 
@@ -85,5 +92,8 @@
     </div>
 
     <script src="{{ asset('js/admin.js') }}"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

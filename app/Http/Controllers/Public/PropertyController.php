@@ -42,14 +42,14 @@ class PropertyController extends Controller
 
         if ($request->filled('price_range')) {
             switch ($request->price_range) {
-                case 'under_250k':
-                    $query->where('price', '<', 250000);
+                case 'under_2b':
+                    $query->where('price', '<', 2000000000);
                     break;
-                case '250k_500k':
-                    $query->whereBetween('price', [250000, 500000]);
+                case '2b_to_5b':
+                    $query->whereBetween('price', [2000000000, 5000000000]);
                     break;
-                case 'above_500k':
-                    $query->where('price', '>', 500000);
+                case 'above_5b':
+                    $query->where('price', '>', 5000000000);
                     break;
             }
         }
@@ -62,7 +62,7 @@ class PropertyController extends Controller
             }
         }
 
-        $properties = $query->latest()->paginate(9)->withQueryString();
+        $properties = $query->latest()->paginate(30)->withQueryString();
 
         return view('public.properties.index', compact('properties', 'categories', 'locations', 'settings'));
     }

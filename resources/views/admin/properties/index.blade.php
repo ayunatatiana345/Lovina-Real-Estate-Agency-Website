@@ -10,8 +10,9 @@
         <p style="font-size: 14px; color: #64748B;">Manage property listings, specifications, and categories.</p>
     </div>
     <div style="display: flex; gap: 12px;">
-        <a href="{{ route('admin.properties.create') }}" class="btn btn-primary" id="btn-add-property">
-            ➕ Add Property
+        <a href="{{ route('admin.properties.create') }}" class="btn btn-primary" id="btn-add-property" style="padding: 10px 24px; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add Property
         </a>
     </div>
 </div>
@@ -41,8 +42,8 @@
             <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Draft</option>
         </select>
 
-        <button type="submit" class="btn btn-primary" style="padding: 10px 20px;">Filter</button>
-        <a href="{{ route('admin.properties.index') }}" class="btn btn-outline" style="padding: 10px 16px;">Reset</a>
+        <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 14px; font-weight: 600; background-color: #1E3A8A !important; border: 1px solid #1E3A8A !important; color: #FFFFFF !important; border-radius: 6px; height: 42px; font-family: 'Poppins', sans-serif;">Filter</button>
+        <a href="{{ route('admin.properties.index') }}" class="btn btn-outline" style="padding: 10px 20px; font-size: 14px; font-weight: 500; color: #1E3A8A; background-color: #FFFFFF; border: 1px solid #1E3A8A; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; height: 42px; font-family: 'Poppins', sans-serif;">Reset</a>
     </form>
 </div>
 
@@ -55,10 +56,9 @@
                 <th>Property Name</th>
                 <th>Category</th>
                 <th>Location</th>
-                <th>Price (USD)</th>
+                <th>Price (IDR)</th>
                 <th>Status</th>
-                <th>Featured</th>
-                <th>Created Date</th>
+                <th>Upload Date & Time</th>
                 <th style="text-align: right;">Actions</th>
             </tr>
         </thead>
@@ -75,39 +75,47 @@
                     </td>
                     <td>{{ $prop->category->name ?? 'N/A' }}</td>
                     <td>{{ $prop->location->name ?? 'N/A' }}</td>
-                    <td style="font-weight: 600; color: #15803D;">${{ number_format($prop->price) }}</td>
+                    <td style="font-weight: 600; color: #15803D; white-space: nowrap;">{{ $prop->formatted_price_admin }}</td>
                     <td>
                         <span class="status-badge badge-{{ $prop->status }}">{{ ucfirst($prop->status) }}</span>
                     </td>
-                    <td>
-                        <form action="{{ route('admin.properties.toggle-featured', $prop->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 18px;">
-                                {{ $prop->is_featured ? '⭐' : '☆' }}
-                            </button>
-                        </form>
-                    </td>
-                    <td style="font-size: 13px; color: #64748B;">{{ $prop->created_at->format('M d, Y') }}</td>
+                    <td style="font-size: 13px; color: #64748B; white-space: nowrap;">{{ $prop->created_at->format('d M Y, H:i') }}</td>
                     <td style="text-align: right;">
-                        <a href="{{ route('admin.properties.edit', $prop->id) }}" class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">Edit</a>
-                        <form action="{{ route('admin.properties.destroy', $prop->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Delete this property permanently?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-outline" style="padding: 6px 12px; font-size: 12px; border-color: #EF4444; color: #DC2626;">Delete</button>
-                        </form>
+                        <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
+                            <a href="{{ route('admin.properties.edit', $prop->id) }}" class="btn btn-outline" style="padding: 6px 10px; font-size: 12px; color: #1E3A8A; border-color: #BFDBFE; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; font-weight: 600;">Edit</a>
+                            <form action="{{ route('admin.properties.destroy', $prop->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Delete this property permanently?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline" style="padding: 6px 6px; font-size: 12px; color: #DC2626; border-color: #FCA5A5; display: inline-flex; align-items: center; justify-content: center;" aria-label="Delete property" title="Delete property">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="9" style="text-align: center; padding: 32px; color: #64748B;">No properties found.</td>
+                    <td colspan="8" style="text-align: center; padding: 32px; color: #64748B;">No properties found.</td>
                 </tr>
             @endforelse
         </tbody>
     </table>
 </div>
 
-<div style="margin-top: 24px;">
-    {{ $properties->links() }}
+<div style="margin-top: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; width: 100%;">
+    @if ($properties->total() > 0)
+        <div style="font-size: 13px; color: #64748B; text-align: center;">
+            Showing {{ $properties->firstItem() }} to {{ $properties->lastItem() }} of {{ $properties->total() }} results
+        </div>
+    @endif
+    <div style="width: 100%; display: flex; justify-content: center;">
+        {{ $properties->links('vendor.pagination.admin') }}
+    </div>
 </div>
 
 <!-- Category Management Section Inside Properties Page -->

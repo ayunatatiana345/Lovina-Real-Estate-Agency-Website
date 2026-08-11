@@ -13,6 +13,7 @@
     <meta property="og:url" content="{{ url()->current() }}">
     
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     @yield('head_extra')
 </head>
 <body>
@@ -57,8 +58,8 @@
                     <p style="color: var(--light-blue); margin-bottom: 20px; font-size: 16px;">
                         The premier luxury real estate agency in North Bali. Specializing in oceanfront villas, beachfront land plots, and prime property investments.
                     </p>
-                    <p style="color: var(--light-blue); font-size: 15px;">
-                        📍 {{ $settings->address ?? 'Jl. Raya Kalibukbuk-Anturan, Lovina, Buleleng, Bali' }}
+                    <p style="color: var(--light-blue); font-size: 15px; display: flex; align-items: flex-start; gap: 8px;">
+                        <i data-lucide="map-pin" class="lucide-icon lucide-icon-sm" style="color: var(--light-blue); margin-top: 3px; flex-shrink: 0;"></i> <span>{{ $settings->address ?? 'Jl. Raya Kalibukbuk-Anturan, Lovina, Buleleng, Bali' }}</span>
                     </p>
                 </div>
 
@@ -85,16 +86,22 @@
 
                 <div>
                     <h4 class="footer-heading">Get in Touch</h4>
-                    <p style="color: var(--light-blue); margin-bottom: 8px; font-size: 15px;">📞 Phone: {{ $settings->phone ?? '+62 812 3456 7890' }}</p>
-                    <p style="color: var(--light-blue); margin-bottom: 8px; font-size: 15px;">💬 WhatsApp: {{ $settings->whatsapp ?? '+62 812 3456 7890' }}</p>
-                    <p style="color: var(--light-blue); margin-bottom: 16px; font-size: 15px;">✉️ Email: {{ $settings->email ?? 'info@lovinanorthbali.com' }}</p>
+                    <p style="color: var(--light-blue); margin-bottom: 8px; font-size: 15px; display: flex; align-items: center; gap: 8px;">
+                        <i data-lucide="phone" class="lucide-icon lucide-icon-sm" style="color: var(--light-blue);"></i> Phone: {{ $settings->phone ?? '+62 812 3456 7890' }}
+                    </p>
+                    <p style="color: var(--light-blue); margin-bottom: 8px; font-size: 15px; display: flex; align-items: center; gap: 8px;">
+                        <i data-lucide="message-circle" class="lucide-icon lucide-icon-sm" style="color: var(--light-blue);"></i> WhatsApp: {{ $settings->whatsapp ?? '+62 812 3456 7890' }}
+                    </p>
+                    <p style="color: var(--light-blue); margin-bottom: 16px; font-size: 15px; display: flex; align-items: center; gap: 8px;">
+                        <i data-lucide="mail" class="lucide-icon lucide-icon-sm" style="color: var(--light-blue);"></i> Email: {{ $settings->email ?? 'info@lovinanorthbali.com' }}
+                    </p>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; {{ date('Y') }} PT Lovina North Bali Real Estate Agency. All rights reserved.</p>
+                <p style="color: #FFFFFF; margin: 0;">&copy; {{ date('Y') }} PT Lovina North Bali Real Estate Agency. All rights reserved.</p>
                 <div style="display: flex; gap: 16px;">
-                    <a href="{{ route('admin.login') }}" style="color: var(--light-blue); font-size: 14px;">Admin Portal</a>
+                    <a href="{{ route('admin.login') }}" style="color: rgba(255, 255, 255, 0.45); font-size: 14px; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#FFFFFF'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Admin Portal</a>
                 </div>
             </div>
         </div>
@@ -104,8 +111,8 @@
     <div class="modal-overlay" id="successModal" style="display: {{ session('success_modal') ? 'flex' : 'none' }};">
         <div class="modal-box">
             <button class="modal-close-btn" id="closeSuccessModalBtn">&times;</button>
-            <div class="modal-icon-success">
-                ✓
+            <div class="modal-icon-success" style="display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="check" style="width: 32px; height: 32px; stroke-width: 3px; color: #16A34A;"></i>
             </div>
             <h2 style="font-size: 32px; color: var(--primary-navy); margin-bottom: 12px;">Message Sent Successfully!</h2>
             <p style="color: var(--text-secondary); font-size: 16px; margin-bottom: 24px;">
@@ -122,7 +129,7 @@
 
             <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
                 <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $settings->whatsapp ?? '6281234567890') }}" target="_blank" class="btn btn-outline" style="border-color: #16A34A; color: #16A34A;">
-                    💬 Chat on WhatsApp
+                    <i data-lucide="message-circle" class="lucide-icon lucide-icon-sm" style="margin-right: 6px; color: #16A34A;"></i> Chat on WhatsApp
                 </a>
                 <button class="btn btn-primary" id="backHomeBtn">Back to Homepage</button>
             </div>
@@ -130,6 +137,9 @@
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+        lucide.createIcons();
+    </script>
     @yield('scripts')
 </body>
 </html>

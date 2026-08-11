@@ -65,6 +65,21 @@ class Property extends Model
         return asset('images/property-placeholder.jpg');
     }
 
+    public function getFormattedPriceAttribute()
+    {
+        $priceIdr = $this->price;
+        if ($priceIdr >= 1000000000) {
+            $billionVal = $priceIdr / 1000000000;
+            return 'IDR ' . round($billionVal, 2) . ' Billion';
+        }
+        return 'IDR ' . number_format($priceIdr);
+    }
+
+    public function getFormattedPriceAdminAttribute()
+    {
+        return 'Rp ' . number_format($this->price, 0, ',', '.');
+    }
+
     public function inquiries()
     {
         return $this->hasMany(Inquiry::class, 'property_id');

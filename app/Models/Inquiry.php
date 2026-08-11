@@ -16,6 +16,7 @@ class Inquiry extends Model
         'property_id',
         'subject',
         'message',
+        'source',
         'status',
         'admin_notes',
     ];
@@ -23,5 +24,10 @@ class Inquiry extends Model
     public function property()
     {
         return $this->belongsTo(Property::class, 'property_id');
+    }
+
+    public function statusLogs()
+    {
+        return $this->hasMany(InquiryStatusLog::class, 'inquiry_id')->orderBy('changed_at', 'asc');
     }
 }

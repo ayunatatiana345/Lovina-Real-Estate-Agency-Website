@@ -45,9 +45,9 @@
                         <label class="form-label" for="price_range">Price Range</label>
                         <select name="price_range" id="price_range" class="form-select">
                             <option value="">Any Price</option>
-                            <option value="under_250k" {{ request('price_range') == 'under_250k' ? 'selected' : '' }}>Under $250,000</option>
-                            <option value="250k_500k" {{ request('price_range') == '250k_500k' ? 'selected' : '' }}>$250,000 - $500,000</option>
-                            <option value="above_500k" {{ request('price_range') == 'above_500k' ? 'selected' : '' }}>Above $500,000</option>
+                            <option value="under_2b" {{ request('price_range') == 'under_2b' ? 'selected' : '' }}>Under IDR 2 Billion</option>
+                            <option value="2b_to_5b" {{ request('price_range') == '2b_to_5b' ? 'selected' : '' }}>IDR 2 Billion – IDR 5 Billion</option>
+                            <option value="above_5b" {{ request('price_range') == 'above_5b' ? 'selected' : '' }}>Above IDR 5 Billion</option>
                         </select>
                     </div>
 
@@ -65,22 +65,33 @@
                 @foreach($properties as $prop)
                     <div class="property-card">
                         <div class="property-card-image-wrap">
-                            <img src="{{ $prop->primary_image_url }}" alt="{{ $prop->name }}" class="property-card-image">
+                            @php
+                                $cover = $prop->images->firstWhere('is_cover', true) ?? $prop->images->first();
+                            @endphp
+                            @if($cover && file_exists(public_path('storage/' . $cover->image_path)))
+                                <img src="{{ asset('storage/' . $cover->image_path) }}" alt="{{ $prop->name }}" class="property-card-image">
+                            @else
+                                <div style="width: 100%; height: 100%; background-color: #F3F4F6; display: flex; align-items: center; justify-content: center;">
+                                    <i data-lucide="home" style="width: 64px; height: 64px; color: #9CA3AF; stroke-width: 1.25px;"></i>
+                                </div>
+                            @endif
                             @if($prop->is_featured)
-                                <span class="property-badge-featured">★ Featured</span>
+                                <span class="property-badge-featured">
+                                    <i data-lucide="star" class="lucide-icon lucide-icon-sm" style="fill: var(--white); stroke: var(--white); margin-right: 4px;"></i>Featured
+                                </span>
                             @endif
                         </div>
                         <div class="property-card-body">
                             <div class="property-category-tag">{{ $prop->category->name ?? 'Villa' }}</div>
                             <h3 class="property-card-title">{{ $prop->name }}</h3>
                             <div class="property-location-tag">
-                                📍 {{ $prop->location->name ?? 'North Bali' }}
+                                <i data-lucide="map-pin" class="lucide-icon lucide-icon-sm" style="color: var(--text-muted); margin-right: 4px;"></i> {{ $prop->location->name ?? 'North Bali' }}
                             </div>
-                            <div class="property-price">USD ${{ number_format($prop->price) }}</div>
+                            <div class="property-price">{{ $prop->formatted_price }}</div>
                             <div class="property-specs-bar">
-                                <div class="spec-item">🛏 {{ $prop->bedrooms }} Beds</div>
-                                <div class="spec-item">🚿 {{ $prop->bathrooms }} Baths</div>
-                                <div class="spec-item">📐 {{ $prop->land_size }} m²</div>
+                                <div class="spec-item"><i data-lucide="bed" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bedrooms }} Beds</div>
+                                <div class="spec-item"><i data-lucide="bath" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bathrooms }} Baths</div>
+                                <div class="spec-item"><i data-lucide="maximize" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->land_size }} m²</div>
                             </div>
                             <div style="margin-top: 16px;">
                                 <a href="{{ route('properties.show', $prop->slug) }}" class="btn btn-outline" style="width: 100%;">View Details</a>
@@ -91,13 +102,20 @@
             </div>
 
             <!-- Pagination -->
-            <div style="margin-top: 48px; display: flex; justify-content: center;">
-                {{ $properties->links() }}
+            <div style="margin-top: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                @if ($properties->total() > 0)
+                    <div class="pagination-info" style="margin-bottom: 16px; font-size: 14px; color: var(--text-muted);">
+                        Showing {{ $properties->firstItem() }} to {{ $properties->lastItem() }} of {{ $properties->total() }} results
+                    </div>
+                @endif
+                {{ $properties->links('vendor.pagination.custom') }}
             </div>
         @else
             <!-- Mandatory Empty State -->
             <div class="empty-state-box">
-                <div class="empty-state-icon">🔍</div>
+                <div class="empty-state-icon" style="color: var(--text-muted); margin-bottom: 16px;">
+                    <i data-lucide="search" class="lucide-icon lucide-icon-xl" style="color: var(--text-muted); width: 48px; height: 48px;"></i>
+                </div>
                 <h2 class="empty-state-title">No Properties Found</h2>
                 <p class="empty-state-text">
                     We could not find any properties matching your current filter criteria. Try adjusting your search keywords, location, or price filters.

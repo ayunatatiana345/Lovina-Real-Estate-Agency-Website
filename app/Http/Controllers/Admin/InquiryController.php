@@ -37,11 +37,17 @@ class InquiryController extends Controller
     public function show($id)
     {
         $settings = CompanySetting::getSettings();
-        $inquiry = Inquiry::with('property')->findOrFail($id);
+        $inquiry = Inquiry::with(['property', 'statusLogs'])->findOrFail($id);
 
         if ($inquiry->status === 'new') {
             $inquiry->status = 'in_progress';
             $inquiry->save();
+
+            \App\Models\InquiryStatusLog::create([
+                'inquiry_id' => $inquiry->id,
+                'status' => 'in_progress',
+                'changed_at' => now(),
+            ]);
         }
 
         return view('admin.inquiries.show', compact('inquiry', 'settings'));
@@ -56,7 +62,16 @@ class InquiryController extends Controller
             'admin_notes' => 'nullable|string',
         ]);
 
+        $oldStatus = $inquiry->status;
         $inquiry->update($validated);
+
+        if ($oldStatus !== $inquiry->status) {
+            \App\Models\InquiryStatusLog::create([
+                'inquiry_id' => $inquiry->id,
+                'status' => $inquiry->status,
+                'changed_at' => now(),
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Inquiry status updated successfully.');
     }

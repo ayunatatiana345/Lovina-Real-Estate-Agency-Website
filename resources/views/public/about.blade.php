@@ -32,7 +32,7 @@
                     @if(isset($story['mission']) && is_array($story['mission']))
                         @foreach($story['mission'] as $m)
                             <li style="margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; font-size: 16px;">
-                                <span style="color: var(--secondary-gold); font-size: 20px;">✓</span>
+                                <i data-lucide="check" class="lucide-icon lucide-icon-sm" style="color: var(--secondary-gold); margin-top: 4px;"></i>
                                 <span>{{ $m }}</span>
                             </li>
                         @endforeach
@@ -49,7 +49,9 @@
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
                 @foreach($benefits as $b)
                     <div style="background-color: var(--light-gray); border-radius: var(--radius-md); padding: 28px 20px; text-align: center;">
-                        <div style="font-size: 36px; margin-bottom: 12px;">🛡️</div>
+                        <div style="color: var(--primary-navy); margin-bottom: 12px;">
+                            <i data-lucide="shield" class="lucide-icon lucide-icon-xl" style="color: var(--primary-navy);"></i>
+                        </div>
                         <h3 style="font-size: 20px; margin-bottom: 8px;">{{ $b->title }}</h3>
                         <p style="font-size: 15px; color: var(--text-secondary);">{{ $b->description }}</p>
                     </div>

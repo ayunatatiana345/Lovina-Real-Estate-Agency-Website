@@ -14,7 +14,9 @@
 <div class="admin-stats-grid">
     <!-- Card 1: Total Properties -->
     <div class="admin-stat-card">
-        <div class="admin-stat-icon">🏡</div>
+        <div class="admin-stat-icon" style="color: #2563EB; display: flex; align-items: center; justify-content: center;">
+            <i data-lucide="home" style="width: 28px; height: 28px; color: #2563EB;"></i>
+        </div>
         <div>
             <div class="admin-stat-lbl">Total Properties</div>
             <div class="admin-stat-val">{{ $totalProperties }}</div>
@@ -27,7 +29,9 @@
 
     <!-- Card 2: Total Inquiries -->
     <div class="admin-stat-card">
-        <div class="admin-stat-icon">💬</div>
+        <div class="admin-stat-icon" style="color: #16A34A; display: flex; align-items: center; justify-content: center;">
+            <i data-lucide="message-square" style="width: 28px; height: 28px; color: #16A34A;"></i>
+        </div>
         <div>
             <div class="admin-stat-lbl">Total Inquiries</div>
             <div class="admin-stat-val">{{ $totalInquiries }}</div>
@@ -41,7 +45,9 @@
 
     <!-- Card 3: Total Views -->
     <div class="admin-stat-card">
-        <div class="admin-stat-icon">👁️</div>
+        <div class="admin-stat-icon" style="color: #8B5CF6; display: flex; align-items: center; justify-content: center;">
+            <i data-lucide="eye" style="width: 28px; height: 28px; color: #8B5CF6;"></i>
+        </div>
         <div>
             <div class="admin-stat-lbl">Total Views (30 Days)</div>
             <div class="admin-stat-val">{{ number_format($totalViews) }}</div>
@@ -53,7 +59,9 @@
 
     <!-- Card 4: Unique Visitors -->
     <div class="admin-stat-card">
-        <div class="admin-stat-icon">👥</div>
+        <div class="admin-stat-icon" style="color: #EA580C; display: flex; align-items: center; justify-content: center;">
+            <i data-lucide="users" style="width: 28px; height: 28px; color: #EA580C;"></i>
+        </div>
         <div>
             <div class="admin-stat-lbl">Unique Visitors (30 Days)</div>
             <div class="admin-stat-val">{{ number_format($uniqueVisitors) }}</div>
@@ -99,8 +107,8 @@
                         <div style="font-size: 14px; font-weight: 600; color: #0F172A;">{{ $tp->name }}</div>
                         <div style="font-size: 12px; color: #64748B;">{{ $tp->location->name ?? 'Lovina' }}</div>
                     </div>
-                    <div style="font-size: 13px; font-weight: 600; color: #2563EB;">
-                        👁️ {{ $tp->views_count }}
+                    <div style="font-size: 13px; font-weight: 600; color: #2563EB; display: flex; align-items: center; gap: 4px;">
+                        <i data-lucide="eye" style="width: 14px; height: 14px; color: #2563EB;"></i> {{ $tp->views_count }}
                     </div>
                 </li>
             @endforeach
@@ -165,16 +173,16 @@
         </div>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <a href="{{ route('admin.properties.create') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #EFF6FF; border-radius: 8px; text-decoration: none; color: #1E40AF; font-weight: 600;">
-                <span>➕</span> Add New Property
+                <i data-lucide="plus" style="width: 18px; height: 18px; color: #1E40AF;"></i> Add New Property
             </a>
             <a href="{{ route('admin.properties.index') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; text-decoration: none; color: #334155; font-weight: 600;">
-                <span>📋</span> View Properties List
+                <i data-lucide="clipboard-list" style="width: 18px; height: 18px; color: #334155;"></i> View Properties List
             </a>
             <a href="{{ route('admin.inquiries.index') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; text-decoration: none; color: #334155; font-weight: 600;">
-                <span>✉️</span> View Inquiries
+                <i data-lucide="mail" style="width: 18px; height: 18px; color: #334155;"></i> View Inquiries
             </a>
             <a href="{{ route('admin.settings.index') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #FEF3C7; border-radius: 8px; text-decoration: none; color: #92400E; font-weight: 600;">
-                <span>⚙️</span> General Settings
+                <i data-lucide="settings" style="width: 18px; height: 18px; color: #92400E;"></i> General Settings
             </a>
         </div>
     </div>

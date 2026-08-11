@@ -18,6 +18,7 @@ class InquiryController extends Controller
             'property_id' => 'nullable|exists:properties,id',
             'subject' => 'nullable|string|max:255',
             'message' => 'required|string',
+            'source' => 'nullable|string|max:255',
         ]);
 
         if (empty($validated['subject']) && !empty($validated['property_id'])) {
@@ -28,7 +29,16 @@ class InquiryController extends Controller
         }
 
         $validated['status'] = 'new';
+        if (empty($validated['source'])) {
+            $validated['source'] = !empty($validated['property_id']) ? 'Property Detail Page' : 'Contact Us Form';
+        }
         $inquiry = Inquiry::create($validated);
+
+        \App\Models\InquiryStatusLog::create([
+            'inquiry_id' => $inquiry->id,
+            'status' => 'new',
+            'changed_at' => now(),
+        ]);
 
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([

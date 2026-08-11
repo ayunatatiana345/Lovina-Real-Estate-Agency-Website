@@ -43,6 +43,7 @@ class CompanySetting extends Model
             'whatsapp' => '+62 812 3456 7890',
             'email' => 'info@lovinanorthbali.com',
             'address' => 'Jl. Raya Kalibukbuk-Anturan, Lovina, Buleleng, Bali 81119, Indonesia',
+            'google_maps_direction_url' => 'https://maps.app.goo.gl/scYXTttd854dwuWc9?g_st=ic',
             'business_hours' => json_encode([
                 ['day' => 'Monday - Friday', 'hours' => '09:00 - 17:00'],
                 ['day' => 'Saturday', 'hours' => '09:00 - 14:00'],
