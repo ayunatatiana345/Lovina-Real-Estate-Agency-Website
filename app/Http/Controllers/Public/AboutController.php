@@ -16,17 +16,31 @@ class AboutController extends Controller
         $settings = CompanySetting::getSettings();
         $story = CmsContent::getContent('about_us', 'story', [
             'title' => 'Our Story',
-            'description' => 'Founded in Lovina, PT Lovina North Bali Real Estate Agency has established itself as the leading property agency dedicated to North Bali real estate.',
-            'vision' => 'To be the most trusted and transparent real estate agency in North Bali.',
+            'description' => 'Established in 2023, PT Lovina North Bali Real Estate Agency has established itself as a dedicated property agency serving North Bali. We specialize in selecting existing villas, houses, hotels, and restaurants to offer you the best options available in beautiful North Bali.',
+            'vision' => 'To be the most trusted and transparent real estate agency in North Bali, connecting discerning buyers with exceptional lifestyle and investment properties.',
             'mission' => [
-                'Deliver uncompromised legal integrity and title verification for every transaction.',
                 'Provide personalized consultation tailored to international buyer requirements.',
-                'Promote sustainable property developments across Buleleng Regency.',
+                'Promote sustainable, community-respecting property developments across Buleleng Regency.',
             ],
         ]);
 
         $benefits = Benefit::where('page', 'homepage')->orderBy('sort_order', 'asc')->get();
-        $statistics = Statistic::where('page', 'homepage')->where('is_visible', true)->orderBy('sort_order', 'asc')->get();
+        $statsSection = CmsContent::getContent('homepage', 'stats', [
+            'items' => [
+                ['number' => '120+', 'label' => 'Carefully curated properties across North Bali.', 'icon' => 'Properties Listed', 'enabled' => true],
+                ['number' => '3+', 'label' => 'Proudly serving North Bali since 2023.', 'icon' => 'Years Established', 'enabled' => true],
+                ['number' => '90%+', 'label' => 'Our clients’ satisfaction is our top priority.', 'icon' => 'Customer Satisfaction', 'enabled' => true],
+            ]
+        ]);
+        $statistics = collect($statsSection['items'] ?? [])
+            ->where('enabled', true)
+            ->map(function ($item) {
+                return (object) [
+                    'number' => $item['number'],
+                    'label' => $item['label'],
+                    'icon' => $item['icon'] ?? '',
+                ];
+            });
 
         return view('public.about', compact('settings', 'story', 'benefits', 'statistics'));
     }

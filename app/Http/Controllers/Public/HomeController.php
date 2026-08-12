@@ -18,8 +18,8 @@ class HomeController extends Controller
     {
         $settings = CompanySetting::getSettings();
         $hero = CmsContent::getContent('homepage', 'hero', [
-            'heading' => 'Discover Premier Luxury Real Estate in Beautiful North Bali',
-            'subheading' => 'Explore beachfront luxury villas, ocean view land plots, and prime investments in Lovina, Temukus, and Singaraja.',
+            'heading' => 'Welcome to North Bali Real Estate Agency',
+            'subheading' => 'If your dream is to live in beautiful North Bali, we can help that dream come true.',
             'background_image' => 'cms/hero-bg.jpg',
         ]);
 
@@ -44,7 +44,22 @@ class HomeController extends Controller
             ->get();
 
         $benefits = Benefit::where('page', 'homepage')->orderBy('sort_order', 'asc')->get();
-        $statistics = Statistic::where('page', 'homepage')->where('is_visible', true)->orderBy('sort_order', 'asc')->get();
+        $statsSection = CmsContent::getContent('homepage', 'stats', [
+            'items' => [
+                ['number' => '120+', 'label' => 'Carefully curated properties across North Bali.', 'icon' => 'Properties Listed', 'enabled' => true],
+                ['number' => '3+', 'label' => 'Proudly serving North Bali since 2023.', 'icon' => 'Years Established', 'enabled' => true],
+                ['number' => '90%+', 'label' => 'Our clients’ satisfaction is our top priority.', 'icon' => 'Customer Satisfaction', 'enabled' => true],
+            ]
+        ]);
+        $statistics = collect($statsSection['items'] ?? [])
+            ->where('enabled', true)
+            ->map(function ($item) {
+                return (object) [
+                    'number' => $item['number'],
+                    'label' => $item['label'],
+                    'icon' => $item['icon'] ?? '',
+                ];
+            });
         $cta = CmsContent::getContent('homepage', 'cta');
 
         return view('public.home', compact(

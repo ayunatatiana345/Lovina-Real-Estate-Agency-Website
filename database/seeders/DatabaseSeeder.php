@@ -501,10 +501,10 @@ class DatabaseSeeder extends Seeder
         $familyHomeProp = Property::where('name', 'Singaraja Family Home')->first();
 
         $inquiries = [
-            // Status: new (6 records)
+            // Status: new (3 records)
             [
-                'customer_name' => 'Graham Whitaker',
-                'email' => 'graham.whitaker@example.com',
+                'customer_name' => 'Thomas Alexander Reed',
+                'email' => 'thomas.reed78@gmail.com',
                 'phone' => '+1 (555) 019-8234',
                 'property_id' => $azureProp ? $azureProp->id : null,
                 'subject' => 'Inquiry regarding Azure Vista Residence',
@@ -514,9 +514,9 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now()->subHours(2),
             ],
             [
-                'customer_name' => 'Ni Luh Pradnyani',
-                'email' => 'nl.pradnyani@example.com',
-                'phone' => '+62 812 3987 6543',
+                'customer_name' => 'Ni Luh Made Ayu Prameswari',
+                'email' => 'ayu.prameswari@gmail.com',
+                'phone' => '+62 812-3987-6543',
                 'property_id' => $harmonyProp ? $harmonyProp->id : null,
                 'subject' => 'Viewing schedule for Harmony Pool Retreat',
                 'message' => 'Selamat pagi, apakah saya bisa menjadwalkan kunjungan ke villa Harmony Pool Retreat hari Sabtu ini?',
@@ -525,8 +525,8 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now()->subHours(4),
             ],
             [
-                'customer_name' => 'Pieter van Dijk',
-                'email' => 'p.vandijk@example.com',
+                'customer_name' => 'Pieter Willem van der Linden',
+                'email' => 'pietervdl.linden@icloud.com',
                 'phone' => '+31 6 1234 5678',
                 'property_id' => $oceanProp ? $oceanProp->id : null,
                 'subject' => 'Questions on Freehold title for Ocean Breeze Estate',
@@ -535,45 +535,12 @@ class DatabaseSeeder extends Seeder
                 'status' => 'new',
                 'created_at' => now()->subHours(6),
             ],
-            [
-                'customer_name' => 'Elaine Mercer',
-                'email' => 'elaine.mercer@example.com',
-                'phone' => '+1 (555) 014-9382',
-                'property_id' => null,
-                'subject' => 'General inquiry about beachfront land plots',
-                'message' => 'Hi, I am looking for a beachfront land plot in Lovina or Temukus. Please let me know what options you have available.',
-                'source' => 'Contact Us Form',
-                'status' => 'new',
-                'created_at' => now()->subHours(8),
-            ],
-            [
-                'customer_name' => 'I Made Wiratama',
-                'email' => 'made.wiratama@example.com',
-                'phone' => '+62 819 9988 7766',
-                'property_id' => $sunsetBayProp ? $sunsetBayProp->id : null,
-                'subject' => 'Villa Sunset Bay purchase inquiry',
-                'message' => 'Halo, saya tertarik dengan Sunset Bay Villa. Apakah harganya masih bisa dinegosiasikan untuk sistem pembayaran tunai?',
-                'source' => 'Property Detail Page',
-                'status' => 'new',
-                'created_at' => now()->subHours(10),
-            ],
-            [
-                'customer_name' => 'Marieke de Vries',
-                'email' => 'marieke.devries@example.com',
-                'phone' => '+31 6 9876 5432',
-                'property_id' => $sunsetProp ? $sunsetProp->id : null,
-                'subject' => 'Lease extension terms on Sunset View Villa',
-                'message' => 'Hello, I see Sunset View Villa is leasehold. What are the options and costs for extending the lease beyond the initial 25 years?',
-                'source' => 'Property Detail Page',
-                'status' => 'new',
-                'created_at' => now()->subHours(12),
-            ],
 
-            // Status: in_progress (6 records)
+            // Status: in_progress (3 records)
             [
-                'customer_name' => 'Douglas Hartwell',
-                'email' => 'douglas.hartwell@example.com',
-                'phone' => '+1 (555) 012-3456',
+                'customer_name' => 'Arthur James Pendelton',
+                'email' => 'arthur.pendelton53@gmail.com',
+                'phone' => '+44 7700 900456',
                 'property_id' => $serenityProp ? $serenityProp->id : null,
                 'subject' => 'Requesting documents for Serenity Hill Villa',
                 'message' => 'Hello, please send the building permit (IMB) and land certificates for Serenity Hill Villa for my legal counsel to review.',
@@ -582,9 +549,9 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now()->subHours(15),
             ],
             [
-                'customer_name' => 'Ni Made Suryani',
-                'email' => 'made.suryani@example.com',
-                'phone' => '+62 878 6123 4567',
+                'customer_name' => 'Ni Putu Ratih Lestari',
+                'email' => 'ratih.lestari22@gmail.com',
+                'phone' => '+62 878-6123-4567',
                 'property_id' => $tropicalProp ? $tropicalProp->id : null,
                 'subject' => 'Rental yields for Tropical Bay Villa',
                 'message' => 'Selamat siang, saya berencana investasi di Tropical Bay Villa. Bisa minta data history okupansi atau estimasi ROI tahunannya?',
@@ -593,8 +560,8 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now()->subHours(18),
             ],
             [
-                'customer_name' => 'Willem van der Meer',
-                'email' => 'w.vandermeer@example.com',
+                'customer_name' => 'Hendrik Jan de Boer',
+                'email' => 'hendrik.deboer@icloud.com',
                 'phone' => '+31 6 4321 8765',
                 'property_id' => $harmonyProp ? $harmonyProp->id : null,
                 'subject' => 'Water and power supply at Harmony Pool Retreat',
@@ -603,45 +570,12 @@ class DatabaseSeeder extends Seeder
                 'status' => 'in_progress',
                 'created_at' => now()->subHours(21),
             ],
-            [
-                'customer_name' => 'Rebecca Callahan',
-                'email' => 'rebecca.c@example.com',
-                'phone' => '+44 7700 900077',
-                'property_id' => null,
-                'subject' => 'Retirement villa consulting',
-                'message' => 'Hi, my husband and I are planning to retire in North Bali next year. We would like to schedule a call to discuss suitable villas under USD 400,000.',
-                'source' => 'Contact Us Form',
-                'status' => 'in_progress',
-                'created_at' => now()->subDay(),
-            ],
-            [
-                'customer_name' => 'I Wayan Suardika',
-                'email' => 'wayan.suardika@example.com',
-                'phone' => '+62 811 385 1234',
-                'property_id' => $familyHomeProp ? $familyHomeProp->id : null,
-                'subject' => 'Tanya legalitas Singaraja Family Home',
-                'message' => 'Apakah status tanah Singaraja Family Home sudah SHM (Sertifikat Hak Milik) atas nama pemilik langsung?',
-                'source' => 'Property Detail Page',
-                'status' => 'in_progress',
-                'created_at' => now()->subDays(2),
-            ],
-            [
-                'customer_name' => 'Annelies Jansen',
-                'email' => 'annelies.j@example.com',
-                'phone' => '+31 6 5678 1234',
-                'property_id' => $azureProp ? $azureProp->id : null,
-                'subject' => 'Furniture package details at Azure Vista',
-                'message' => 'Hello, does the asking price for Azure Vista Residence include all the indoor and outdoor furniture shown in the photos?',
-                'source' => 'Property Detail Page',
-                'status' => 'in_progress',
-                'created_at' => now()->subDays(3),
-            ],
 
-            // Status: responded (5 records)
+            // Status: responded (3 records)
             [
-                'customer_name' => 'Martin Prescott',
-                'email' => 'martin.prescott@example.com',
-                'phone' => '+1 (555) 018-7241',
+                'customer_name' => 'Jean-Pierre Dubois',
+                'email' => 'jpdubois.81@gmail.com',
+                'phone' => '+33 6 12 34 56 78',
                 'property_id' => $oceanProp ? $oceanProp->id : null,
                 'subject' => 'Property tax question for Ocean Breeze',
                 'message' => 'Hi, what are the annual property maintenance taxes and local community fees for Ocean Breeze Estate?',
@@ -650,9 +584,9 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now()->subDays(4),
             ],
             [
-                'customer_name' => 'Ni Luh Putu Arianti',
-                'email' => 'putu.arianti@example.com',
-                'phone' => '+62 812 3678 9900',
+                'customer_name' => 'Komang Ayu Sri Wahyuni',
+                'email' => 'komang.sri87@gmail.com',
+                'phone' => '+62 812-3678-9900',
                 'property_id' => null,
                 'subject' => 'Looking for investment advice in Sererit',
                 'message' => 'Hello, I am interested in building a guest house in Sererit. I would like to consult about local regulations for commercial licensing.',
@@ -661,9 +595,9 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now()->subDays(5),
             ],
             [
-                'customer_name' => 'Hendrik de Boer',
-                'email' => 'hendrik.deboer@example.com',
-                'phone' => '+31 6 1122 3344',
+                'customer_name' => 'Yosef Andreas Wibowo',
+                'email' => 'yosef.wibowo31@gmail.com',
+                'phone' => '+62 811-385-1234',
                 'property_id' => $serenityProp ? $serenityProp->id : null,
                 'subject' => 'Access road details at Serenity Hill Villa',
                 'message' => 'Beste, is the access road to Serenity Hill Villa paved and wide enough for two cars to pass? Thank you.',
@@ -671,34 +605,12 @@ class DatabaseSeeder extends Seeder
                 'status' => 'responded',
                 'created_at' => now()->subDays(6),
             ],
-            [
-                'customer_name' => 'Judith Holloway',
-                'email' => 'judith.h@example.com',
-                'phone' => '+1 (555) 016-4422',
-                'property_id' => $sunsetBayProp ? $sunsetBayProp->id : null,
-                'subject' => 'Sunset Bay Villa site inspection',
-                'message' => 'Hello, we would like to schedule a physical tour of the Sunset Bay Villa on August 15th around 4 PM. Please let us know if this works.',
-                'source' => 'Property Detail Page',
-                'status' => 'responded',
-                'created_at' => now()->subDays(7),
-            ],
-            [
-                'customer_name' => 'I Ketut Ardana',
-                'email' => 'ketut.ardana@example.com',
-                'phone' => '+62 813 3712 3456',
-                'property_id' => $sunsetProp ? $sunsetProp->id : null,
-                'subject' => 'Nego harga Sunset View Villa',
-                'message' => 'Selamat sore, saya sudah mengunjungi lokasi Sunset View Villa. Apakah ada kelonggaran harga jika termin bayar bertahap 3 kali?',
-                'source' => 'Property Detail Page',
-                'status' => 'responded',
-                'created_at' => now()->subDays(8),
-            ],
 
-            // Status: closed (5 records)
+            // Status: closed (3 records)
             [
-                'customer_name' => 'Saskia Verhoeven',
-                'email' => 'saskia.verhoeven@example.com',
-                'phone' => '+31 6 7766 5544',
+                'customer_name' => 'Siti Aminah Rahmawati',
+                'email' => 'aminah.rahmawati@icloud.com',
+                'phone' => '+62 821-4567-9032',
                 'property_id' => $azureProp ? $azureProp->id : null,
                 'subject' => 'Survey request for Azure Vista',
                 'message' => 'We would like to inspect the building quality of Azure Vista Residence before placing a formal offer.',
@@ -707,9 +619,9 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now()->subDays(10),
             ],
             [
-                'customer_name' => 'Arthur Pendelton',
-                'email' => 'arthur.p@example.com',
-                'phone' => '+1 (555) 011-8899',
+                'customer_name' => 'I Made Raka Pranata',
+                'email' => 'made.raka78@gmail.com',
+                'phone' => '+62 819-9988-7766',
                 'property_id' => $oceanProp ? $oceanProp->id : null,
                 'subject' => 'Asking if Ocean Breeze has ocean access',
                 'message' => 'Hello, is there a pathway or direct access down to the beach from the Ocean Breeze Estate cliff garden?',
@@ -718,37 +630,15 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now()->subDays(12),
             ],
             [
-                'customer_name' => 'I Nyoman Mahendra',
-                'email' => 'nyoman.mahendra@example.com',
-                'phone' => '+62 812 4567 8901',
+                'customer_name' => 'I Nyoman Gede Mahendra',
+                'email' => 'nyoman.mahendra@gmail.com',
+                'phone' => '+62 812-4567-8901',
                 'property_id' => null,
                 'subject' => 'Kemitraan agen properti lokal',
                 'message' => 'Saya memiliki beberapa klien lokal yang mencari tanah di Lovina. Apakah ada skema bagi komisi kerja sama agen?',
                 'source' => 'Contact Us Form',
                 'status' => 'closed',
                 'created_at' => now()->subDays(14),
-            ],
-            [
-                'customer_name' => 'Geraldine Kraan',
-                'email' => 'g.kraan@example.com',
-                'phone' => '+31 6 8899 0011',
-                'property_id' => $tropicalProp ? $tropicalProp->id : null,
-                'subject' => 'Lease contract draft for Tropical Bay',
-                'message' => 'Dear agent, please send the standard lease contract template you use for properties like Tropical Bay Villa.',
-                'source' => 'Property Detail Page',
-                'status' => 'closed',
-                'created_at' => now()->subDays(16),
-            ],
-            [
-                'customer_name' => 'Ni Made Asriati',
-                'email' => 'made.asriati@example.com',
-                'phone' => '+62 819 3344 5566',
-                'property_id' => $harmonyProp ? $harmonyProp->id : null,
-                'subject' => 'Booking confirmation check',
-                'message' => 'Halo, saya ingin menanyakan apakah deposit untuk sewa Harmony Pool Retreat sudah masuk ke rekening agen?',
-                'source' => 'Property Detail Page',
-                'status' => 'closed',
-                'created_at' => now()->subDays(20),
             ],
         ];
 
@@ -801,31 +691,24 @@ class DatabaseSeeder extends Seeder
         $benefits = [
             [
                 'page' => 'homepage',
-                'title' => 'North Bali Specialists',
-                'description' => 'Over 15 years of exclusive focus and deep expertise in Lovina and North Bali property market.',
-                'icon' => 'compass',
+                'title' => 'North Bali Property Focus',
+                'description' => 'We specialize in villas, houses, land, hotels, and restaurants across beautiful North Bali.',
+                'icon' => 'home',
                 'sort_order' => 1,
             ],
             [
                 'page' => 'homepage',
-                'title' => 'Verified Legal Titles',
-                'description' => 'Every listing undergoes rigorous legal verification and land title checking before publishing.',
-                'icon' => 'shield-check',
+                'title' => 'Tailored Property Search',
+                'description' => 'On request, we can specifically search for properties based on what you are looking for and what your wishes are.',
+                'icon' => 'search',
                 'sort_order' => 2,
             ],
             [
                 'page' => 'homepage',
-                'title' => 'Transparent Pricing',
-                'description' => 'Direct owner prices with zero hidden markups or surprise fees for international buyers.',
-                'icon' => 'tag',
+                'title' => 'Local Property Support',
+                'description' => 'We can help you find a property that suits your requirements and provide support based on your specific needs.',
+                'icon' => 'shield',
                 'sort_order' => 3,
-            ],
-            [
-                'page' => 'homepage',
-                'title' => 'Full Ownership Support',
-                'description' => 'End-to-end guidance from initial viewing, notary coordination, tax setup, to villa management.',
-                'icon' => 'users',
-                'sort_order' => 4,
             ],
         ];
 
@@ -835,10 +718,30 @@ class DatabaseSeeder extends Seeder
 
         // 8. Statistics
         $statistics = [
-            ['page' => 'homepage', 'number' => '120+', 'label' => 'Properties Listed', 'icon' => 'home', 'is_visible' => true, 'sort_order' => 1],
-            ['page' => 'homepage', 'number' => '15+', 'label' => 'Years Experience', 'icon' => 'award', 'is_visible' => true, 'sort_order' => 2],
-            ['page' => 'homepage', 'number' => '450+', 'label' => 'Happy Clients', 'icon' => 'smile', 'is_visible' => true, 'sort_order' => 3],
-            ['page' => 'homepage', 'number' => '99%', 'label' => 'Customer Satisfaction', 'icon' => 'star', 'is_visible' => true, 'sort_order' => 4],
+            [
+                'page' => 'homepage',
+                'number' => '120+',
+                'label' => 'Carefully curated properties across North Bali.',
+                'icon' => 'Properties Listed',
+                'is_visible' => true,
+                'sort_order' => 1
+            ],
+            [
+                'page' => 'homepage',
+                'number' => '3+',
+                'label' => 'Proudly serving North Bali since 2023.',
+                'icon' => 'Years Established',
+                'is_visible' => true,
+                'sort_order' => 2
+            ],
+            [
+                'page' => 'homepage',
+                'number' => '90%+',
+                'label' => 'Our clients’ satisfaction is our top priority.',
+                'icon' => 'Customer Satisfaction',
+                'is_visible' => true,
+                'sort_order' => 3
+            ],
         ];
 
         foreach ($statistics as $stat) {
@@ -850,8 +753,8 @@ class DatabaseSeeder extends Seeder
             'page' => 'homepage',
             'section_key' => 'hero',
             'content' => [
-                'heading' => 'Discover Premier Luxury Real Estate in Beautiful North Bali',
-                'subheading' => 'Explore beachfront luxury villas, ocean view land plots, and prime investments in Lovina, Temukus, and Singaraja.',
+                'heading' => 'Welcome to North Bali Real Estate Agency',
+                'subheading' => 'If your dream is to live in beautiful North Bali, we can help that dream come true.',
                 'background_image' => 'cms/hero-bg.jpg',
             ],
         ]);
@@ -872,10 +775,9 @@ class DatabaseSeeder extends Seeder
             'section_key' => 'story',
             'content' => [
                 'title' => 'Our Story',
-                'description' => 'Founded in Lovina, PT Lovina North Bali Real Estate Agency has established itself as the leading property agency dedicated to North Bali real estate. We specialize in luxury villas, residential homes, beachfront land plots, and commercial opportunities for both local and foreign buyers.',
+                'description' => 'Established in 2023, PT Lovina North Bali Real Estate Agency has established itself as a dedicated property agency serving North Bali. We specialize in selecting existing villas, houses, hotels, and restaurants to offer you the best options available in beautiful North Bali.',
                 'vision' => 'To be the most trusted and transparent real estate agency in North Bali, connecting discerning buyers with exceptional lifestyle and investment properties.',
                 'mission' => [
-                    'Deliver uncompromised legal integrity and title verification for every transaction.',
                     'Provide personalized consultation tailored to international buyer requirements.',
                     'Promote sustainable, community-respecting property developments across Buleleng Regency.',
                 ],

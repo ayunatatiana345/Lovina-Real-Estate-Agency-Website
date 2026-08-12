@@ -37,9 +37,6 @@
                     <li><a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" id="nav-link-contact">Contact Us</a></li>
                 </ul>
 
-                <div>
-                    <a href="{{ route('contact') }}" class="btn btn-secondary" id="btn-list-property">List Your Property</a>
-                </div>
             </nav>
         </div>
     </header>

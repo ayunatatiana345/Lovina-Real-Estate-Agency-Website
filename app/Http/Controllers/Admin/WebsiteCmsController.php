@@ -25,8 +25,8 @@ class WebsiteCmsController extends Controller
             'enabled' => true,
             'background_image' => 'cms/hero-bg.jpg',
             'small_title' => 'Find Your Dream',
-            'heading' => 'Discover Premier Luxury Real Estate in Beautiful North Bali',
-            'subheading' => 'Explore beachfront luxury villas, ocean view land plots, and prime investments in Lovina, Temukus, and Singaraja.',
+            'heading' => 'Welcome to North Bali Real Estate Agency',
+            'subheading' => 'If your dream is to live in beautiful North Bali, we can help that dream come true.',
             'buttons' => [
                 ['text' => 'Browse Properties', 'link' => '/properties', 'style' => 'primary'],
                 ['text' => 'Contact Us', 'link' => '/contact', 'style' => 'outline']
@@ -77,10 +77,9 @@ class WebsiteCmsController extends Controller
 
         $statsSection = CmsContent::getContent('homepage', 'stats', [
             'items' => [
-                ['number' => '120+', 'label' => 'Properties Listed', 'icon' => 'home', 'enabled' => true],
-                ['number' => '15+', 'label' => 'Years Experience', 'icon' => 'award', 'enabled' => true],
-                ['number' => '450+', 'label' => 'Happy Clients', 'icon' => 'users', 'enabled' => true],
-                ['number' => '99%', 'label' => 'Customer Satisfaction', 'icon' => 'star', 'enabled' => true],
+                ['number' => '120+', 'label' => 'Carefully curated properties across North Bali.', 'icon' => 'Properties Listed', 'enabled' => true],
+                ['number' => '3+', 'label' => 'Proudly serving North Bali since 2023.', 'icon' => 'Years Established', 'enabled' => true],
+                ['number' => '90%+', 'label' => 'Our clients’ satisfaction is our top priority.', 'icon' => 'Customer Satisfaction', 'enabled' => true],
             ]
         ]);
 

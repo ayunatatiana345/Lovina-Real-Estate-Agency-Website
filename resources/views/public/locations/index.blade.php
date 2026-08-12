@@ -2,6 +2,18 @@
 
 @section('title', 'Locations - ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency'))
 
+@section('head_extra')
+<style>
+    .locations-card-btn {
+        transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out !important;
+    }
+    .locations-card-btn:hover {
+        background-color: var(--primary-navy) !important;
+        color: var(--white) !important;
+    }
+</style>
+@endsection
+
 @section('content')
 <!-- Hero Section (Sized exactly identical to About Us & Contact Us) -->
 <section class="section-spacing bg-light-blue" style="padding-top: 60px; padding-bottom: 60px; font-family: 'Poppins', sans-serif;">
@@ -133,8 +145,8 @@
                         </p>
                         <div style="margin-top: auto;">
                             <!-- View Properties buttons link to `/properties?location=[slug]` -->
-                            <a href="{{ route('properties.index', ['location' => $loc->slug]) }}" class="btn btn-outline" style="width: 100%; height: 42px; padding: 0 16px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); border: 2px solid var(--primary-navy); color: var(--primary-navy); text-decoration: none; box-sizing: border-box; background-color: #FFFFFF;">
-                                View Properties &rarr;
+                            <a href="{{ route('properties.index', ['location' => $loc->slug]) }}" class="btn btn-outline locations-card-btn" style="width: 100%; height: 42px; padding: 0 16px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); border: 2px solid var(--primary-navy); color: var(--primary-navy); text-decoration: none; box-sizing: border-box; background-color: #FFFFFF;">
+                                View Properties
                             </a>
                         </div>
                     </div>

@@ -69,10 +69,12 @@
                     <tr>
                         <td>
                             <div style="width: 64px; height: 48px; border-radius: 6px; overflow: hidden; border: 1px solid #E2E8F0; background-color: #F1F5F9;">
-                                <img src="{{ $loc->image ? asset('storage/' . $loc->image) : 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=120&q=80' }}" 
-                                     alt="{{ $loc->name }}" 
-                                     style="width: 100%; height: 100%; object-fit: cover;"
-                                     onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=120&q=80'">
+                                @if($loc->image)
+                                    <img src="{{ asset('storage/' . $loc->image) }}" 
+                                         alt="{{ $loc->name }}" 
+                                         style="width: 100%; height: 100%; object-fit: cover;"
+                                         onerror="this.style.display='none'">
+                                @endif
                             </div>
                         </td>
                         <td style="font-weight: 700; color: #0F172A;">{{ $loc->name }}</td>
@@ -211,7 +213,7 @@
     <div class="slide-panel-body" style="padding: 24px; overflow-y: auto; flex-grow: 1;">
         <!-- Large Image Box -->
         <div style="width: 100%; height: 200px; border-radius: 8px; overflow: hidden; border: 1px solid #E2E8F0; background-color: #F1F5F9; margin-bottom: 24px;">
-            <img src="" id="view-drawer-img" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80'">
+            <img src="" id="view-drawer-img" style="width: 100%; height: 100%; object-fit: cover; display: none;" onerror="this.style.display='none'">
         </div>
 
         <div style="margin-bottom: 20px;">
@@ -277,7 +279,7 @@
         <div class="danger-preview-card">
             <!-- Left Thumbnail -->
             <div class="danger-preview-img-wrap">
-                <img id="delete-preview-img-tag" src="" alt="Location image" class="danger-preview-img" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=120&q=80'">
+                <img id="delete-preview-img-tag" src="" alt="Location image" class="danger-preview-img" style="display: none;" onerror="this.style.display='none'">
             </div>
             <!-- Right Info Stack -->
             <div class="danger-preview-info">
@@ -498,7 +500,13 @@ function viewLocationDetails(btn) {
 
     // Image
     const imgTag = document.getElementById('view-drawer-img');
-    imgTag.src = data.image ? `/storage/${data.image}` : 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80';
+    if (data.image) {
+        imgTag.src = `/storage/${data.image}`;
+        imgTag.style.display = 'block';
+    } else {
+        imgTag.src = '';
+        imgTag.style.display = 'none';
+    }
 
     // Setup Edit button link action inside View drawer
     const editBtn = document.getElementById('view-drawer-edit-btn');
@@ -529,7 +537,13 @@ function triggerDeleteLocation(btn) {
     // Image fallback and routing
     const imgTag = document.getElementById('delete-preview-img-tag');
     if (imgTag) {
-        imgTag.src = data.image ? `/storage/${data.image}` : 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=120&q=80';
+        if (data.image) {
+            imgTag.src = `/storage/${data.image}`;
+            imgTag.style.display = 'block';
+        } else {
+            imgTag.src = '';
+            imgTag.style.display = 'none';
+        }
     }
 
     // Lock background scroll

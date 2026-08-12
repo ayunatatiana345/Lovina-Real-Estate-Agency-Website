@@ -209,6 +209,16 @@
                 </button>
             </form>
         </div>
+
+        <!-- Closing CTA Message -->
+        <div style="text-align: center; max-width: 700px; margin: 48px auto 0 auto; padding-top: 24px;">
+            <p class="body-text" style="font-size: 18px; font-weight: 500; color: var(--primary-navy); margin-bottom: 8px;">
+                We hope we can do something for you, and we would love to hear from you.
+            </p>
+            <p class="body-text" style="font-size: 16px; font-weight: 600; color: var(--secondary-gold);">
+                The Lovina North Bali Real Estate Agency Team.
+            </p>
+        </div>
     </div>
 </section>
 @endsection

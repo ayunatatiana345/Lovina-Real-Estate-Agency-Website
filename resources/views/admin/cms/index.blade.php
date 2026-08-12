@@ -142,15 +142,15 @@
                     <span class="chevron-icon" style="font-size: 12px; color: #64748B;">▼</span>
                 </div>
 
-                <!-- 8. Company Statistics Section Card -->
+                <!-- 8. Info & Services Section Card -->
                 <div class="cms-nav-card" data-section="sec-stats" onclick="switchSection('sec-stats')">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div class="cms-nav-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                         </div>
                         <div>
-                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">8. Company Statistics</div>
-                            <div style="font-size: 11px; color: #64748B;">Edit key agency metrics.</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">8. Info & Services</div>
+                            <div style="font-size: 11px; color: #64748B;">Edit key agency information cards.</div>
                         </div>
                     </div>
                     <span class="chevron-icon" style="font-size: 12px; color: #64748B;">▼</span>
@@ -500,24 +500,23 @@
             <div class="admin-card cms-section-editor" id="sec-stats" style="display: none;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">
                     <div>
-                        <h3 style="font-size: 18px; font-weight: 700; color: #0F172A;">8. Company Statistics Section</h3>
-                        <p style="font-size: 13px; color: #64748B;">Edit key agency metrics displayed across website.</p>
+                        <h3 style="font-size: 18px; font-weight: 700; color: #0F172A;">8. Company Statistics</h3>
+                        <p style="font-size: 13px; color: #64748B;">Edit key agency statistics cards displayed across website.</p>
                     </div>
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
                     @php $statItems = $statsSection['items'] ?? [
-                        ['number' => '120+', 'label' => 'Properties Listed', 'icon' => 'home', 'enabled' => true],
-                        ['number' => '15+', 'label' => 'Years Experience', 'icon' => 'award', 'enabled' => true],
-                        ['number' => '450+', 'label' => 'Happy Clients', 'icon' => 'users', 'enabled' => true],
-                        ['number' => '99%', 'label' => 'Customer Satisfaction', 'icon' => 'star', 'enabled' => true],
+                        ['number' => '120+', 'label' => 'Carefully curated properties across North Bali.', 'icon' => 'Properties Listed', 'enabled' => true],
+                        ['number' => '3+', 'label' => 'Proudly serving North Bali since 2023.', 'icon' => 'Years Established', 'enabled' => true],
+                        ['number' => '90%+', 'label' => 'Our clients’ satisfaction is our top priority.', 'icon' => 'Customer Satisfaction', 'enabled' => true],
                     ]; @endphp
 
                     @foreach($statItems as $sIdx => $st)
-                        <div style="display: grid; grid-template-columns: 1.5fr 2fr 1fr auto; gap: 10px; align-items: center; background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 12px; border-radius: 8px;">
-                            <input type="text" name="stat_numbers[]" class="form-control" value="{{ $st['number'] }}" placeholder="e.g. 120+">
-                            <input type="text" name="stat_labels[]" class="form-control" value="{{ $st['label'] }}" placeholder="Label">
-                            <input type="text" name="stat_icons[]" class="form-control" value="{{ $st['icon'] }}" placeholder="icon">
+                        <div style="display: grid; grid-template-columns: 1fr 2fr 1.5fr auto; gap: 10px; align-items: center; background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 12px; border-radius: 8px;">
+                            <input type="text" name="stat_numbers[]" class="form-control" value="{{ $st['number'] }}" placeholder="Number (e.g. 120+)">
+                            <input type="text" name="stat_labels[]" class="form-control" value="{{ $st['label'] }}" placeholder="Description (e.g. Carefully curated...)">
+                            <input type="text" name="stat_icons[]" class="form-control" value="{{ $st['icon'] }}" placeholder="Title (e.g. Properties Listed)">
                             <label style="display: flex; align-items: center; gap: 4px; font-size: 12px;">
                                 <input type="checkbox" name="stat_enabled[{{ $sIdx }}]" value="1" {{ ($st['enabled'] ?? true) ? 'checked' : '' }}> Enable
                             </label>
@@ -710,16 +709,16 @@
                     <span style="font-size: 10px; font-weight: 600; background-color: #DCFCE7; color: #166534; padding: 2px 8px; border-radius: 12px;">Using Homepage Content</span>
                 </div>
 
-                <!-- F. Company Statistics (With Status Badge) -->
+                <!-- F. Info & Services (With Status Badge) -->
                 <div class="cms-nav-card" data-section="sec-ab-stats" onclick="switchSectionAbout('sec-ab-stats')">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div class="cms-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
                         <div>
-                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">F. Company Statistics</div>
-                            <div style="font-size: 11px; color: #64748B;">Reuse homepage stats metrics.</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">F. Info & Services</div>
+                            <div style="font-size: 11px; color: #64748B;">Reuse homepage info cards.</div>
                         </div>
                     </div>
-                    <span style="font-size: 10px; font-weight: 600; background-color: #DCFCE7; color: #166534; padding: 2px 8px; border-radius: 12px;">Show Homepage Statistics</span>
+                    <span style="font-size: 10px; font-weight: 600; background-color: #DCFCE7; color: #166534; padding: 2px 8px; border-radius: 12px;">Show Homepage Info Cards</span>
                 </div>
             </div>
         </div>
@@ -844,14 +843,14 @@
                 </div>
             </div>
 
-            <!-- F. Company Statistics -->
+            <!-- F. Info & Services -->
             <div class="admin-card cms-ab-section" id="sec-ab-stats" style="display: none;">
-                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">F. Company Statistics</h3>
+                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">F. Company Information & Services</h3>
 
                 <div class="form-group">
                     <label style="display: flex; align-items: center; gap: 10px; font-weight: 600; cursor: pointer; background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 16px; border-radius: 8px;">
                         <input type="checkbox" name="about_show_stats" value="1" {{ ($aboutStats['show_homepage_stats'] ?? true) ? 'checked' : '' }}>
-                        <span>Show Homepage Statistics bar on About Us page</span>
+                        <span>Show Homepage Info Cards bar on About Us page</span>
                     </label>
                 </div>
 

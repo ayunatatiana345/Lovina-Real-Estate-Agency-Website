@@ -2,6 +2,37 @@
 
 @section('title', 'Home - ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency'))
 
+@section('head_extra')
+<style>
+    .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+    .info-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+    @media (max-width: 1024px) {
+        .benefits-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .info-grid-3 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 640px) {
+        .benefits-grid {
+            grid-template-columns: 1fr;
+        }
+        .info-grid-3 {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
 <!-- 1. Hero Section -->
 <section class="section-spacing bg-light-blue" style="padding-top: 80px; padding-bottom: 80px;">
@@ -35,9 +66,9 @@
                     <label class="form-label" for="price_range">Price Range</label>
                     <select name="price_range" id="price_range" class="form-select">
                         <option value="">Any Price</option>
-                        <option value="under_250k">Under $250,000</option>
-                        <option value="250k_500k">$250,000 - $500,000</option>
-                        <option value="above_500k">Above $500,000</option>
+                        <option value="under_2b">Under IDR 2 Billion</option>
+                        <option value="2b_to_5b">IDR 2 Billion – IDR 5 Billion</option>
+                        <option value="above_5b">Above IDR 5 Billion</option>
                     </select>
                 </div>
 
@@ -208,11 +239,11 @@
             <p class="body-text" style="color: var(--text-secondary);">Your trusted local partner for smooth real estate acquisitions.</p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+        <div class="benefits-grid">
             @foreach($benefits as $b)
                 <div style="background-color: var(--light-gray); border-radius: var(--radius-md); padding: 28px 20px; text-align: center;">
                     <div style="color: var(--primary-navy); margin-bottom: 12px;">
-                        <i data-lucide="shield" class="lucide-icon lucide-icon-xl" style="color: var(--primary-navy);"></i>
+                        <i data-lucide="{{ $b->icon ?? 'shield' }}" class="lucide-icon lucide-icon-xl" style="color: var(--primary-navy);"></i>
                     </div>
                     <h3 style="font-size: 20px; margin-bottom: 8px;">{{ $b->title }}</h3>
                     <p style="font-size: 15px; color: var(--text-secondary);">{{ $b->description }}</p>
@@ -222,14 +253,21 @@
     </div>
 </section>
 
-<!-- 7. Company Statistics Card -->
+<!-- 7. Key Facts & Services -->
 <section class="section-spacing bg-navy">
     <div class="container">
-        <div class="stats-grid">
+        <div class="info-grid-3">
             @foreach($statistics as $stat)
-                <div class="stats-card">
-                    <div class="stats-number">{{ $stat->number }}</div>
-                    <div class="stats-label">{{ $stat->label }}</div>
+                <div class="stats-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 40px 24px;">
+                    <div style="font-size: 48px; font-weight: 700; color: var(--primary-navy); margin-bottom: 12px; line-height: 1.1;">
+                        {{ $stat->number }}
+                    </div>
+                    <h3 style="font-size: 18px; font-weight: 600; color: var(--primary-navy); margin-bottom: 12px; line-height: 1.3;">
+                        {{ $stat->icon }}
+                    </h3>
+                    <p style="font-size: 15px; color: var(--text-secondary); line-height: 1.6; margin: 0; max-width: 280px;">
+                        {{ $stat->label }}
+                    </p>
                 </div>
             @endforeach
         </div>
