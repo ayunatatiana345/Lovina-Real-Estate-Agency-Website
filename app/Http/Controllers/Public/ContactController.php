@@ -1,5 +1,7 @@
 <?php
 
+// Contact page UI is handled by Tatiana.
+
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;

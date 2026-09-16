@@ -1,6 +1,51 @@
+{{-- Aragon handles property grid layout. --}}
+{{-- Tatiana handles the filter section here. --}}
 @extends('layouts.public')
 
-@section('title', 'Properties - ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency'))
+@php
+    $pageTitle = 'Properties for Sale in North Bali | ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency');
+    $pageDesc = 'Explore premier properties for sale in North Bali including luxury beachfront villas, hillside ocean view land plots, and houses in Lovina, Temukus, and Singaraja.';
+    if (request()->filled('type')) {
+        $selectedCat = $categories->firstWhere('slug', request('type')) ?? $categories->firstWhere('id', request('type'));
+        if ($selectedCat) {
+            $pageTitle = $selectedCat->name . ' for Sale in North Bali | ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency');
+            $pageDesc = 'Discover luxury ' . strtolower($selectedCat->name) . ' for sale across North Bali. View photos, pricing, and property details.';
+        }
+    } elseif (request()->filled('location')) {
+        $selectedLoc = $locations->firstWhere('slug', request('location')) ?? $locations->firstWhere('id', request('location'));
+        if ($selectedLoc) {
+            $pageTitle = 'Properties for Sale in ' . $selectedLoc->name . ', Bali | ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency');
+            $pageDesc = 'Browse property for sale in ' . $selectedLoc->name . ', North Bali. Explore villas, land plots, and residential properties with trusted legal guidance.';
+        }
+    }
+@endphp
+
+@section('title', $pageTitle)
+@section('meta_description', $pageDesc)
+@section('canonical', route('properties.index'))
+
+@section('structured_data')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ route('home') }}"
+    },
+    {
+      "@@type": "ListItem",
+      "position": 2,
+      "name": "Properties",
+      "item": "{{ route('properties.index') }}"
+    }
+  ]
+}
+</script>
+@endsection
 
 @section('content')
 <section class="section-spacing bg-light-blue" style="padding-top: 60px; padding-bottom: 60px;">
@@ -44,10 +89,9 @@
                     <div class="form-group" style="margin-bottom: 0;">
                         <label class="form-label" for="price_range">Price Range</label>
                         <select name="price_range" id="price_range" class="form-select">
-                            <option value="">Any Price</option>
-                            <option value="under_2b" {{ request('price_range') == 'under_2b' ? 'selected' : '' }}>Under IDR 2 Billion</option>
-                            <option value="2b_to_5b" {{ request('price_range') == '2b_to_5b' ? 'selected' : '' }}>IDR 2 Billion – IDR 5 Billion</option>
-                            <option value="above_5b" {{ request('price_range') == 'above_5b' ? 'selected' : '' }}>Above IDR 5 Billion</option>
+                            @foreach($priceRangeOptions as $val => $label)
+                                <option value="{{ $val }}" {{ request('price_range') == (string)$val ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -65,14 +109,12 @@
                 @foreach($properties as $prop)
                     <div class="property-card">
                         <div class="property-card-image-wrap">
-                            @php
-                                $cover = $prop->images->firstWhere('is_cover', true) ?? $prop->images->first();
-                            @endphp
-                            @if($cover && file_exists(public_path('storage/' . $cover->image_path)))
-                                <img src="{{ asset('storage/' . $cover->image_path) }}" alt="{{ $prop->name }}" class="property-card-image">
+                            @if($prop->real_cover_image_url)
+                                <img src="{{ $prop->real_cover_image_url }}" alt="{{ $prop->name }} - {{ $prop->category->name ?? 'Property' }} in {{ $prop->location->name ?? 'North Bali' }}" class="property-card-image" loading="lazy" onerror="this.onerror=null;this.style.display='none';">
                             @else
-                                <div style="width: 100%; height: 100%; background-color: #F3F4F6; display: flex; align-items: center; justify-content: center;">
-                                    <i data-lucide="home" style="width: 64px; height: 64px; color: #9CA3AF; stroke-width: 1.25px;"></i>
+                                <div class="property-card-no-image">
+                                    <i data-lucide="camera" class="lucide-icon" style="width: 32px; height: 32px; stroke-width: 1.5; opacity: 0.45; margin-bottom: 6px;"></i>
+                                    <span style="font-size: 13px; font-weight: 500; opacity: 0.65;">Photos coming soon</span>
                                 </div>
                             @endif
                             @if($prop->is_featured)
@@ -88,13 +130,26 @@
                                 <i data-lucide="map-pin" class="lucide-icon lucide-icon-sm" style="color: var(--text-muted); margin-right: 4px;"></i> {{ $prop->location->name ?? 'North Bali' }}
                             </div>
                             <div class="property-price">{{ $prop->formatted_price }}</div>
-                            <div class="property-specs-bar">
-                                <div class="spec-item"><i data-lucide="bed" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bedrooms }} Beds</div>
-                                <div class="spec-item"><i data-lucide="bath" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bathrooms }} Baths</div>
-                                <div class="spec-item"><i data-lucide="maximize" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->land_size }} m²</div>
-                            </div>
+                            @php
+                                $hasSpecs = ($prop->bedrooms && $prop->bedrooms > 0) ||
+                                            ($prop->bathrooms && $prop->bathrooms > 0) ||
+                                            ($prop->land_size && $prop->land_size > 0);
+                            @endphp
+                            @if($hasSpecs)
+                                <div class="property-specs-bar">
+                                    @if($prop->bedrooms && $prop->bedrooms > 0)
+                                        <div class="spec-item"><i data-lucide="bed" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bedrooms }} Beds</div>
+                                    @endif
+                                    @if($prop->bathrooms && $prop->bathrooms > 0)
+                                        <div class="spec-item"><i data-lucide="bath" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bathrooms }} Baths</div>
+                                    @endif
+                                    @if($prop->land_size && $prop->land_size > 0)
+                                        <div class="spec-item"><i data-lucide="maximize" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->land_size }} m²</div>
+                                    @endif
+                                </div>
+                            @endif
                             <div style="margin-top: 16px;">
-                                <a href="{{ route('properties.show', $prop->slug) }}" class="btn btn-outline" style="width: 100%;">View Details</a>
+                                <a href="{{ route('properties.show', $prop->slug) }}" class="btn btn-outline" style="width: 100%;">View Detail</a>
                             </div>
                         </div>
                     </div>

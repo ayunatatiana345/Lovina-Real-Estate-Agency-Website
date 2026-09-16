@@ -1,6 +1,29 @@
+{{-- Tara handles the homepage layout. --}}
+{{-- Aragon provides the property data for this section. --}}
 @extends('layouts.public')
 
-@section('title', 'Home - ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency'))
+@section('title', 'North Bali Property for Sale & Investment | ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency'))
+@section('meta_description', $settings->site_description ?? 'Explore beachfront luxury villas, ocean view land plots, and prime property investments for sale across Lovina, Temukus, Singaraja, and North Bali.')
+@section('canonical', route('home'))
+
+@section('structured_data')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "WebSite",
+  "name": "{{ $settings->company_name ?? 'PT Lovina North Bali Real Estate Agency' }}",
+  "url": "{{ route('home') }}",
+  "potentialAction": {
+    "@@type": "SearchAction",
+    "target": {
+      "@@type": "EntryPoint",
+      "urlTemplate": "{{ route('properties.index') }}?keyword={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+@endsection
 
 @section('head_extra')
 <style>
@@ -38,18 +61,22 @@
 <section class="section-spacing bg-light-blue" style="padding-top: 80px; padding-bottom: 80px;">
     <div class="container">
         <div style="max-width: 800px; margin-bottom: 40px;">
+            @if(!empty($hero['small_title']))
+                <div style="font-size: 14px; font-weight: 700; color: var(--primary-navy); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">{{ $hero['small_title'] }}</div>
+            @endif
             <h1 style="margin-bottom: 20px;">{{ $hero['heading'] ?? 'Discover Premier Luxury Real Estate in Beautiful North Bali' }}</h1>
             <p class="body-text" style="font-size: 20px; color: var(--text-secondary);">
                 {{ $hero['subheading'] ?? 'Explore beachfront luxury villas, ocean view land plots, and prime investments in Lovina, Temukus, and Singaraja.' }}
             </p>
         </div>
 
+        @if($searchSection['enabled'] ?? true)
         <!-- Search Bar -->
         <div class="search-bar-box" id="home-search-bar">
             <form action="{{ route('properties.index') }}" method="GET" class="search-bar-grid">
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" for="keyword">Search Location / Property Name</label>
-                    <input type="text" name="keyword" id="keyword" class="form-control" placeholder="e.g. Lovina Villa, Beachfront Land...">
+                    <input type="text" name="keyword" id="keyword" class="form-control" placeholder="{{ $searchSection['placeholder'] ?? 'e.g. Lovina Villa, Beachfront Land...' }}">
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0;">
@@ -65,10 +92,9 @@
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" for="price_range">Price Range</label>
                     <select name="price_range" id="price_range" class="form-select">
-                        <option value="">Any Price</option>
-                        <option value="under_2b">Under IDR 2 Billion</option>
-                        <option value="2b_to_5b">IDR 2 Billion – IDR 5 Billion</option>
-                        <option value="above_5b">Above IDR 5 Billion</option>
+                        @foreach($priceRangeOptions as $val => $label)
+                            <option value="{{ $val }}" {{ request('price_range') == (string)$val ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -79,6 +105,7 @@
                 </div>
             </form>
         </div>
+        @endif
     </div>
 </section>
 
@@ -89,7 +116,7 @@
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px;">
             <div>
                 <span class="property-category-tag">Featured Selection</span>
-                <h2>Featured North Bali Properties</h2>
+                <h2>{{ $featuredSection['section_title'] ?? 'Featured North Bali Properties' }}</h2>
             </div>
             <a href="{{ route('properties.index') }}" class="btn btn-outline">View All Properties &rarr;</a>
         </div>
@@ -98,19 +125,19 @@
             @foreach($featuredProperties as $prop)
                 <div class="property-card">
                     <div class="property-card-image-wrap">
-                        @php
-                            $cover = $prop->images->firstWhere('is_cover', true) ?? $prop->images->first();
-                        @endphp
-                        @if($cover && file_exists(public_path('storage/' . $cover->image_path)))
-                            <img src="{{ asset('storage/' . $cover->image_path) }}" alt="{{ $prop->name }}" class="property-card-image">
+                        @if($prop->real_cover_image_url)
+                            <img src="{{ $prop->real_cover_image_url }}" alt="{{ $prop->name }} - {{ $prop->category->name ?? 'Property' }} in {{ $prop->location->name ?? 'North Bali' }}" class="property-card-image" loading="lazy" onerror="this.onerror=null;this.style.display='none';">
                         @else
-                            <div style="width: 100%; height: 100%; background-color: #F3F4F6; display: flex; align-items: center; justify-content: center;">
-                                <i data-lucide="home" style="width: 64px; height: 64px; color: #9CA3AF; stroke-width: 1.25px;"></i>
+                            <div class="property-card-no-image">
+                                <i data-lucide="camera" class="lucide-icon" style="width: 32px; height: 32px; stroke-width: 1.5; opacity: 0.45; margin-bottom: 6px;"></i>
+                                <span style="font-size: 13px; font-weight: 500; opacity: 0.65;">Photos coming soon</span>
                             </div>
                         @endif
-                        <span class="property-badge-featured">
-                            <i data-lucide="star" class="lucide-icon lucide-icon-sm" style="fill: var(--white); stroke: var(--white); margin-right: 4px;"></i>Featured
-                        </span>
+                        @if($prop->is_featured)
+                            <span class="property-badge-featured">
+                                <i data-lucide="star" class="lucide-icon lucide-icon-sm" style="fill: var(--white); stroke: var(--white); margin-right: 4px;"></i>Featured
+                            </span>
+                        @endif
                     </div>
                     <div class="property-card-body">
                         <div class="property-category-tag">{{ $prop->category->name ?? 'Villa' }}</div>
@@ -119,13 +146,26 @@
                             <i data-lucide="map-pin" class="lucide-icon lucide-icon-sm" style="color: var(--text-muted); margin-right: 4px;"></i> {{ $prop->location->name ?? 'Lovina, North Bali' }}
                         </div>
                         <div class="property-price">{{ $prop->formatted_price }}</div>
-                        <div class="property-specs-bar">
-                            <div class="spec-item"><i data-lucide="bed" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bedrooms }} Beds</div>
-                            <div class="spec-item"><i data-lucide="bath" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bathrooms }} Baths</div>
-                            <div class="spec-item"><i data-lucide="maximize" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->land_size }} m²</div>
-                        </div>
+                        @php
+                            $hasSpecs = ($prop->bedrooms && $prop->bedrooms > 0) ||
+                                        ($prop->bathrooms && $prop->bathrooms > 0) ||
+                                        ($prop->land_size && $prop->land_size > 0);
+                        @endphp
+                        @if($hasSpecs)
+                            <div class="property-specs-bar">
+                                @if($prop->bedrooms && $prop->bedrooms > 0)
+                                    <div class="spec-item"><i data-lucide="bed" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bedrooms }} Beds</div>
+                                @endif
+                                @if($prop->bathrooms && $prop->bathrooms > 0)
+                                    <div class="spec-item"><i data-lucide="bath" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bathrooms }} Baths</div>
+                                @endif
+                                @if($prop->land_size && $prop->land_size > 0)
+                                    <div class="spec-item"><i data-lucide="maximize" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->land_size }} m²</div>
+                                @endif
+                            </div>
+                        @endif
                         <div style="margin-top: 16px;">
-                            <a href="{{ route('properties.show', $prop->slug) }}" class="btn btn-outline" style="width: 100%;">View Details</a>
+                            <a href="{{ route('properties.show', $prop->slug) }}" class="btn btn-outline" style="width: 100%;">View Detail</a>
                         </div>
                     </div>
                 </div>
@@ -139,9 +179,9 @@
 <section class="section-spacing bg-light-gray">
     <div class="container">
         <div style="text-align: center; max-width: 600px; margin: 0 auto 48px auto;">
-            <h2>Explore Property Categories</h2>
+            <h2>{{ $categoriesSection['heading'] ?? 'Explore Property Categories' }}</h2>
             <p class="body-text" style="color: var(--text-secondary);">
-                Find your perfect real estate match by category in North Bali.
+                {{ $categoriesSection['description'] ?? 'Find your perfect real estate match by category in North Bali.' }}
             </p>
         </div>
 
@@ -163,7 +203,7 @@
 <section class="section-spacing bg-white">
     <div class="container">
         <div style="text-align: center; max-width: 600px; margin: 0 auto 48px auto;">
-            <h2>Latest Added Properties</h2>
+            <h2>{{ $latestSection['section_title'] ?? 'Latest Added Properties' }}</h2>
             <p class="body-text" style="color: var(--text-secondary);">
                 Explore our newest luxury real estate arrivals in North Bali.
             </p>
@@ -173,15 +213,18 @@
             @foreach($latestProperties as $prop)
                 <div class="property-card">
                     <div class="property-card-image-wrap">
-                        @php
-                            $cover = $prop->images->firstWhere('is_cover', true) ?? $prop->images->first();
-                        @endphp
-                        @if($cover && file_exists(public_path('storage/' . $cover->image_path)))
-                            <img src="{{ asset('storage/' . $cover->image_path) }}" alt="{{ $prop->name }}" class="property-card-image">
+                        @if($prop->real_cover_image_url)
+                            <img src="{{ $prop->real_cover_image_url }}" alt="{{ $prop->name }} - {{ $prop->category->name ?? 'Property' }} in {{ $prop->location->name ?? 'North Bali' }}" class="property-card-image" loading="lazy" onerror="this.onerror=null;this.style.display='none';">
                         @else
-                            <div style="width: 100%; height: 100%; background-color: #F3F4F6; display: flex; align-items: center; justify-content: center;">
-                                <i data-lucide="home" style="width: 64px; height: 64px; color: #9CA3AF; stroke-width: 1.25px;"></i>
+                            <div class="property-card-no-image">
+                                <i data-lucide="camera" class="lucide-icon" style="width: 32px; height: 32px; stroke-width: 1.5; opacity: 0.45; margin-bottom: 6px;"></i>
+                                <span style="font-size: 13px; font-weight: 500; opacity: 0.65;">Photos coming soon</span>
                             </div>
+                        @endif
+                        @if($prop->is_featured)
+                            <span class="property-badge-featured">
+                                <i data-lucide="star" class="lucide-icon lucide-icon-sm" style="fill: var(--white); stroke: var(--white); margin-right: 4px;"></i>Featured
+                            </span>
                         @endif
                     </div>
                     <div class="property-card-body">
@@ -191,13 +234,26 @@
                             <i data-lucide="map-pin" class="lucide-icon lucide-icon-sm" style="color: var(--text-muted); margin-right: 4px;"></i> {{ $prop->location->name ?? 'North Bali' }}
                         </div>
                         <div class="property-price">{{ $prop->formatted_price }}</div>
-                        <div class="property-specs-bar">
-                            <div class="spec-item"><i data-lucide="bed" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bedrooms }} Beds</div>
-                            <div class="spec-item"><i data-lucide="bath" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bathrooms }} Baths</div>
-                            <div class="spec-item"><i data-lucide="maximize" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->land_size }} m²</div>
-                        </div>
+                        @php
+                            $hasSpecs = ($prop->bedrooms && $prop->bedrooms > 0) ||
+                                        ($prop->bathrooms && $prop->bathrooms > 0) ||
+                                        ($prop->land_size && $prop->land_size > 0);
+                        @endphp
+                        @if($hasSpecs)
+                            <div class="property-specs-bar">
+                                @if($prop->bedrooms && $prop->bedrooms > 0)
+                                    <div class="spec-item"><i data-lucide="bed" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bedrooms }} Beds</div>
+                                @endif
+                                @if($prop->bathrooms && $prop->bathrooms > 0)
+                                    <div class="spec-item"><i data-lucide="bath" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->bathrooms }} Baths</div>
+                                @endif
+                                @if($prop->land_size && $prop->land_size > 0)
+                                    <div class="spec-item"><i data-lucide="maximize" class="lucide-icon lucide-icon-sm" style="margin-right: 4px;"></i> {{ $prop->land_size }} m²</div>
+                                @endif
+                            </div>
+                        @endif
                         <div style="margin-top: 16px;">
-                            <a href="{{ route('properties.show', $prop->slug) }}" class="btn btn-outline" style="width: 100%;">View Details</a>
+                            <a href="{{ route('properties.show', $prop->slug) }}" class="btn btn-outline" style="width: 100%;">View Detail</a>
                         </div>
                     </div>
                 </div>
@@ -211,20 +267,22 @@
     <div class="container">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px;">
             <div>
-                <h2>Popular Locations in North Bali</h2>
-                <p class="body-text" style="color: var(--text-secondary);">Prime coastal & mountain regions in Buleleng Regency.</p>
+                <h2>{{ $locationsSection['heading'] ?? 'Popular Locations in North Bali' }}</h2>
+                <p class="body-text" style="color: var(--text-secondary);">{{ $locationsSection['description'] ?? 'Prime coastal & mountain regions in Buleleng Regency.' }}</p>
             </div>
-            <a href="{{ route('locations.index') }}" class="btn btn-outline">Explore All Locations &rarr;</a>
+            <a href="{{ route('locations.index') }}" class="btn btn-outline">Explore All Locations</a>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
             @foreach($popularLocations as $loc)
-                <div style="background-color: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm);">
-                    <h3 style="font-size: 24px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; color: var(--primary-navy);">
+                <div style="background-color: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+                    <h3 style="font-size: 24px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; color: var(--primary-navy); text-align: left;">
                         <i data-lucide="map-pin" class="lucide-icon" style="color: var(--primary-navy);"></i> {{ $loc->name }}
                     </h3>
-                    <p style="color: var(--text-secondary); font-size: 16px; margin-bottom: 16px;">{{ $loc->description }}</p>
-                    <a href="{{ route('properties.index', ['location' => $loc->slug]) }}" class="btn btn-outline" style="padding: 8px 16px; font-size: 14px;">View Properties &rarr;</a>
+                    <p style="color: var(--text-secondary); font-size: 16px; margin-bottom: 20px; text-align: justify; flex-grow: 1;">{{ $loc->description }}</p>
+                    <div style="text-align: center; margin-top: auto;">
+                        <a href="{{ route('locations.show', $loc->slug) }}" class="btn btn-primary" style="padding: 8px 24px; font-size: 14px; display: inline-block;">View Properties</a>
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -235,8 +293,8 @@
 <section class="section-spacing bg-white">
     <div class="container">
         <div style="text-align: center; max-width: 600px; margin: 0 auto 48px auto;">
-            <h2>Why Choose PT Lovina North Bali</h2>
-            <p class="body-text" style="color: var(--text-secondary);">Your trusted local partner for smooth real estate acquisitions.</p>
+            <h2>{{ $whyChooseSection['heading'] ?? 'Why Choose PT Lovina North Bali' }}</h2>
+            <p class="body-text" style="color: var(--text-secondary);">{{ $whyChooseSection['description'] ?? 'Your trusted local partner for smooth real estate acquisitions.' }}</p>
         </div>
 
         <div class="benefits-grid">

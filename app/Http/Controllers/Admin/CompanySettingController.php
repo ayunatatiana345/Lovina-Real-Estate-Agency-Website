@@ -1,5 +1,7 @@
 <?php
 
+// Tara handles company settings here.
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -9,10 +11,11 @@ use Illuminate\Support\Facades\Storage;
 
 class CompanySettingController extends Controller
 {
-    public function index()
+    public function index(\App\Services\CurrencyService $currencyService)
     {
         $settings = CompanySetting::getSettings();
-        return view('admin.settings.index', compact('settings'));
+        $currencyMeta = $currencyService->getRateMetadata();
+        return view('admin.settings.index', compact('settings', 'currencyMeta'));
     }
 
     public function update(Request $request)
@@ -37,6 +40,23 @@ class CompanySettingController extends Controller
             'seo_meta_title' => 'nullable|string|max:255',
             'seo_meta_description' => 'nullable|string',
         ]);
+
+        if ($request->has('b_hours_mf')) {
+            $hours = [];
+            $mf = $request->input('b_hours_mf', '09.00 – 12.00, 13.00 – 17.00');
+            if (!empty($mf)) {
+                $hours[] = ['day' => 'Monday – Friday', 'hours' => $mf];
+            }
+            $sat = $request->input('b_hours_sat');
+            if (!empty($sat) && strtolower(trim($sat)) !== 'closed') {
+                $hours[] = ['day' => 'Saturday', 'hours' => $sat];
+            }
+            $sun = $request->input('b_hours_sun');
+            if (!empty($sun) && strtolower(trim($sun)) !== 'closed') {
+                $hours[] = ['day' => 'Sunday', 'hours' => $sun];
+            }
+            $data['business_hours'] = json_encode($hours);
+        }
 
         if ($request->hasFile('logo_primary')) {
             if ($settings->logo_primary) {

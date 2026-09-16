@@ -73,7 +73,7 @@
                 <label class="form-label">Primary Logo</label>
                 <div class="branding-thumb-box" style="margin-bottom: 0;">
                     <div class="branding-thumb-preview" id="prev-primary-logo-wrap">
-                        <img src="{{ $settings->logo_primary ? asset('storage/' . $settings->logo_primary) : asset('images/logo-placeholder.png') }}" id="prev-primary-logo-img" alt="Primary Logo" onerror="this.src='https://via.placeholder.com/120x40?text=LOVINA+NAVY'">
+                        <img src="{{ $settings->logo_primary ? asset('storage/' . $settings->logo_primary) : asset('images/logo-placeholder.png') }}" id="prev-primary-logo-img" alt="Primary Logo" onerror="this.onerror=null;this.src='https://via.placeholder.com/120x40?text=LOVINA+NAVY'">
                     </div>
                     <div>
                         <div style="display: flex; gap: 8px; margin-bottom: 6px;">
@@ -93,7 +93,7 @@
                 <label class="form-label">Alternative Logo</label>
                 <div class="branding-thumb-box" style="margin-bottom: 0;">
                     <div class="branding-thumb-preview" id="prev-alt-logo-wrap">
-                        <img src="{{ $settings->logo_alt ? asset('storage/' . $settings->logo_alt) : asset('images/logo-alt-placeholder.png') }}" id="prev-alt-logo-img" alt="Alternative Logo" onerror="this.src='https://via.placeholder.com/120x40?text=LOVINA+ALT'">
+                        <img src="{{ $settings->logo_alt ? asset('storage/' . $settings->logo_alt) : asset('images/logo-alt-placeholder.png') }}" id="prev-alt-logo-img" alt="Alternative Logo" onerror="this.onerror=null;this.src='https://via.placeholder.com/120x40?text=LOVINA+ALT'">
                     </div>
                     <div>
                         <div style="display: flex; gap: 8px; margin-bottom: 6px;">
@@ -113,7 +113,7 @@
                 <label class="form-label">Site Icon / Favicon</label>
                 <div class="branding-thumb-box" style="margin-bottom: 0; padding: 12px 16px;">
                     <div class="branding-thumb-preview" style="width: 50px; height: 50px;">
-                        <img src="{{ $settings->favicon ? asset('storage/' . $settings->favicon) : asset('images/favicon-placeholder.png') }}" id="prev-favicon-img" alt="Favicon" onerror="this.src='https://via.placeholder.com/40x40?text=BALI'">
+                        <img src="{{ $settings->favicon ? asset('storage/' . $settings->favicon) : asset('images/favicon-placeholder.png') }}" id="prev-favicon-img" alt="Favicon" onerror="this.onerror=null;this.src='https://via.placeholder.com/40x40?text=BALI'">
                     </div>
                     <div>
                         <div style="display: flex; gap: 8px; margin-bottom: 6px;">
@@ -139,22 +139,22 @@
 
                 <div class="form-group" style="margin-bottom: 16px;">
                     <label class="form-label" for="phone">Phone Number *</label>
-                    <input type="text" name="phone" id="phone" class="form-control" value="{{ old('phone', $settings->phone ?? '+62 362 1234567') }}" style="width: 100%;" required>
+                    <input type="text" name="phone" id="phone" class="form-control" value="{{ old('phone', $settings->phone ?? '0859 3666 6384') }}" style="width: 100%;" required>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 16px;">
                     <label class="form-label" for="whatsapp">WhatsApp Number *</label>
-                    <input type="text" name="whatsapp" id="whatsapp" class="form-control" value="{{ old('whatsapp', $settings->whatsapp ?? '+62 812 3456 7890') }}" style="width: 100%;" required>
+                    <input type="text" name="whatsapp" id="whatsapp" class="form-control" value="{{ old('whatsapp', $settings->whatsapp ?? '0859 3666 6384') }}" style="width: 100%;" required>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 16px;">
                     <label class="form-label" for="email">Email Address *</label>
-                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $settings->email ?? 'info@lovinabali.com') }}" style="width: 100%;" required>
+                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $settings->email ?? 'lovinanorthbaliagency2023@gmail.com') }}" style="width: 100%;" required>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" for="address">Office Address *</label>
-                    <textarea name="address" id="address" class="form-control" style="min-height: 100px; width: 100%; resize: vertical;" required>{{ old('address', $settings->address ?? 'Jl. Raya Lovina No. 88, Kalibukbuk, Buleleng, Bali 81152, Indonesia') }}</textarea>
+                    <textarea name="address" id="address" class="form-control" style="min-height: 100px; width: 100%; resize: vertical;" required>{{ old('address', $settings->address ?? "Jl. Desa Kalibukbuk-Anturan\nBuleleng\nBali") }}</textarea>
                 </div>
             </div>
 
@@ -170,74 +170,53 @@
 
                 <div class="form-group" style="margin-bottom: 16px;">
                     <label class="form-label" for="instagram_url">Instagram URL</label>
-                    <input type="text" name="instagram_url" id="instagram_url" class="form-control" value="{{ old('instagram_url', $settings->instagram_url ?? 'https://instagram.com/lovinabali') }}" style="width: 100%;" placeholder="https://instagram.com/lovinabali">
+                    <input type="text" name="instagram_url" id="instagram_url" class="form-control" value="{{ old('instagram_url', $settings->instagram_url ?? '') }}" style="width: 100%;" placeholder="https://instagram.com/lovinabali">
                 </div>
 
                 <div class="form-group" style="margin-bottom: 16px;">
                     <label class="form-label" for="facebook_url">Facebook URL</label>
-                    <input type="text" name="facebook_url" id="facebook_url" class="form-control" value="{{ old('facebook_url', $settings->facebook_url ?? 'https://facebook.com/lovinabali') }}" style="width: 100%;" placeholder="https://facebook.com/lovinabali">
+                    <input type="text" name="facebook_url" id="facebook_url" class="form-control" value="{{ old('facebook_url', $settings->facebook_url ?? 'https://www.facebook.com/people/Lovina-North-Bali-Real-Estate-Agency/61552694420689/') }}" style="width: 100%;" placeholder="https://www.facebook.com/people/Lovina-North-Bali-Real-Estate-Agency/61552694420689/">
                 </div>
 
                 <div class="form-group" style="margin-bottom: 16px;">
                     <label class="form-label" for="whatsapp_url">WhatsApp URL</label>
-                    <input type="text" name="whatsapp_url" id="whatsapp_url" class="form-control" value="{{ old('whatsapp_url', $settings->whatsapp_url ?? 'https://wa.me/6281234567890') }}" style="width: 100%;" placeholder="https://wa.me/6281234567890">
+                    <input type="text" name="whatsapp_url" id="whatsapp_url" class="form-control" value="{{ old('whatsapp_url', $settings->whatsapp_url ?? 'https://wa.me/6285936666384') }}" style="width: 100%;" placeholder="https://wa.me/6285936666384">
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" for="youtube_url">YouTube URL (Optional)</label>
-                    <input type="text" name="youtube_url" id="youtube_url" class="form-control" value="{{ old('youtube_url', $settings->youtube_url ?? 'https://youtube.com/@lovinabali') }}" style="width: 100%;" placeholder="https://youtube.com/@lovinabali">
+                    <input type="text" name="youtube_url" id="youtube_url" class="form-control" value="{{ old('youtube_url', $settings->youtube_url ?? 'https://www.youtube.com/@LOVINANORTHBALIREALESTATEAGENC') }}" style="width: 100%;" placeholder="https://www.youtube.com/@LOVINANORTHBALIREALESTATEAGENC">
                 </div>
             </div>
         </div>
 
         <!-- CARD E: Business Hours -->
+        @php
+            $bHours = is_string($settings->business_hours) ? json_decode($settings->business_hours, true) : ($settings->business_hours ?? []);
+            $mfHours = $bHours[0]['hours'] ?? '09.00 – 12.00, 13.00 – 17.00';
+            $satHours = $bHours[1]['hours'] ?? '';
+            $sunHours = $bHours[2]['hours'] ?? '';
+        @endphp
         <div class="admin-card" id="sec-business-hours" style="padding: 28px; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
                 <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #F1F5F9; padding-bottom: 10px;">E. Business Hours</h3>
 
                 <!-- Monday - Friday -->
-                <div class="business-hour-row">
-                    <div style="font-size: 13px; font-weight: 600; color: #334155; width: 110px;">Monday - Friday</div>
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <input type="text" id="mf-start" class="form-control" value="09:00" style="width: 60px; padding: 6px 8px; text-align: center; font-size: 13px;">
-                        <span style="color: #64748B;">-</span>
-                        <input type="text" id="mf-end" class="form-control" value="17:00" style="width: 60px; padding: 6px 8px; text-align: center; font-size: 13px;">
-                    </div>
-                    <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; cursor: pointer;">
-                        <input type="checkbox" id="mf-open" checked onchange="toggleDayStatus('mf-start', 'mf-end', this)">
-                        <span style="font-weight: 600; color: #0F172A;">Open</span>
-                    </label>
+                <div class="business-hour-row" style="margin-bottom: 12px;">
+                    <label class="form-label" style="font-size: 13px; margin-bottom: 4px;">Monday – Friday</label>
+                    <input type="text" name="b_hours_mf" id="b_hours_mf" class="form-control" value="{{ old('b_hours_mf', $mfHours) }}" placeholder="e.g. 09.00 – 12.00, 13.00 – 17.00" style="width: 100%; font-size: 13px;">
                 </div>
 
                 <!-- Saturday -->
-                <div class="business-hour-row">
-                    <div style="font-size: 13px; font-weight: 600; color: #334155; width: 110px;">Saturday</div>
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <input type="text" id="sat-start" class="form-control" value="09:00" style="width: 60px; padding: 6px 8px; text-align: center; font-size: 13px;">
-                        <span style="color: #64748B;">-</span>
-                        <input type="text" id="sat-end" class="form-control" value="14:00" style="width: 60px; padding: 6px 8px; text-align: center; font-size: 13px;">
-                    </div>
-                    <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; cursor: pointer;">
-                        <input type="checkbox" id="sat-open" checked onchange="toggleDayStatus('sat-start', 'sat-end', this)">
-                        <span style="font-weight: 600; color: #0F172A;">Open</span>
-                    </label>
+                <div class="business-hour-row" style="margin-bottom: 12px;">
+                    <label class="form-label" style="font-size: 13px; margin-bottom: 4px;">Saturday (Optional)</label>
+                    <input type="text" name="b_hours_sat" id="b_hours_sat" class="form-control" value="{{ old('b_hours_sat', $satHours) }}" placeholder="e.g. Closed or 09:00 - 14:00" style="width: 100%; font-size: 13px;">
                 </div>
 
                 <!-- Sunday -->
-                <div class="business-hour-row">
-                    <div style="font-size: 13px; font-weight: 600; color: #334155; width: 110px;">Sunday</div>
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <input type="text" id="sun-start" class="form-control" value="Closed" disabled style="width: 132px; padding: 6px 8px; text-align: center; font-size: 13px; background-color: #F1F5F9; color: #94A3B8;">
-                    </div>
-                    <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; cursor: pointer;">
-                        <input type="checkbox" id="sun-open" onchange="toggleSundayStatus('sun-start', this)">
-                        <span style="font-weight: 600; color: #0F172A;">Open</span>
-                    </label>
-                </div>
-
-                <div class="form-group" style="margin-top: 16px; margin-bottom: 0;">
-                    <label class="form-label" for="public_holiday">Public Holiday</label>
-                    <textarea id="public_holiday" class="form-control" style="min-height: 60px; font-size: 13px; width: 100%;" placeholder="Please check our Google Maps or contact us for more information.">Please check our Google Maps or contact us for more information.</textarea>
+                <div class="business-hour-row" style="margin-bottom: 12px;">
+                    <label class="form-label" style="font-size: 13px; margin-bottom: 4px;">Sunday (Optional)</label>
+                    <input type="text" name="b_hours_sun" id="b_hours_sun" class="form-control" value="{{ old('b_hours_sun', $sunHours) }}" placeholder="e.g. Closed" style="width: 100%; font-size: 13px;">
                 </div>
             </div>
 
@@ -256,13 +235,13 @@
 
                 <div class="form-group" style="margin-bottom: 16px;">
                     <label class="form-label" for="google_maps_embed_url">Google Maps Embed URL</label>
-                    <input type="text" name="google_maps_embed_url" id="google_maps_embed_url" class="form-control" value="{{ old('google_maps_embed_url', $settings->google_maps_embed_url ?? 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15796...') }}" style="width: 100%;" placeholder="https://www.google.com/maps/embed?pb=...">
+                    <input type="text" name="google_maps_embed_url" id="google_maps_embed_url" class="form-control" value="{{ old('google_maps_embed_url', $settings->google_maps_embed_url ?? 'https://maps.google.com/maps?q=Lovina+North+Bali+Real+Estate+Agency,+Jl.+Desa+Kalibukbuk-Anturan,+Kalibukbuk,+Kec.+Buleleng,+Kabupaten+Buleleng,+Bali+81119&t=&z=16&ie=UTF8&iwloc=&output=embed') }}" style="width: 100%;" placeholder="https://www.google.com/maps/embed?pb=...">
                     <div style="font-size: 11px; color: #64748B; margin-top: 4px;">Paste the embed code from Google Maps (Share &gt; Embed a map).</div>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 16px;">
                     <label class="form-label" for="google_maps_direction_url">Google Maps Direction URL</label>
-                    <input type="text" name="google_maps_direction_url" id="google_maps_direction_url" class="form-control" value="{{ old('google_maps_direction_url', $settings->google_maps_direction_url ?? 'https://maps.app.goo.gl/abc123example') }}" style="width: 100%;" placeholder="https://maps.app.goo.gl/abc123example">
+                    <input type="text" name="google_maps_direction_url" id="google_maps_direction_url" class="form-control" value="{{ old('google_maps_direction_url', $settings->google_maps_direction_url ?? 'https://maps.app.goo.gl/scYXTttd854dwuWc9?g_st=ic') }}" style="width: 100%;" placeholder="https://maps.app.goo.gl/scYXTttd854dwuWc9?g_st=ic">
                     <div style="font-size: 11px; color: #64748B; margin-top: 4px;">Paste the direction link from Google Maps (Share &gt; Copy link).</div>
                 </div>
             </div>
@@ -304,7 +283,11 @@
                     <label class="form-label">Default Social Sharing Image</label>
                     <div style="display: flex; gap: 14px; align-items: flex-start;">
                         <div style="width: 120px; height: 75px; border-radius: 6px; overflow: hidden; border: 1px solid #CBD5E1; background-color: #F8FAFC; flex-shrink: 0;">
-                            <img src="{{ $settings->seo_social_image ? asset('storage/' . $settings->seo_social_image) : asset('images/property-placeholder.jpg') }}" id="prev-seo-img" alt="SEO Social Sharing" style="width: 100%; height: 100%; object-fit: cover;">
+                            @if($settings->seo_social_image)
+                                <img src="{{ asset('storage/' . $settings->seo_social_image) }}" id="prev-seo-img" alt="SEO Social Sharing" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null;this.style.display='none';">
+                            @else
+                                <img src="" id="prev-seo-img" alt="SEO Social Sharing" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                            @endif
                         </div>
                         <div>
                             <div style="display: flex; gap: 8px; margin-bottom: 6px;">
@@ -322,6 +305,45 @@
 
             <div class="helper-text-box" style="margin-top: 20px;">
                 ℹ️ These settings will be used as default SEO values across the website.
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 4: Currency & Daily Exchange Rate Status (Read-Only Informational) -->
+    <div style="margin-top: 24px;">
+        <div class="admin-card" id="sec-currency-status" style="padding: 28px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #F1F5F9; padding-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin: 0;">H. Currency & Daily Exchange Rate</h3>
+                <span style="background-color: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #16A34A;"></span>
+                    {{ $currencyMeta['status'] ?? 'Connected' }}
+                </span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px;">
+                    <div style="font-size: 12px; color: #64748B; font-weight: 600; text-transform: uppercase; margin-bottom: 6px;">Exchange Rate Source</div>
+                    <div style="font-size: 15px; font-weight: 700; color: #1E3A8A;">{{ $currencyMeta['provider'] ?? 'Frankfurter (European Central Bank)' }}</div>
+                </div>
+
+                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px;">
+                    <div style="font-size: 12px; color: #64748B; font-weight: 600; text-transform: uppercase; margin-bottom: 6px;">Latest Published Rate</div>
+                    <div style="font-size: 15px; font-weight: 700; color: #15803D;">{{ $currencyMeta['formatted_rate'] ?? '1 USD = Rp 17.693' }}</div>
+                </div>
+
+                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px;">
+                    <div style="font-size: 12px; color: #64748B; font-weight: 600; text-transform: uppercase; margin-bottom: 6px;">Rate Publication Date</div>
+                    <div style="font-size: 15px; font-weight: 700; color: #0F172A;">{{ $currencyMeta['rate_date'] ?? date('Y-m-d') }}</div>
+                </div>
+
+                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px;">
+                    <div style="font-size: 12px; color: #64748B; font-weight: 600; text-transform: uppercase; margin-bottom: 6px;">Last Refreshed</div>
+                    <div style="font-size: 15px; font-weight: 700; color: #0F172A;">{{ $currencyMeta['last_updated'] ?? date('Y-m-d H:i') }}</div>
+                </div>
+            </div>
+
+            <div class="helper-text-box" style="margin: 0; background-color: #EFF6FF; border-color: #BFDBFE; color: #1E40AF;">
+                ✓ <strong>Automatic Maintenance:</strong> The exchange rate is retrieved automatically from the external published source. Admin never needs to search for or manually input daily USD/IDR exchange rates. Property base prices remain canonically stored in IDR in the database and are dynamically converted for public visitors.
             </div>
         </div>
     </div>

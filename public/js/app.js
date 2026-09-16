@@ -22,22 +22,27 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         body: formData,
       })
-      .then(response => response.json())
-      .then(data => {
+      .then(async response => {
         if (submitBtn) submitBtn.disabled = false;
-        if (data.success) {
+        const data = await response.json().catch(() => null);
+
+        if (response.ok && data && data.success) {
           inquiryForm.reset();
           if (successModal) {
             successModal.style.display = 'flex';
           }
+        } else if (response.status === 422 && data && data.errors) {
+          const firstError = Object.values(data.errors)[0][0] || 'Please verify your input fields.';
+          alert(firstError);
         } else {
-          alert('Submission error. Please check your form input.');
+          const msg = (data && data.message) ? data.message : 'An error occurred. Please try again.';
+          alert(msg);
         }
       })
       .catch(error => {
         if (submitBtn) submitBtn.disabled = false;
         console.error('Inquiry error:', error);
-        alert('An error occurred. Please try again.');
+        alert('Unable to submit inquiry. Please check your connection and try again.');
       });
     });
   }
@@ -45,6 +50,14 @@ document.addEventListener('DOMContentLoaded', function () {
   if (closeModalBtn && successModal) {
     closeModalBtn.addEventListener('click', function () {
       successModal.style.display = 'none';
+    });
+  }
+
+  if (successModal) {
+    successModal.addEventListener('click', function (e) {
+      if (e.target === successModal) {
+        successModal.style.display = 'none';
+      }
     });
   }
 

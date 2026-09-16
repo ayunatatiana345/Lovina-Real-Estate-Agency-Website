@@ -30,9 +30,35 @@
     </div>
 </div>
 
-<!-- Filters & Add Inquiry -->
+<!-- Workflow Navigation Tabs: New/Unreplied, Replied, All -->
+<div style="display: flex; gap: 12px; margin-bottom: 20px; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; flex-wrap: wrap;">
+    <a href="{{ route('admin.inquiries.index', array_merge(request()->except(['page', 'tab']), ['tab' => 'unreplied'])) }}" 
+       style="text-decoration: none; padding: 10px 18px; border-radius: 8px 8px 0 0; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; {{ $currentTab === 'unreplied' ? 'background-color: #1E3A8A; color: #FFFFFF; border-bottom: 3px solid #1E3A8A;' : 'background-color: #F8FAFC; color: #64748B;' }}">
+        <span>New / Unreplied</span>
+        <span style="font-size: 11px; padding: 2px 8px; border-radius: 9999px; font-weight: 700; {{ $currentTab === 'unreplied' ? 'background-color: #3B82F6; color: #FFFFFF;' : 'background-color: #E2E8F0; color: #475569;' }}">
+            {{ $unrepliedCount }}
+        </span>
+    </a>
+    <a href="{{ route('admin.inquiries.index', array_merge(request()->except(['page', 'tab']), ['tab' => 'replied'])) }}" 
+       style="text-decoration: none; padding: 10px 18px; border-radius: 8px 8px 0 0; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; {{ $currentTab === 'replied' ? 'background-color: #1E3A8A; color: #FFFFFF; border-bottom: 3px solid #1E3A8A;' : 'background-color: #F8FAFC; color: #64748B;' }}">
+        <span>Replied</span>
+        <span style="font-size: 11px; padding: 2px 8px; border-radius: 9999px; font-weight: 700; {{ $currentTab === 'replied' ? 'background-color: #10B981; color: #FFFFFF;' : 'background-color: #E2E8F0; color: #475569;' }}">
+            {{ $repliedCount }}
+        </span>
+    </a>
+    <a href="{{ route('admin.inquiries.index', array_merge(request()->except(['page', 'tab']), ['tab' => 'all'])) }}" 
+       style="text-decoration: none; padding: 10px 18px; border-radius: 8px 8px 0 0; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; {{ $currentTab === 'all' ? 'background-color: #1E3A8A; color: #FFFFFF; border-bottom: 3px solid #1E3A8A;' : 'background-color: #F8FAFC; color: #64748B;' }}">
+        <span>All</span>
+        <span style="font-size: 11px; padding: 2px 8px; border-radius: 9999px; font-weight: 700; {{ $currentTab === 'all' ? 'background-color: #64748B; color: #FFFFFF;' : 'background-color: #E2E8F0; color: #475569;' }}">
+            {{ $allCount }}
+        </span>
+    </a>
+</div>
+
+<!-- Filters -->
 <div class="admin-card" style="margin-bottom: 24px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
     <form action="{{ route('admin.inquiries.index') }}" method="GET" style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; flex-grow: 1;">
+        <input type="hidden" name="tab" value="{{ $currentTab }}">
         <input type="text" name="search" class="form-control" placeholder="Search customer, email, property..." value="{{ request('search') }}" style="max-width: 360px; width: 100%;">
         
         <select name="status" class="form-select" style="max-width: 200px;">
@@ -44,7 +70,7 @@
         </select>
 
         <button type="submit" class="btn btn-primary" style="padding: 10px 24px; background-color: #1E3A8A !important; border-color: #1E3A8A !important; color: #FFFFFF !important; font-weight: 600;">Filter</button>
-        <a href="{{ route('admin.inquiries.index') }}" class="btn btn-outline" style="padding: 10px 16px; text-decoration: none; color: #2563EB;">Reset</a>
+        <a href="{{ route('admin.inquiries.index', ['tab' => $currentTab]) }}" class="btn btn-outline" style="padding: 10px 16px; text-decoration: none; color: #2563EB;">Reset</a>
     </form>
 </div>
 
@@ -100,7 +126,20 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" style="text-align: center; color: #64748B; padding: 24px;">No inquiries found.</td>
+                        <td colspan="7" style="text-align: center; color: #64748B; padding: 36px 20px;">
+                            <div style="font-size: 16px; font-weight: 600; color: #475569; margin-bottom: 6px;">
+                                @if($currentTab === 'unreplied')
+                                    No new inquiries.
+                                @elseif($currentTab === 'replied')
+                                    No replied inquiries yet.
+                                @else
+                                    No inquiries yet.
+                                @endif
+                            </div>
+                            <div style="font-size: 13px; color: #94A3B8;">
+                                Customer messages submitted from the public website will appear here automatically.
+                            </div>
+                        </td>
                     </tr>
                 @endforelse
             </tbody>

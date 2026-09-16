@@ -1,6 +1,32 @@
+{{-- Tara handles the about us page here. --}}
 @extends('layouts.public')
 
-@section('title', 'About Us - ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency'))
+@section('title', 'About Us | ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency'))
+@section('meta_description', 'Learn about PT Lovina North Bali Real Estate Agency. Established in 2023, we provide trusted local expertise, personalized property consultation, and transparent guidance across North Bali.')
+@section('canonical', route('about'))
+
+@section('structured_data')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ route('home') }}"
+    },
+    {
+      "@@type": "ListItem",
+      "position": 2,
+      "name": "About Us",
+      "item": "{{ route('about') }}"
+    }
+  ]
+}
+</script>
+@endsection
 
 @section('head_extra')
 <style>
@@ -70,8 +96,8 @@
 @section('content')
 <section class="section-spacing bg-light-blue" style="padding-top: 60px; padding-bottom: 60px;">
     <div class="container">
-        <h1 style="margin-bottom: 12px;">About PT Lovina North Bali</h1>
-        <p class="body-text" style="color: var(--text-secondary);">Your trusted real estate partner in North Bali. Established in 2023.</p>
+        <h1 style="margin-bottom: 12px;">{{ $banner['title'] ?? 'About PT Lovina North Bali' }}</h1>
+        <p class="body-text" style="color: var(--text-secondary);">{{ $banner['subtitle'] ?? 'Your trusted real estate partner in North Bali. Established in 2023.' }}</p>
     </div>
 </section>
 
@@ -79,31 +105,31 @@
     <div class="container">
         <!-- Our Story -->
         <div class="about-story-container">
-            <h2>{{ $story['title'] ?? 'Our Story' }}</h2>
+            <h2>{{ $story['heading'] ?? $story['title'] ?? 'Our Story' }}</h2>
             <p class="body-text">
-                {{ $story['description'] ?? 'Founded in Lovina, PT Lovina North Bali Real Estate Agency has established itself as the leading property agency dedicated to North Bali real estate.' }}
+                {{ $story['description'] ?? 'Established in 2023, PT Lovina North Bali Real Estate Agency has established itself as a dedicated property agency serving North Bali. We specialize in selecting existing villas, houses, hotels, and restaurants to offer you the best options available in beautiful North Bali.' }}
             </p>
         </div>
 
         <!-- Real Estate -->
         <div class="about-story-container">
-            <h2>Real Estate</h2>
-            <p class="body-text" style="margin-bottom: 16px;">
-                We are constantly busy with selecting existing villas, houses, hotels, and restaurants, so we can offer you the best of the best of what is available here in beautiful North Bali. We have for each his own, from wonderful big villas on the beach, houses with nice views in the mountains, till small houses in the villages for the real Bali feeling.
-            </p>
-            <p class="body-text" style="margin-bottom: 16px;">
-                On request we can also specifically search for you. Come in and visit us in our office, tell us what you are looking for and what your wishes are, and we will find your dreamhouse specially for you.
-            </p>
-            <p class="body-text">
-                In the rare circumstances that we can’t find anything that meets all your wishes, then we have our other specialty.
-            </p>
+            <h2>{{ $realEstate['title'] ?? 'Real Estate' }}</h2>
+            @if(!empty($realEstate['paragraph_1']))
+                <p class="body-text" style="margin-bottom: 16px;">{{ $realEstate['paragraph_1'] }}</p>
+            @endif
+            @if(!empty($realEstate['paragraph_2']))
+                <p class="body-text" style="margin-bottom: 16px;">{{ $realEstate['paragraph_2'] }}</p>
+            @endif
+            @if(!empty($realEstate['paragraph_3']))
+                <p class="body-text">{{ $realEstate['paragraph_3'] }}</p>
+            @endif
         </div>
 
         <!-- And further -->
         <div class="about-story-container">
-            <h2>And further</h2>
+            <h2>{{ $andFurther['title'] ?? 'And further' }}</h2>
             <p class="body-text">
-                Maybe you have a villa, but you are not always in Bali, or you rent it out, then we can offer you a tailored maintenance package. We can also make sure that your villa and/or garden will always look the best that it can be, and if you receive guests, then someone of our team is there to welcome them. For the perfect first impression. Tell us your specific wishes and we will figure it out together.
+                {{ $andFurther['description'] ?? 'Maybe you have a villa, but you are not always in Bali, or you rent it out, then we can offer you a tailored maintenance package. We can also make sure that your villa and/or garden will always look the best that it can be, and if you receive guests, then someone of our team is there to welcome them. For the perfect first impression. Tell us your specific wishes and we will figure it out together.' }}
             </p>
         </div>
 
@@ -111,18 +137,18 @@
         <div class="about-grid-container">
             <!-- Our Vision -->
             <div class="about-card">
-                <h3 style="margin-bottom: 20px;">Our Vision</h3>
+                <h3 style="margin-bottom: 20px;">{{ $vision['title'] ?? 'Our Vision' }}</h3>
                 <p class="body-text" style="line-height: 1.8; color: var(--text-secondary); text-align: justify;">
-                    {{ $story['vision'] ?? 'To be the most trusted and transparent real estate agency in North Bali.' }}
+                    {{ $vision['description'] ?? 'To be the most trusted and transparent real estate agency in North Bali, connecting discerning buyers with exceptional lifestyle and investment properties.' }}
                 </p>
             </div>
 
             <!-- Our Mission -->
             <div class="about-card">
-                <h3 style="margin-bottom: 20px;">Our Mission</h3>
+                <h3 style="margin-bottom: 20px;">{{ $mission['title'] ?? 'Our Mission' }}</h3>
                 <ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
-                    @if(isset($story['mission']) && is_array($story['mission']))
-                        @foreach($story['mission'] as $m)
+                    @if(isset($mission['points']) && is_array($mission['points']))
+                        @foreach($mission['points'] as $m)
                             <li style="margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; font-size: 16px;">
                                 <i data-lucide="check" class="lucide-icon lucide-icon-sm" style="color: var(--secondary-gold); margin-top: 4px; flex-shrink: 0;"></i>
                                 <span style="text-align: justify;">{{ $m }}</span>

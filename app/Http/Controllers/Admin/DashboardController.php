@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Models\Inquiry;
 use App\Models\CompanySetting;
+use App\Models\Article;
+use App\Models\ArticleView;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -23,7 +25,9 @@ class DashboardController extends Controller
         $readInquiries = Inquiry::whereIn('status', ['in_progress', 'responded'])->count();
         $repliedInquiries = Inquiry::where('status', 'closed')->count();
 
-        $totalViews = Property::sum('views_count');
+        $totalPropertyViews = Property::sum('views_count');
+        $totalArticleViews = ArticleView::count();
+        $totalViews = $totalPropertyViews + $totalArticleViews;
         $uniqueVisitors = 1256; // Stat simulation matching mockup
 
         $recentInquiries = Inquiry::with('property')
@@ -32,6 +36,15 @@ class DashboardController extends Controller
             ->get();
 
         $topProperties = Property::with(['location', 'category'])
+            ->orderBy('views_count', 'desc')
+            ->take(5)
+            ->get();
+
+        $totalArticles = Article::count();
+        $publishedArticles = Article::where('status', 'published')->count();
+        $draftArticles = Article::where('status', 'draft')->count();
+
+        $topArticles = Article::withCount('views')
             ->orderBy('views_count', 'desc')
             ->take(5)
             ->get();
@@ -48,7 +61,11 @@ class DashboardController extends Controller
             'totalViews',
             'uniqueVisitors',
             'recentInquiries',
-            'topProperties'
+            'topProperties',
+            'totalArticles',
+            'publishedArticles',
+            'draftArticles',
+            'topArticles'
         ));
     }
 }

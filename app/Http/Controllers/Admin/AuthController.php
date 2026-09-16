@@ -1,5 +1,7 @@
 <?php
 
+// Tara handles admin authentication here.
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;

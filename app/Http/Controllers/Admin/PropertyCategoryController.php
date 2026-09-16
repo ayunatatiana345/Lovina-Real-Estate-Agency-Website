@@ -1,5 +1,7 @@
 <?php
 
+// Tatiana handles property categories here.
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -34,14 +36,31 @@ class PropertyCategoryController extends Controller
             'status' => 'required|in:active,inactive',
         ]);
 
+        $validated['slug'] = Str::slug($validated['name']);
+
         $category->update($validated);
 
         return redirect()->back()->with('success', 'Category updated successfully.');
     }
 
+    public function toggleStatus($id)
+    {
+        $category = PropertyCategory::findOrFail($id);
+        $category->status = ($category->status === 'active') ? 'inactive' : 'active';
+        $category->save();
+
+        return redirect()->back()->with('success', 'Category "' . $category->name . '" status changed to ' . ucfirst($category->status) . '.');
+    }
+
     public function destroy($id)
     {
         $category = PropertyCategory::findOrFail($id);
+
+        $assignedCount = $category->properties()->count();
+        if ($assignedCount > 0) {
+            return redirect()->back()->with('error', 'Cannot delete category "' . $category->name . '" because it has ' . $assignedCount . ' ' . Str::plural('property', $assignedCount) . ' assigned to it. Please deactivate the category or reassign its properties first.');
+        }
+
         $category->delete();
 
         return redirect()->back()->with('success', 'Category deleted successfully.');

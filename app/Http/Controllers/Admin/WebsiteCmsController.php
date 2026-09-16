@@ -1,5 +1,7 @@
 <?php
 
+// Tara handles website CMS here.
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -46,7 +48,7 @@ class WebsiteCmsController extends Controller
 
         $featuredSection = CmsContent::getContent('homepage', 'featured', [
             'section_title' => 'Featured North Bali Properties',
-            'selected_ids' => Property::where('is_featured', true)->pluck('id')->take(3)->toArray(),
+            'selected_ids' => Property::where('is_featured', true)->pluck('id')->take(6)->toArray(),
         ]);
 
         $latestSection = CmsContent::getContent('homepage', 'latest', [
@@ -93,16 +95,29 @@ class WebsiteCmsController extends Controller
 
         // 2. About Us Sections
         $aboutBanner = CmsContent::getContent('about_us', 'banner', [
-            'title' => 'About Us',
+            'title' => 'About PT Lovina North Bali',
+            'subtitle' => 'Your trusted real estate partner in North Bali. Established in 2023.',
             'image' => 'cms/about-banner.jpg',
             'breadcrumb' => 'Home / About Us',
         ]);
 
         $aboutStory = CmsContent::getContent('about_us', 'story', [
             'label' => 'OUR STORY',
-            'heading' => 'Our Story & Heritage',
-            'description' => 'Founded in Lovina, PT Lovina North Bali Real Estate Agency has established itself as the leading property agency dedicated to North Bali real estate. We specialize in luxury villas, residential homes, beachfront land plots, and commercial opportunities for both local and foreign buyers.',
+            'heading' => 'Our Story',
+            'description' => 'Established in 2023, PT Lovina North Bali Real Estate Agency has established itself as a dedicated property agency serving North Bali. We specialize in selecting existing villas, houses, hotels, and restaurants to offer you the best options available in beautiful North Bali.',
             'image' => 'images/office-building.jpg',
+        ]);
+
+        $aboutRealEstate = CmsContent::getContent('about_us', 'real_estate', [
+            'title' => 'Real Estate',
+            'paragraph_1' => 'We are constantly busy with selecting existing villas, houses, hotels, and restaurants, so we can offer you the best of the best of what is available here in beautiful North Bali. We have for each his own, from wonderful big villas on the beach, houses with nice views in the mountains, till small houses in the villages for the real Bali feeling.',
+            'paragraph_2' => 'On request we can also specifically search for you. Come in and visit us in our office, tell us what you are looking for and what your wishes are, and we will find your dreamhouse specially for you.',
+            'paragraph_3' => 'In the rare circumstances that we can’t find anything that meets all your wishes, then we have our other specialty.',
+        ]);
+
+        $aboutAndFurther = CmsContent::getContent('about_us', 'and_further', [
+            'title' => 'And further',
+            'description' => 'Maybe you have a villa, but you are not always in Bali, or you rent it out, then we can offer you a tailored maintenance package. We can also make sure that your villa and/or garden will always look the best that it can be, and if you receive guests, then someone of our team is there to welcome them. For the perfect first impression. Tell us your specific wishes and we will figure it out together.',
         ]);
 
         $aboutVision = CmsContent::getContent('about_us', 'vision', [
@@ -161,6 +176,8 @@ class WebsiteCmsController extends Controller
             'cta',
             'aboutBanner',
             'aboutStory',
+            'aboutRealEstate',
+            'aboutAndFurther',
             'aboutVision',
             'aboutMission',
             'aboutWhyChoose',
@@ -280,12 +297,26 @@ class WebsiteCmsController extends Controller
             $statsItems = [];
             foreach ($request->input('stat_labels') as $idx => $label) {
                 if (!empty($label)) {
+                    $num = $request->input("stat_numbers.{$idx}", '100+');
+                    $icon = $request->input("stat_icons.{$idx}", 'home');
+                    $isEnabled = isset($request->input('stat_enabled')[$idx]);
                     $statsItems[] = [
-                        'number' => $request->input("stat_numbers.{$idx}", '100+'),
+                        'number' => $num,
                         'label' => $label,
-                        'icon' => $request->input("stat_icons.{$idx}", 'home'),
-                        'enabled' => isset($request->input('stat_enabled')[$idx]),
+                        'icon' => $icon,
+                        'enabled' => $isEnabled,
                     ];
+
+                    // Sync to Statistic database model if applicable
+                    Statistic::updateOrCreate(
+                        ['page' => 'homepage', 'sort_order' => $idx + 1],
+                        [
+                            'number' => $num,
+                            'label' => $label,
+                            'icon' => $icon,
+                            'is_visible' => $isEnabled,
+                        ]
+                    );
                 }
             }
             CmsContent::updateOrCreate(['page' => 'homepage', 'section_key' => 'stats'], [
@@ -312,7 +343,8 @@ class WebsiteCmsController extends Controller
     {
         // A. Page Banner
         $bannerData = CmsContent::getContent('about_us', 'banner');
-        $bannerData['title'] = $request->input('banner_title', 'About Us');
+        $bannerData['title'] = $request->input('banner_title', 'About PT Lovina North Bali');
+        $bannerData['subtitle'] = $request->input('banner_subtitle', 'Your trusted real estate partner in North Bali. Established in 2023.');
         $bannerData['breadcrumb'] = $request->input('banner_breadcrumb', 'Home / About Us');
         if ($request->hasFile('banner_image')) {
             $bannerData['image'] = $request->file('banner_image')->store('cms', 'public');
@@ -322,14 +354,32 @@ class WebsiteCmsController extends Controller
         // B. Company Story
         $storyData = CmsContent::getContent('about_us', 'story');
         $storyData['label'] = $request->input('story_label', 'OUR STORY');
-        $storyData['heading'] = $request->input('story_heading', 'Our Story & Heritage');
+        $storyData['heading'] = $request->input('story_heading', 'Our Story');
         $storyData['description'] = $request->input('story_description', '');
         if ($request->hasFile('story_image')) {
             $storyData['image'] = $request->file('story_image')->store('cms', 'public');
         }
         CmsContent::updateOrCreate(['page' => 'about_us', 'section_key' => 'story'], ['content' => $storyData]);
 
-        // C. Vision
+        // C. Real Estate Section
+        CmsContent::updateOrCreate(['page' => 'about_us', 'section_key' => 'real_estate'], [
+            'content' => [
+                'title' => $request->input('real_estate_title', 'Real Estate'),
+                'paragraph_1' => $request->input('real_estate_p1', ''),
+                'paragraph_2' => $request->input('real_estate_p2', ''),
+                'paragraph_3' => $request->input('real_estate_p3', ''),
+            ]
+        ]);
+
+        // D. And Further Section
+        CmsContent::updateOrCreate(['page' => 'about_us', 'section_key' => 'and_further'], [
+            'content' => [
+                'title' => $request->input('and_further_title', 'And further'),
+                'description' => $request->input('and_further_desc', ''),
+            ]
+        ]);
+
+        // E. Vision
         CmsContent::updateOrCreate(['page' => 'about_us', 'section_key' => 'vision'], [
             'content' => [
                 'title' => $request->input('vision_title', 'Our Vision'),
@@ -338,7 +388,7 @@ class WebsiteCmsController extends Controller
             ]
         ]);
 
-        // D. Mission
+        // F. Mission
         $missionPoints = array_values(array_filter($request->input('mission_points', [])));
         CmsContent::updateOrCreate(['page' => 'about_us', 'section_key' => 'mission'], [
             'content' => [
@@ -348,14 +398,14 @@ class WebsiteCmsController extends Controller
             ]
         ]);
 
-        // E. Why Choose Us Mode
+        // G. Why Choose Us Mode
         CmsContent::updateOrCreate(['page' => 'about_us', 'section_key' => 'why_choose'], [
             'content' => [
                 'mode' => $request->input('about_why_mode', 'use_homepage'),
             ]
         ]);
 
-        // F. Company Statistics Toggle
+        // H. Company Statistics Toggle
         CmsContent::updateOrCreate(['page' => 'about_us', 'section_key' => 'stats'], [
             'content' => [
                 'show_homepage_stats' => $request->has('about_show_stats'),

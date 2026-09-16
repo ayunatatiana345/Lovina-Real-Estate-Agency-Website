@@ -1,2 +1,8 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin/
+Disallow: /currency/
+Disallow: /api/
+Disallow: /inquiry/
+
+Sitemap: https://lovinanorthbali.com/sitemap.xml

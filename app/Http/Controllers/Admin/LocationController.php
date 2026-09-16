@@ -1,5 +1,7 @@
 <?php
 
+// Tatiana handles locations here.
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -30,13 +32,19 @@ class LocationController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:locations,name',
-            'description' => 'required|string|max:500',
+            'description' => 'required|string|max:2000',
             'image' => 'nullable|image|max:2048',
             'is_popular' => 'nullable|boolean',
             'status' => 'required|in:active,inactive',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
+        $baseSlug = Str::slug($validated['name']);
+        $slug = $baseSlug;
+        $counter = 1;
+        while (Location::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . (++$counter);
+        }
+        $validated['slug'] = $slug;
         $validated['is_popular'] = $request->has('is_popular');
 
         if ($request->hasFile('image')) {
@@ -54,12 +62,19 @@ class LocationController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:locations,name,' . $id,
-            'description' => 'required|string|max:500',
+            'description' => 'required|string|max:2000',
             'image' => 'nullable|image|max:2048',
             'is_popular' => 'nullable|boolean',
             'status' => 'required|in:active,inactive',
         ]);
 
+        $baseSlug = Str::slug($validated['name']);
+        $slug = $baseSlug;
+        $counter = 1;
+        while (Location::where('slug', $slug)->where('id', '!=', $id)->exists()) {
+            $slug = $baseSlug . '-' . (++$counter);
+        }
+        $validated['slug'] = $slug;
         $validated['is_popular'] = $request->has('is_popular');
 
         if ($request->hasFile('image')) {
@@ -77,6 +92,13 @@ class LocationController extends Controller
     public function destroy($id)
     {
         $location = Location::findOrFail($id);
+
+        $assignedPropsCount = $location->properties()->count();
+        if ($assignedPropsCount > 0) {
+            return redirect()->route('admin.locations.index')
+                ->with('error', 'Cannot delete location "' . $location->name . '" because it still has ' . $assignedPropsCount . ' ' . Str::plural('property', $assignedPropsCount) . ' assigned to it. Please reassign or remove the properties first to protect data integrity.');
+        }
+
         if ($location->image) {
             Storage::disk('public')->delete($location->image);
         }

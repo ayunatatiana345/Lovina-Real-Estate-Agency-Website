@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title>@yield('title', 'Admin Dashboard') - PT Lovina North Bali</title>
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
@@ -13,15 +14,8 @@
 
     <!-- Admin Sidebar -->
     <aside class="admin-sidebar" id="admin-sidebar">
-        <div class="admin-sidebar-header">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-            <div class="admin-sidebar-logo">
-                PT LOVINA NORTH BALI<br>
-                <span style="font-size: 11px; font-weight: 400; opacity: 0.8;">REAL ESTATE AGENCY</span>
-            </div>
+        <div class="admin-sidebar-header" style="display: flex; justify-content: center; align-items: center; padding: 20px 15px;">
+            <img src="{{ asset('images/white logo lovina.png') }}" alt="PT LOVINA NORTH BALI" style="height: 115px; max-width: 100%; object-fit: contain;">
         </div>
 
         <div style="padding-top: 16px; flex-grow: 1;">
@@ -43,6 +37,15 @@
                 <li class="admin-nav-item">
                     <a href="{{ route('admin.settings.index') }}" class="admin-nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" id="side-settings" style="display: flex; align-items: center; gap: 10px;">
                         <i data-lucide="settings" style="width: 18px; height: 18px;"></i> Company Settings
+                    </a>
+                </li>
+            </ul>
+
+            <div class="admin-nav-section">CONTENT MANAGEMENT</div>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="{{ route('admin.articles.index') }}" class="admin-nav-link {{ request()->routeIs('admin.articles.*') ? 'active' : '' }}" id="side-articles" style="display: flex; align-items: center; gap: 10px;">
+                        <i data-lucide="newspaper" style="width: 18px; height: 18px;"></i> News Articles
                     </a>
                 </li>
             </ul>

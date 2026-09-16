@@ -1,5 +1,7 @@
 <?php
 
+// Aragon handles property data here.
+
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
@@ -7,15 +9,17 @@ use App\Models\Property;
 use App\Models\PropertyCategory;
 use App\Models\Location;
 use App\Models\CompanySetting;
+use App\Services\CurrencyService;
 use Illuminate\Http\Request;
 
 class PropertyController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, CurrencyService $currencyService)
     {
         $settings = CompanySetting::getSettings();
-        $categories = PropertyCategory::where('status', 'active')->get();
-        $locations = Location::where('status', 'active')->get();
+        $categories = PropertyCategory::where('status', 'active')->orderBy('name', 'asc')->get();
+        $locations = Location::where('status', 'active')->orderBy('name', 'asc')->get();
+        $priceRangeOptions = $currencyService->getPriceRangeOptions();
 
         $query = Property::with(['category', 'location', 'images'])
             ->where('status', 'published');
@@ -40,17 +44,19 @@ class PropertyController extends Controller
             });
         }
 
-        if ($request->filled('price_range')) {
-            switch ($request->price_range) {
-                case 'under_2b':
-                    $query->where('price', '<', 2000000000);
-                    break;
-                case '2b_to_5b':
-                    $query->whereBetween('price', [2000000000, 5000000000]);
-                    break;
-                case 'above_5b':
-                    $query->where('price', '>', 5000000000);
-                    break;
+        if ($request->filled('price_range') || $request->filled('min_price') || $request->filled('max_price')) {
+            $bounds = $currencyService->getFilterIdrBounds(
+                $request->price_range,
+                $request->filled('min_price') ? (float) $request->min_price : null,
+                $request->filled('max_price') ? (float) $request->max_price : null
+            );
+
+            if ($bounds['min'] !== null && $bounds['max'] !== null) {
+                $query->whereBetween('price', [$bounds['min'], $bounds['max']]);
+            } elseif ($bounds['min'] !== null) {
+                $query->where('price', '>=', $bounds['min']);
+            } elseif ($bounds['max'] !== null) {
+                $query->where('price', '<=', $bounds['max']);
             }
         }
 
@@ -64,7 +70,7 @@ class PropertyController extends Controller
 
         $properties = $query->latest()->paginate(30)->withQueryString();
 
-        return view('public.properties.index', compact('properties', 'categories', 'locations', 'settings'));
+        return view('public.properties.index', compact('properties', 'categories', 'locations', 'settings', 'priceRangeOptions'));
     }
 
     public function show($slug)

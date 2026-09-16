@@ -38,6 +38,16 @@
 </div>
 @endif
 
+@if(session('error'))
+<div class="settings-error-alert" id="error-session-banner" style="margin-bottom: 24px; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 18px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #DC2626; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">!</div>
+        <span>{{ session('error') }}</span>
+    </div>
+    <button type="button" onclick="document.getElementById('error-session-banner').remove()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991B1B;">&times;</button>
+</div>
+@endif
+
 <!-- Search & Reset (Matching Reference Design) -->
 <div class="admin-card" style="margin-bottom: 24px; padding: 20px 24px;">
     <form action="{{ route('admin.locations.index') }}" method="GET" style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
@@ -335,8 +345,13 @@
             </div>
         </div>
         
+        <!-- Dynamic Blocked Warning Banner -->
+        <div id="delete-blocked-warning" style="display: none; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 16px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; text-align: left; line-height: 1.5;">
+            <!-- filled by JS -->
+        </div>
+
         <!-- 6. Alert Banner Permanen -->
-        <div class="danger-alert-banner">
+        <div class="danger-alert-banner" id="delete-standard-warning">
             <div class="danger-alert-icon-wrap">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="3 6 5 6 21 6"></polyline>
@@ -351,12 +366,18 @@
             </div>
         </div>
         
+        <!-- Hidden Real Delete Form -->
+        <form id="delete-location-real-form" method="POST" action="" style="display: none;">
+            @csrf
+            @method('DELETE')
+        </form>
+
         <!-- 7. Tombol Aksi -->
         <div class="danger-modal-buttons">
             <button type="button" class="btn btn-cancel" onclick="closeDeleteModal(event)">
                 Cancel
             </button>
-            <button type="button" class="btn btn-delete" onclick="confirmDeleteLocationLocal(event)">
+            <button type="button" class="btn btn-delete" id="btn-confirm-delete-location" onclick="confirmDeleteLocationReal(event)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -531,7 +552,8 @@ function triggerDeleteLocation(btn) {
     // Fill preview card dynamically
     document.getElementById('delete-preview-name-val').textContent = data.name;
     document.getElementById('delete-preview-desc-val').textContent = data.description || '';
-    document.getElementById('delete-preview-count-val').textContent = data.properties_count !== undefined ? data.properties_count : 0;
+    const propCount = (data.properties_count !== undefined && data.properties_count !== null) ? parseInt(data.properties_count) : 0;
+    document.getElementById('delete-preview-count-val').textContent = propCount;
     document.getElementById('delete-preview-popular-val').textContent = data.is_popular ? 'Yes' : 'No';
     
     // Image fallback and routing
@@ -543,6 +565,37 @@ function triggerDeleteLocation(btn) {
         } else {
             imgTag.src = '';
             imgTag.style.display = 'none';
+        }
+    }
+
+    // Configure form and check deletion safety
+    const realForm = document.getElementById('delete-location-real-form');
+    if (realForm) {
+        realForm.action = `/admin/locations/${data.id}`;
+    }
+
+    const blockWarning = document.getElementById('delete-blocked-warning');
+    const stdWarning = document.getElementById('delete-standard-warning');
+    const deleteBtn = document.getElementById('btn-confirm-delete-location');
+
+    if (propCount > 0) {
+        blockWarning.style.display = 'block';
+        blockWarning.innerHTML = `<strong>⚠️ Deletion Blocked to Protect Data:</strong> This location has <strong>${propCount}</strong> property listing(s) assigned to it. To protect property records, photos, and inquiries, you must reassign or remove those properties first, or set this location's status to <em>Inactive</em>.`;
+        if (stdWarning) stdWarning.style.display = 'none';
+        if (deleteBtn) {
+            deleteBtn.disabled = true;
+            deleteBtn.style.opacity = '0.5';
+            deleteBtn.style.cursor = 'not-allowed';
+            deleteBtn.title = 'Cannot delete location with assigned properties';
+        }
+    } else {
+        blockWarning.style.display = 'none';
+        if (stdWarning) stdWarning.style.display = 'flex';
+        if (deleteBtn) {
+            deleteBtn.disabled = false;
+            deleteBtn.style.opacity = '1';
+            deleteBtn.style.cursor = 'pointer';
+            deleteBtn.title = 'Permanently delete this location';
         }
     }
 
@@ -561,25 +614,18 @@ function closeDeleteModal(e) {
     document.body.style.overflow = '';
 }
 
-// Local Delete action (UI State update only as required)
-function confirmDeleteLocationLocal(e) {
+// Real Delete Form Submission
+function confirmDeleteLocationReal(e) {
     if (e) e.preventDefault();
     
-    if (activeDeleteRowEl) {
-        activeDeleteRowEl.remove();
+    const deleteBtn = document.getElementById('btn-confirm-delete-location');
+    if (deleteBtn && deleteBtn.disabled) {
+        return;
     }
     
-    // Close modal & unlock scroll
-    closeDeleteModal(e);
-    
-    // Show success notification banner
-    const banner = document.getElementById('success-toast-banner');
-    if (banner) {
-        banner.style.display = 'flex';
-        document.getElementById('success-toast-text').textContent = "Location deleted successfully.";
-        
-        // Auto scroll to top to see notification clearly
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    const realForm = document.getElementById('delete-location-real-form');
+    if (realForm) {
+        realForm.submit();
     }
 }
 

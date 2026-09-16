@@ -53,111 +53,205 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // 3. Locations (Official Company Locations list)
+        // 3. Locations (Official Company Locations list - 23 Verified Published Locations)
         $locationsData = [
             [
                 'name' => 'Lovina',
-                'description' => 'Famous for its black sand beaches, dolphin watching, and calm ocean atmosphere.',
+                'description' => 'Lovina is one of North Bali’s best-known coastal tourism areas, with a relaxed atmosphere and convenient connections to nearby residential, hospitality, and local communities.',
                 'image' => 'locations/lovina.jpg',
                 'is_popular' => true,
                 'status' => 'active',
             ],
             [
-                'name' => 'Kaliasem',
-                'description' => 'A peaceful coastal area adjacent to Lovina beach, popular for villa development.',
-                'image' => 'locations/kaliasem.jpg',
-                'is_popular' => true,
-                'status' => 'active',
-            ],
-            [
-                'name' => 'Celuk Buluh',
-                'description' => 'A beautiful seaside area with direct beach access and calm waters.',
-                'image' => 'locations/celuk-buluh.jpg',
-                'is_popular' => true,
-                'status' => 'active',
-            ],
-            [
-                'name' => 'Banjar',
-                'description' => 'A peaceful mountainous area surrounded by lush tropical nature and famous hot springs.',
-                'image' => 'locations/banjar.jpg',
-                'is_popular' => true,
-                'status' => 'active',
-            ],
-            [
-                'name' => 'Anturan',
-                'description' => 'Peaceful location close to the beach and local amenities.',
-                'image' => 'locations/anturan.jpg',
-                'is_popular' => true,
-                'status' => 'active',
-            ],
-            [
                 'name' => 'Kalibukbuk',
-                'description' => 'Quiet residential area in Lovina with beautiful ocean views.',
+                'description' => 'Within the wider Lovina area, Kalibukbuk forms an established hub featuring residential properties, holiday accommodation, restaurants, and everyday services along the coastal strip.',
                 'image' => 'locations/kalibukbuk.jpg',
                 'is_popular' => true,
                 'status' => 'active',
             ],
             [
-                'name' => 'Singaraja',
-                'description' => 'The main city of North Bali, offering full city facilities, top schools, and cultural heritage.',
-                'image' => 'locations/singaraja.jpg',
+                'name' => 'Kaliasem',
+                'description' => 'Positioned alongside the central Lovina corridor, Kaliasem provides a balanced mix of residential properties, private villas, and land parcels connected to nearby beachside neighborhoods.',
+                'image' => 'locations/kaliasem.jpg',
                 'is_popular' => false,
                 'status' => 'active',
             ],
             [
-                'name' => 'Kayuputih',
-                'description' => 'Lush green hillside area offering panoramic views of the Bali Sea.',
+                'name' => 'Anturan',
+                'description' => 'Along the coastal route east of Lovina, Anturan combines traditional seaside neighborhoods with residential properties and convenient road access toward Singaraja and neighboring communities.',
+                'image' => 'locations/anturan.jpg',
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Celuk Buluh',
+                'description' => 'Associated closely with Kalibukbuk, Celuk Buluh features villas, residential dwellings, and land opportunities situated within the calm surroundings of the greater Lovina area.',
+                'image' => 'locations/celuk-buluh.jpg',
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Kayu Putih',
+                'description' => 'Further inland on elevated ground, Kayu Putih offers a greener, tranquil setting with property opportunities ranging from open land to private residential villas.',
                 'image' => 'locations/kayuputih.jpg',
                 'is_popular' => false,
                 'status' => 'active',
             ],
             [
-                'name' => 'Sererit',
-                'description' => 'A quiet coastal town with traditional markets and beautiful green rice field views.',
-                'image' => 'locations/sererit.jpg',
-                'is_popular' => false,
-                'status' => 'active',
-            ],
-            [
-                'name' => 'Dencarik',
-                'description' => 'A quiet village near Lovina with great potential for beachfront property developments.',
-                'image' => 'locations/dencarik.jpg',
+                'name' => 'Tukad Mungga',
+                'description' => 'Tukad Mungga is a residential coastal area located along the main thoroughfare that connects established beachside communities west of Singaraja.',
+                'image' => null,
                 'is_popular' => false,
                 'status' => 'active',
             ],
             [
                 'name' => 'Sambangan',
-                'description' => 'Known as the Secret Garden of Sambangan, famous for waterfalls and lush valley views.',
+                'description' => 'Surrounded by natural hillsides and greenery, Sambangan appeals to buyers seeking an inland retreat distinct from North Bali’s primary seaside property corridor.',
                 'image' => 'locations/sambangan.jpg',
                 'is_popular' => false,
                 'status' => 'active',
             ],
             [
+                'name' => 'Sanggalangit',
+                'description' => 'Near the peaceful western reaches of Buleleng, Sanggalangit provides a quiet rural setting with published property listings reflecting residential opportunities among local communities.',
+                'image' => null,
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Dencarik',
+                'description' => 'Dencarik stretches across coastal and agricultural terrain in North Bali, represented in published listings by versatile land and villa opportunities near the beach.',
+                'image' => 'locations/dencarik.jpg',
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Cempaga',
+                'description' => 'For buyers considering larger land parcels, Cempaga provides an inland hillside environment distinct from the busier coastal tourism strip of Lovina.',
+                'image' => null,
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
                 'name' => 'Temukus',
-                'description' => 'A serene coastal area known for beautiful beaches and premium luxury ocean villas.',
+                'description' => 'Stretching along the North Bali coastline near Lovina, Temukus features published listings that include seaside parcels and coastal villa properties.',
                 'image' => 'locations/temukus.jpg',
                 'is_popular' => false,
                 'status' => 'active',
             ],
             [
-                'name' => 'Ume Anyar',
-                'description' => 'A scenic coastal village near Sererit with pristine ocean views and quiet atmosphere.',
-                'image' => 'locations/ume-anyar.jpg',
+                'name' => 'Banjar',
+                'description' => 'Banjar covers an extensive district with both coastal and elevated inland neighborhoods, giving property buyers diverse settings beyond the central Lovina corridor.',
+                'image' => 'locations/banjar.jpg',
                 'is_popular' => false,
                 'status' => 'active',
+            ],
+            [
+                'name' => 'Banyualit',
+                'description' => 'Situated along the Singaraja–Lovina coastal corridor, Banyualit is an established residential community with listings covering private houses and building land.',
+                'image' => null,
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Gambuh',
+                'description' => 'Set back from the busier coastal strip, Gambuh offers a peaceful inland setting suited to buyers exploring land and residential property options.',
+                'image' => null,
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Selat',
+                'description' => 'Characterized by agricultural scenery and rural hamlets, Selat features published listings with larger land parcels surrounded by North Bali’s inland landscape.',
+                'image' => null,
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Tegal Linggah',
+                'description' => 'Tegal Linggah represents an inland residential alternative in North Bali, offering quieter surroundings away from the busier coastal resort destinations.',
+                'image' => null,
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Kubutambahan',
+                'description' => 'Lying along the eastern North Bali coastline beyond Lovina, Kubutambahan provides property opportunities that include expansive land parcels near the sea.',
+                'image' => null,
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Sing-Sing',
+                'description' => 'Bordering the scenic Sing-Sing valley, this local area features published villa properties that offer buyers a tranquil alternative to central Lovina.',
+                'image' => null,
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Tangguwisia',
+                'description' => 'The area offers a quieter coastal North Bali setting, with the published listings showing land opportunities within the wider Seririt-side property market.',
+                'image' => null,
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Sulanyah',
+                'description' => 'Sulanyah is a coastal North Bali location represented by published land property, giving buyers an option beyond the better-known Lovina and Singaraja areas.',
+                'image' => null,
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Bondalem',
+                'description' => 'On the eastern coastline of North Bali, Bondalem extends property searches into a calm seaside environment away from the central tourism center.',
+                'image' => null,
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Gerokgak',
+                'description' => 'Covering a broader region of western Buleleng, Gerokgak extends the property directory with coastal and agricultural acreage beyond the central Lovina corridor.',
+                'image' => 'locations/gerokgak.jpg',
+                'is_popular' => false,
+                'status' => 'active',
+            ],
+            // Inactive historical reference records for backwards-compatible test property foreign keys
+            [
+                'name' => 'Singaraja',
+                'description' => 'The main urban center and administrative capital of Buleleng Regency.',
+                'image' => 'locations/singaraja.jpg',
+                'is_popular' => false,
+                'status' => 'inactive',
+            ],
+            [
+                'name' => 'Seririt',
+                'description' => 'A major commercial and agricultural town in western Buleleng, serving as a regional trading hub with local markets, commercial shops, and key transport connections along the north coast.',
+                'image' => 'locations/sererit.jpg',
+                'is_popular' => true,
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Ume Anyar',
+                'description' => 'A rural coastal village in western Buleleng.',
+                'image' => 'locations/ume-anyar.jpg',
+                'is_popular' => false,
+                'status' => 'inactive',
             ],
         ];
 
         $locations = [];
         foreach ($locationsData as $loc) {
-            $locations[$loc['name']] = Location::create([
-                'name' => $loc['name'],
-                'slug' => Str::slug($loc['name']),
-                'description' => $loc['description'],
-                'image' => $loc['image'],
-                'is_popular' => $loc['is_popular'],
-                'status' => $loc['status'],
-            ]);
+            $locations[$loc['name']] = Location::updateOrCreate(
+                ['slug' => Str::slug($loc['name'])],
+                [
+                    'name' => $loc['name'],
+                    'description' => $loc['description'],
+                    'image' => $loc['image'],
+                    'is_popular' => $loc['is_popular'],
+                    'status' => $loc['status'],
+                ]
+            );
         }
 
         // 4. Properties (Realistic North Bali listings matching requirements)
@@ -241,7 +335,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Tropical Bay Villa',
                 'category' => 'Villa',
-                'location' => 'Sererit',
+                'location' => 'Seririt',
                 'price' => 210000.00,
                 'ownership_type' => 'Freehold',
                 'status' => 'published',
@@ -490,199 +584,8 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // 5. Inquiries (Matching dashboard recent inquiries table from prompt reference image 5)
-        $azureProp = Property::where('name', 'Azure Vista Residence')->first();
-        $harmonyProp = Property::where('name', 'Harmony Pool Retreat')->first();
-        $oceanProp = Property::where('name', 'Ocean Breeze Estate')->first();
-        $serenityProp = Property::where('name', 'Serenity Hill Villa')->first();
-        $sunsetProp = Property::where('name', 'Sunset View Villa')->first();
-        $sunsetBayProp = Property::where('name', 'Sunset Bay Villa')->first();
-        $tropicalProp = Property::where('name', 'Tropical Bay Villa')->first();
-        $familyHomeProp = Property::where('name', 'Singaraja Family Home')->first();
-
-        $inquiries = [
-            // Status: new (3 records)
-            [
-                'customer_name' => 'Thomas Alexander Reed',
-                'email' => 'thomas.reed78@gmail.com',
-                'phone' => '+1 (555) 019-8234',
-                'property_id' => $azureProp ? $azureProp->id : null,
-                'subject' => 'Inquiry regarding Azure Vista Residence',
-                'message' => 'Hello, I am looking to purchase a property in North Bali and would like to arrange a private viewing of the Azure Vista Residence next week.',
-                'source' => 'Property Detail Page',
-                'status' => 'new',
-                'created_at' => now()->subHours(2),
-            ],
-            [
-                'customer_name' => 'Ni Luh Made Ayu Prameswari',
-                'email' => 'ayu.prameswari@gmail.com',
-                'phone' => '+62 812-3987-6543',
-                'property_id' => $harmonyProp ? $harmonyProp->id : null,
-                'subject' => 'Viewing schedule for Harmony Pool Retreat',
-                'message' => 'Selamat pagi, apakah saya bisa menjadwalkan kunjungan ke villa Harmony Pool Retreat hari Sabtu ini?',
-                'source' => 'Property Detail Page',
-                'status' => 'new',
-                'created_at' => now()->subHours(4),
-            ],
-            [
-                'customer_name' => 'Pieter Willem van der Linden',
-                'email' => 'pietervdl.linden@icloud.com',
-                'phone' => '+31 6 1234 5678',
-                'property_id' => $oceanProp ? $oceanProp->id : null,
-                'subject' => 'Questions on Freehold title for Ocean Breeze Estate',
-                'message' => 'Beste Lovina Agency, is the freehold certificate ready for transfer on the Ocean Breeze Estate? I am interested in purchasing this villa.',
-                'source' => 'Property Detail Page',
-                'status' => 'new',
-                'created_at' => now()->subHours(6),
-            ],
-
-            // Status: in_progress (3 records)
-            [
-                'customer_name' => 'Arthur James Pendelton',
-                'email' => 'arthur.pendelton53@gmail.com',
-                'phone' => '+44 7700 900456',
-                'property_id' => $serenityProp ? $serenityProp->id : null,
-                'subject' => 'Requesting documents for Serenity Hill Villa',
-                'message' => 'Hello, please send the building permit (IMB) and land certificates for Serenity Hill Villa for my legal counsel to review.',
-                'source' => 'Property Detail Page',
-                'status' => 'in_progress',
-                'created_at' => now()->subHours(15),
-            ],
-            [
-                'customer_name' => 'Ni Putu Ratih Lestari',
-                'email' => 'ratih.lestari22@gmail.com',
-                'phone' => '+62 878-6123-4567',
-                'property_id' => $tropicalProp ? $tropicalProp->id : null,
-                'subject' => 'Rental yields for Tropical Bay Villa',
-                'message' => 'Selamat siang, saya berencana investasi di Tropical Bay Villa. Bisa minta data history okupansi atau estimasi ROI tahunannya?',
-                'source' => 'Property Detail Page',
-                'status' => 'in_progress',
-                'created_at' => now()->subHours(18),
-            ],
-            [
-                'customer_name' => 'Hendrik Jan de Boer',
-                'email' => 'hendrik.deboer@icloud.com',
-                'phone' => '+31 6 4321 8765',
-                'property_id' => $harmonyProp ? $harmonyProp->id : null,
-                'subject' => 'Water and power supply at Harmony Pool Retreat',
-                'message' => 'Hello, I want to clarify the water source and backup generator capacity at Harmony Pool Retreat. Is there any issue during the dry season?',
-                'source' => 'Property Detail Page',
-                'status' => 'in_progress',
-                'created_at' => now()->subHours(21),
-            ],
-
-            // Status: responded (3 records)
-            [
-                'customer_name' => 'Jean-Pierre Dubois',
-                'email' => 'jpdubois.81@gmail.com',
-                'phone' => '+33 6 12 34 56 78',
-                'property_id' => $oceanProp ? $oceanProp->id : null,
-                'subject' => 'Property tax question for Ocean Breeze',
-                'message' => 'Hi, what are the annual property maintenance taxes and local community fees for Ocean Breeze Estate?',
-                'source' => 'Property Detail Page',
-                'status' => 'responded',
-                'created_at' => now()->subDays(4),
-            ],
-            [
-                'customer_name' => 'Komang Ayu Sri Wahyuni',
-                'email' => 'komang.sri87@gmail.com',
-                'phone' => '+62 812-3678-9900',
-                'property_id' => null,
-                'subject' => 'Looking for investment advice in Sererit',
-                'message' => 'Hello, I am interested in building a guest house in Sererit. I would like to consult about local regulations for commercial licensing.',
-                'source' => 'Contact Us Form',
-                'status' => 'responded',
-                'created_at' => now()->subDays(5),
-            ],
-            [
-                'customer_name' => 'Yosef Andreas Wibowo',
-                'email' => 'yosef.wibowo31@gmail.com',
-                'phone' => '+62 811-385-1234',
-                'property_id' => $serenityProp ? $serenityProp->id : null,
-                'subject' => 'Access road details at Serenity Hill Villa',
-                'message' => 'Beste, is the access road to Serenity Hill Villa paved and wide enough for two cars to pass? Thank you.',
-                'source' => 'Property Detail Page',
-                'status' => 'responded',
-                'created_at' => now()->subDays(6),
-            ],
-
-            // Status: closed (3 records)
-            [
-                'customer_name' => 'Siti Aminah Rahmawati',
-                'email' => 'aminah.rahmawati@icloud.com',
-                'phone' => '+62 821-4567-9032',
-                'property_id' => $azureProp ? $azureProp->id : null,
-                'subject' => 'Survey request for Azure Vista',
-                'message' => 'We would like to inspect the building quality of Azure Vista Residence before placing a formal offer.',
-                'source' => 'Property Detail Page',
-                'status' => 'closed',
-                'created_at' => now()->subDays(10),
-            ],
-            [
-                'customer_name' => 'I Made Raka Pranata',
-                'email' => 'made.raka78@gmail.com',
-                'phone' => '+62 819-9988-7766',
-                'property_id' => $oceanProp ? $oceanProp->id : null,
-                'subject' => 'Asking if Ocean Breeze has ocean access',
-                'message' => 'Hello, is there a pathway or direct access down to the beach from the Ocean Breeze Estate cliff garden?',
-                'source' => 'Property Detail Page',
-                'status' => 'closed',
-                'created_at' => now()->subDays(12),
-            ],
-            [
-                'customer_name' => 'I Nyoman Gede Mahendra',
-                'email' => 'nyoman.mahendra@gmail.com',
-                'phone' => '+62 812-4567-8901',
-                'property_id' => null,
-                'subject' => 'Kemitraan agen properti lokal',
-                'message' => 'Saya memiliki beberapa klien lokal yang mencari tanah di Lovina. Apakah ada skema bagi komisi kerja sama agen?',
-                'source' => 'Contact Us Form',
-                'status' => 'closed',
-                'created_at' => now()->subDays(14),
-            ],
-        ];
-
-        foreach ($inquiries as $inq) {
-            $inquiry = Inquiry::create($inq);
-
-            // Seed initial status log
-            InquiryStatusLog::create([
-                'inquiry_id' => $inquiry->id,
-                'status' => 'new',
-                'changed_at' => $inquiry->created_at,
-            ]);
-
-            // Add transition logs if status has progressed
-            if ($inquiry->status === 'in_progress') {
-                InquiryStatusLog::create([
-                    'inquiry_id' => $inquiry->id,
-                    'status' => 'in_progress',
-                    'changed_at' => $inquiry->created_at->addMinutes(30),
-                ]);
-            } elseif ($inquiry->status === 'responded') {
-                InquiryStatusLog::create([
-                    'inquiry_id' => $inquiry->id,
-                    'status' => 'in_progress',
-                    'changed_at' => $inquiry->created_at->addMinutes(30),
-                ]);
-                InquiryStatusLog::create([
-                    'inquiry_id' => $inquiry->id,
-                    'status' => 'responded',
-                    'changed_at' => $inquiry->created_at->addHours(3),
-                ]);
-            } elseif ($inquiry->status === 'closed') {
-                InquiryStatusLog::create([
-                    'inquiry_id' => $inquiry->id,
-                    'status' => 'in_progress',
-                    'changed_at' => $inquiry->created_at->addMinutes(30),
-                ]);
-                InquiryStatusLog::create([
-                    'inquiry_id' => $inquiry->id,
-                    'status' => 'closed',
-                    'changed_at' => $inquiry->created_at->addHours(5),
-                ]);
-            }
-        }
+        // 5. Inquiries: Real customer inquiries are submitted exclusively via Public Website.
+        // No fake/dummy inquiries are seeded.
 
         // 6. Company Settings
         CompanySetting::getSettings();
@@ -791,5 +694,8 @@ class DatabaseSeeder extends Seeder
 
         // 11. Property Seeder (Run custom properties list)
         $this->call(PropertySeeder::class);
+
+        // 12. Article Seeder
+        $this->call(ArticleSeeder::class);
     }
 }

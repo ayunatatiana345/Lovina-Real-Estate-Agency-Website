@@ -1,5 +1,7 @@
 <?php
 
+// Aragon handles the property model here.
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,14 +21,18 @@ class Property extends Model
         'status',
         'is_featured',
         'description',
+        'short_description',
         'bedrooms',
         'bathrooms',
         'land_size',
         'building_size',
         'garage',
         'swimming_pool',
+        'features',
         'electricity',
         'water_supply',
+        'furnishing',
+        'air_conditioning',
         'views_count',
     ];
 
@@ -34,7 +40,23 @@ class Property extends Model
         'price' => 'decimal:2',
         'is_featured' => 'boolean',
         'swimming_pool' => 'boolean',
+        'features' => 'array',
     ];
+
+    public function hasFeature(string $featureKey): bool
+    {
+        if (is_array($this->features)) {
+            return in_array($featureKey, $this->features);
+        }
+
+        if ($featureKey === 'swimming_pool') return (bool)$this->swimming_pool;
+        if ($featureKey === 'garage') return (int)($this->garage ?? 0) > 0;
+        if ($featureKey === 'furnishing') return !empty($this->furnishing) && $this->furnishing !== 'Unfurnished';
+        if ($featureKey === 'air_conditioning') return !empty($this->air_conditioning) && strtolower($this->air_conditioning) !== 'no';
+        if ($featureKey === 'water_supply') return !empty($this->water_supply);
+
+        return false;
+    }
 
     public function category()
     {
@@ -56,28 +78,70 @@ class Property extends Model
         return $this->hasOne(PropertyImage::class, 'property_id')->where('is_cover', true);
     }
 
-    public function getPrimaryImageUrlAttribute()
+    public function getPrimaryImageUrlAttribute(): ?string
     {
         $cover = $this->images->firstWhere('is_cover', true) ?? $this->images->first();
         if ($cover) {
-            return asset('storage/' . $cover->image_path);
+            return $cover->image_url;
         }
-        return asset('images/property-placeholder.jpg');
+        return null;
     }
 
-    public function getFormattedPriceAttribute()
+    public function getHasRealImageAttribute(): bool
     {
-        $priceIdr = $this->price;
-        if ($priceIdr >= 1000000000) {
-            $billionVal = $priceIdr / 1000000000;
-            return 'IDR ' . round($billionVal, 2) . ' Billion';
-        }
-        return 'IDR ' . number_format($priceIdr);
+        return $this->images && $this->images->count() > 0;
     }
 
-    public function getFormattedPriceAdminAttribute()
+    public function getRealCoverImageUrlAttribute(): ?string
     {
-        return 'Rp ' . number_format($this->price, 0, ',', '.');
+        $cover = $this->images->firstWhere('is_cover', true) ?? $this->images->first();
+        if ($cover && $cover->image_path) {
+            if (file_exists(public_path('storage/' . $cover->image_path))) {
+                return asset('storage/' . $cover->image_path);
+            }
+            if (file_exists(public_path('images/' . basename($cover->image_path)))) {
+                return asset('images/' . basename($cover->image_path));
+            }
+            if (file_exists(public_path($cover->image_path))) {
+                return asset($cover->image_path);
+            }
+        }
+        return null;
+    }
+
+    public function getFormattedPriceAttribute(): string
+    {
+        $formatted = app(\App\Services\CurrencyService::class)->formatPropertyPrice($this->price);
+        if ($this->category && in_array(strtolower($this->category->slug ?? $this->category->name ?? ''), ['rent', 'rental', 'rentals'])) {
+            return $formatted . ' / month';
+        }
+        return $formatted;
+    }
+
+    public function getDisplayPriceAttribute(): string
+    {
+        return $this->getFormattedPriceAttribute();
+    }
+
+    public function getConvertedPriceAttribute(): ?float
+    {
+        if ($this->price === null) {
+            return null;
+        }
+        $currency = app(\App\Services\CurrencyService::class)->getUserCurrency();
+        return app(\App\Services\CurrencyService::class)->convert((float) $this->price, 'IDR', $currency);
+    }
+
+    public function getFormattedPriceAdminAttribute(): string
+    {
+        if ($this->price === null) {
+            return 'Price on Request';
+        }
+        $formatted = 'Rp ' . number_format($this->price, 0, ',', '.');
+        if ($this->category && in_array(strtolower($this->category->slug ?? $this->category->name ?? ''), ['rent', 'rental', 'rentals'])) {
+            return $formatted . ' / month';
+        }
+        return $formatted;
     }
 
     public function inquiries()

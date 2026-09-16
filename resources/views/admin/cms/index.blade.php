@@ -353,7 +353,7 @@
                                     <input type="checkbox" name="featured_ids[]" value="{{ $p->id }}" {{ in_array($p->id, $featuredSection['selected_ids'] ?? []) ? 'checked' : '' }}>
                                     <span style="font-weight: 600; font-size: 14px;">{{ $p->name }}</span>
                                 </div>
-                                <span style="font-size: 13px; color: #16A34A; font-weight: 600;">${{ number_format($p->price) }}</span>
+                                <span style="font-size: 13px; color: #16A34A; font-weight: 600;">{{ $p->formatted_price_admin }}</span>
                             </label>
                         @endforeach
                     </div>
@@ -604,21 +604,59 @@
                         <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 10px;" id="prev-featured-title">{{ $featuredSection['section_title'] ?? 'Featured Properties' }}</div>
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
                             @foreach($featuredProperties->take(3) as $fp)
-                                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px; font-size: 10px;">
+                                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px; font-size: 10px; overflow: hidden;">
+                                    @if($fp->real_cover_image_url)
+                                        <img src="{{ $fp->real_cover_image_url }}" alt="Cover" style="width: 100%; height: 45px; object-fit: cover; border-radius: 4px; margin-bottom: 4px;">
+                                    @endif
                                     <div style="font-weight: 700; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $fp->name }}</div>
-                                    <div style="color: #16A34A; font-weight: 600;">${{ number_format($fp->price) }}</div>
+                                    <div style="color: #16A34A; font-weight: 600;">{{ $fp->formatted_price_admin }}</div>
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
-                    <!-- Preview 5: Categories -->
+                    <!-- Preview 4: Categories -->
                     <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-                        <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 4px;" id="prev-cat-heading">{{ $categoriesSection['heading'] ?? 'Categories' }}</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 6px;" id="prev-cat-heading">{{ $categoriesSection['heading'] ?? 'Categories' }}</div>
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
                             @foreach($categories->take(6) as $cat)
                                 <div style="border: 1px solid #E2E8F0; padding: 6px; text-align: center; border-radius: 4px; font-size: 10px; font-weight: 600;">
                                     {{ $cat->name }}
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Preview 5: Latest Properties -->
+                    <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+                        <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 6px;" id="prev-latest-title">{{ $latestSection['section_title'] ?? 'Latest Added Properties' }}</div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+                            @foreach($latestProperties->take(3) as $lp)
+                                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 6px; font-size: 10px;">
+                                    <div style="font-weight: 700; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $lp->name }}</div>
+                                    <div style="color: #16A34A; font-weight: 600;">{{ $lp->formatted_price_admin }}</div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Preview 6: Popular Locations -->
+                    <div style="background-color: #F4F1FA; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+                        <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 6px;" id="prev-loc-heading">{{ $locationsSection['heading'] ?? 'Popular Locations' }}</div>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            @foreach($popularLocations->take(4) as $pl)
+                                <span style="background-color: #FFFFFF; border: 1px solid #CBD5E1; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; color: #1E3A8A;">📍 {{ $pl->name }}</span>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Preview 7: Why Choose Us -->
+                    <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+                        <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 4px;" id="prev-why-heading">{{ $whyChooseSection['heading'] ?? 'Why Choose PT Lovina North Bali' }}</div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px;">
+                            @foreach($benefits->take(3) as $ben)
+                                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 6px; border-radius: 4px; text-align: center; font-size: 10px;">
+                                    <div style="font-weight: 700; color: #1E3A8A;">{{ $ben->title }}</div>
                                 </div>
                             @endforeach
                         </div>
@@ -655,7 +693,7 @@
                         <div class="cms-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></div>
                         <div>
                             <div style="font-size: 14px; font-weight: 700; color: #0F172A;">A. Page Banner</div>
-                            <div style="font-size: 11px; color: #64748B;">Top header banner & breadcrumbs.</div>
+                            <div style="font-size: 11px; color: #64748B;">Top header title & subtitle.</div>
                         </div>
                     </div>
                     <span class="chevron-icon" style="font-size: 12px; color: #2563EB;">▲</span>
@@ -666,55 +704,79 @@
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div class="cms-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
                         <div>
-                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">B. Company Story</div>
-                            <div style="font-size: 11px; color: #64748B;">Agency background text & photo.</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">B. Our Story</div>
+                            <div style="font-size: 11px; color: #64748B;">Agency background text.</div>
                         </div>
                     </div>
                     <span class="chevron-icon" style="font-size: 12px; color: #64748B;">▼</span>
                 </div>
 
-                <!-- C. Vision -->
+                <!-- C. Real Estate Section -->
+                <div class="cms-nav-card" data-section="sec-ab-real-estate" onclick="switchSectionAbout('sec-ab-real-estate')">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="cms-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div>
+                        <div>
+                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">C. Real Estate Section</div>
+                            <div style="font-size: 11px; color: #64748B;">Property selection text & paragraphs.</div>
+                        </div>
+                    </div>
+                    <span class="chevron-icon" style="font-size: 12px; color: #64748B;">▼</span>
+                </div>
+
+                <!-- D. And Further Section -->
+                <div class="cms-nav-card" data-section="sec-ab-and-further" onclick="switchSectionAbout('sec-ab-and-further')">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="cms-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></div>
+                        <div>
+                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">D. And Further Section</div>
+                            <div style="font-size: 11px; color: #64748B;">Maintenance & extra services.</div>
+                        </div>
+                    </div>
+                    <span class="chevron-icon" style="font-size: 12px; color: #64748B;">▼</span>
+                </div>
+
+                <!-- E. Vision -->
                 <div class="cms-nav-card" data-section="sec-ab-vision" onclick="switchSectionAbout('sec-ab-vision')">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div class="cms-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
                         <div>
-                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">C. Vision</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">E. Our Vision</div>
                             <div style="font-size: 11px; color: #64748B;">Agency long-term vision.</div>
                         </div>
                     </div>
                     <span class="chevron-icon" style="font-size: 12px; color: #64748B;">▼</span>
                 </div>
 
-                <!-- D. Mission -->
+                <!-- F. Mission -->
                 <div class="cms-nav-card" data-section="sec-ab-mission" onclick="switchSectionAbout('sec-ab-mission')">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div class="cms-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
                         <div>
-                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">D. Mission</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">F. Our Mission</div>
                             <div style="font-size: 11px; color: #64748B;">Mission statement & key points.</div>
                         </div>
                     </div>
                     <span class="chevron-icon" style="font-size: 12px; color: #64748B;">▼</span>
                 </div>
 
-                <!-- E. Why Choose Us (With Status Badge) -->
+                <!-- G. Why Choose Us (With Status Badge) -->
                 <div class="cms-nav-card" data-section="sec-ab-why" onclick="switchSectionAbout('sec-ab-why')">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div class="cms-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
                         <div>
-                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">E. Why Choose Us</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">G. Why Choose Us</div>
                             <div style="font-size: 11px; color: #64748B;">Consistency with homepage.</div>
                         </div>
                     </div>
                     <span style="font-size: 10px; font-weight: 600; background-color: #DCFCE7; color: #166534; padding: 2px 8px; border-radius: 12px;">Using Homepage Content</span>
                 </div>
 
-                <!-- F. Info & Services (With Status Badge) -->
+                <!-- H. Info & Services (With Status Badge) -->
                 <div class="cms-nav-card" data-section="sec-ab-stats" onclick="switchSectionAbout('sec-ab-stats')">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div class="cms-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
                         <div>
-                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">F. Info & Services</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #0F172A;">H. Info & Services</div>
                             <div style="font-size: 11px; color: #64748B;">Reuse homepage info cards.</div>
                         </div>
                     </div>
@@ -731,7 +793,12 @@
                 
                 <div class="form-group">
                     <label class="form-label" for="banner_title">Page Title *</label>
-                    <input type="text" name="banner_title" id="banner_title" class="form-control" value="{{ $aboutBanner['title'] ?? 'About Us' }}" required oninput="updateAboutPreview()">
+                    <input type="text" name="banner_title" id="banner_title" class="form-control" value="{{ $aboutBanner['title'] ?? 'About PT Lovina North Bali' }}" required oninput="updateAboutPreview()">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="banner_subtitle">Page Subtitle *</label>
+                    <input type="text" name="banner_subtitle" id="banner_subtitle" class="form-control" value="{{ $aboutBanner['subtitle'] ?? 'Your trusted real estate partner in North Bali. Established in 2023.' }}" required oninput="updateAboutPreview()">
                 </div>
 
                 <div class="form-group">
@@ -751,7 +818,7 @@
 
             <!-- B. Company Story -->
             <div class="admin-card cms-ab-section" id="sec-ab-story" style="display: none;">
-                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">B. Company Story</h3>
+                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">B. Our Story</h3>
 
                 <div class="form-group">
                     <label class="form-label" for="story_label">Section Label</label>
@@ -760,7 +827,7 @@
 
                 <div class="form-group">
                     <label class="form-label" for="story_heading">Heading *</label>
-                    <input type="text" name="story_heading" id="story_heading" class="form-control" value="{{ $aboutStory['heading'] ?? 'Our Story & Heritage' }}" required oninput="updateAboutPreview()">
+                    <input type="text" name="story_heading" id="story_heading" class="form-control" value="{{ $aboutStory['heading'] ?? 'Our Story' }}" required oninput="updateAboutPreview()">
                 </div>
 
                 <div class="form-group">
@@ -773,9 +840,57 @@
                 </div>
             </div>
 
-            <!-- C. Vision -->
+            <!-- C. Real Estate Section -->
+            <div class="admin-card cms-ab-section" id="sec-ab-real-estate" style="display: none;">
+                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">C. Real Estate Section</h3>
+
+                <div class="form-group">
+                    <label class="form-label" for="real_estate_title">Section Title *</label>
+                    <input type="text" name="real_estate_title" id="real_estate_title" class="form-control" value="{{ $aboutRealEstate['title'] ?? 'Real Estate' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="real_estate_p1">Paragraph 1 *</label>
+                    <textarea name="real_estate_p1" id="real_estate_p1" class="form-control" style="min-height: 100px;" required>{{ $aboutRealEstate['paragraph_1'] ?? '' }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="real_estate_p2">Paragraph 2 *</label>
+                    <textarea name="real_estate_p2" id="real_estate_p2" class="form-control" style="min-height: 90px;" required>{{ $aboutRealEstate['paragraph_2'] ?? '' }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="real_estate_p3">Paragraph 3 *</label>
+                    <textarea name="real_estate_p3" id="real_estate_p3" class="form-control" style="min-height: 80px;" required>{{ $aboutRealEstate['paragraph_3'] ?? '' }}</textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end;">
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                </div>
+            </div>
+
+            <!-- D. And Further Section -->
+            <div class="admin-card cms-ab-section" id="sec-ab-and-further" style="display: none;">
+                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">D. And Further Section</h3>
+
+                <div class="form-group">
+                    <label class="form-label" for="and_further_title">Section Title *</label>
+                    <input type="text" name="and_further_title" id="and_further_title" class="form-control" value="{{ $aboutAndFurther['title'] ?? 'And further' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="and_further_desc">Body Content *</label>
+                    <textarea name="and_further_desc" id="and_further_desc" class="form-control" style="min-height: 120px;" required>{{ $aboutAndFurther['description'] ?? '' }}</textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end;">
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                </div>
+            </div>
+
+            <!-- E. Vision -->
             <div class="admin-card cms-ab-section" id="sec-ab-vision" style="display: none;">
-                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">C. Vision</h3>
+                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">E. Our Vision</h3>
 
                 <div class="form-group">
                     <label class="form-label" for="vision_title">Vision Title *</label>
@@ -792,9 +907,9 @@
                 </div>
             </div>
 
-            <!-- D. Mission -->
+            <!-- F. Mission -->
             <div class="admin-card cms-ab-section" id="sec-ab-mission" style="display: none;">
-                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">D. Mission</h3>
+                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">F. Our Mission</h3>
 
                 <div class="form-group">
                     <label class="form-label" for="mission_title">Mission Title *</label>
@@ -819,9 +934,9 @@
                 </div>
             </div>
 
-            <!-- E. Why Choose Us -->
+            <!-- G. Why Choose Us -->
             <div class="admin-card cms-ab-section" id="sec-ab-why" style="display: none;">
-                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">E. Why Choose Us</h3>
+                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">G. Why Choose Us</h3>
 
                 <div class="form-group">
                     <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; cursor: pointer;">
@@ -843,9 +958,9 @@
                 </div>
             </div>
 
-            <!-- F. Info & Services -->
+            <!-- H. Info & Services -->
             <div class="admin-card cms-ab-section" id="sec-ab-stats" style="display: none;">
-                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">F. Company Information & Services</h3>
+                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">H. Company Information & Services</h3>
 
                 <div class="form-group">
                     <label style="display: flex; align-items: center; gap: 10px; font-weight: 600; cursor: pointer; background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 16px; border-radius: 8px;">
@@ -869,8 +984,9 @@
                 <div class="cms-preview-body">
                     <!-- Preview Banner -->
                     <div style="background-color: #1E3A8A; color: white; padding: 24px 16px; border-radius: 8px; text-align: center; margin-bottom: 16px;">
-                        <h2 style="font-size: 22px; color: white; margin-bottom: 4px;" id="prev-ab-title">{{ $aboutBanner['title'] ?? 'ABOUT US' }}</h2>
-                        <div style="font-size: 11px; color: #93C5FD;" id="prev-ab-bc">{{ $aboutBanner['breadcrumb'] ?? 'Home / About Us' }}</div>
+                        <h2 style="font-size: 20px; color: white; margin-bottom: 4px;" id="prev-ab-title">{{ $aboutBanner['title'] ?? 'About PT Lovina North Bali' }}</h2>
+                        <div style="font-size: 11px; color: #93C5FD; margin-bottom: 4px;" id="prev-ab-sub">{{ $aboutBanner['subtitle'] ?? 'Your trusted real estate partner in North Bali.' }}</div>
+                        <div style="font-size: 10px; color: #CBD5E1;" id="prev-ab-bc">{{ $aboutBanner['breadcrumb'] ?? 'Home / About Us' }}</div>
                     </div>
 
                     <!-- Preview Story -->
@@ -1067,6 +1183,7 @@ function updatePreview() {
 // Real-Time Live Preview Update for About Us
 function updateAboutPreview() {
     const bannerTitle = document.getElementById('banner_title');
+    const bannerSub = document.getElementById('banner_subtitle');
     const bannerBc = document.getElementById('banner_breadcrumb');
     const storyHead = document.getElementById('story_heading');
     const storyDesc = document.getElementById('story_description');
@@ -1075,6 +1192,9 @@ function updateAboutPreview() {
 
     if (bannerTitle && document.getElementById('prev-ab-title')) {
         document.getElementById('prev-ab-title').textContent = bannerTitle.value;
+    }
+    if (bannerSub && document.getElementById('prev-ab-sub')) {
+        document.getElementById('prev-ab-sub').textContent = bannerSub.value;
     }
     if (bannerBc && document.getElementById('prev-ab-bc')) {
         document.getElementById('prev-ab-bc').textContent = bannerBc.value;

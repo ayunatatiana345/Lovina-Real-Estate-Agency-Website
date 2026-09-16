@@ -1,19 +1,23 @@
 <?php
 
+// Tatiana handles locations here.
+
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\Location;
 use App\Models\Property;
 use App\Models\CompanySetting;
+use App\Services\CurrencyService;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, CurrencyService $currencyService)
     {
         $settings = CompanySetting::getSettings();
         $categories = \App\Models\PropertyCategory::where('status', 'active')->get();
+        $priceRangeOptions = $currencyService->getPriceRangeOptions();
         
         $query = Location::where('status', 'active')->withCount(['properties' => function ($q) {
             $q->where('status', 'published');
@@ -32,15 +36,21 @@ class LocationController extends Controller
             });
         }
 
-        if ($request->filled('price_range')) {
-            $query->whereHas('properties', function ($q) use ($request) {
+        if ($request->filled('price_range') || $request->filled('min_price') || $request->filled('max_price')) {
+            $bounds = $currencyService->getFilterIdrBounds(
+                $request->price_range,
+                $request->filled('min_price') ? (float) $request->min_price : null,
+                $request->filled('max_price') ? (float) $request->max_price : null
+            );
+
+            $query->whereHas('properties', function ($q) use ($bounds) {
                 $q->where('status', 'published');
-                if ($request->price_range == 'under_2b') {
-                    $q->where('price', '<', 2000000000);
-                } elseif ($request->price_range == '2b_to_5b') {
-                    $q->where('price', '>=', 2000000000)->where('price', '<=', 5000000000);
-                } elseif ($request->price_range == 'above_5b') {
-                    $q->where('price', '>', 5000000000);
+                if ($bounds['min'] !== null && $bounds['max'] !== null) {
+                    $q->whereBetween('price', [$bounds['min'], $bounds['max']]);
+                } elseif ($bounds['min'] !== null) {
+                    $q->where('price', '>=', $bounds['min']);
+                } elseif ($bounds['max'] !== null) {
+                    $q->where('price', '<=', $bounds['max']);
                 }
             });
         }
@@ -49,9 +59,44 @@ class LocationController extends Controller
                            ->orderByDesc('properties_count')
                            ->orderBy('name')
                            ->get();
+        $allLocations = Location::where('status', 'active')->withCount(['properties' => function ($q) {
+            $q->where('status', 'published');
+        }])->get();
         $totalLocations = Location::where('status', 'active')->count();
         $totalProperties = Property::where('status', 'published')->count();
 
-        return view('public.locations.index', compact('locations', 'totalLocations', 'totalProperties', 'settings', 'categories'));
+        return view('public.locations.index', compact('locations', 'allLocations', 'totalLocations', 'totalProperties', 'settings', 'categories', 'priceRangeOptions'));
+    }
+
+    public function show(string $slug, Request $request, CurrencyService $currencyService)
+    {
+        $settings = CompanySetting::getSettings();
+        $location = Location::where('slug', $slug)->where('status', 'active')->firstOrFail();
+
+        $query = Property::with(['category', 'location', 'images'])
+            ->where('location_id', $location->id)
+            ->where('status', 'published');
+
+        if ($request->filled('type')) {
+            $query->whereHas('category', function ($qc) use ($request) {
+                $qc->where('slug', $request->type)
+                   ->orWhere('id', $request->type);
+            });
+        }
+
+        $properties = $query->latest()
+            ->paginate(12)
+            ->withQueryString();
+
+        $categories = \App\Models\PropertyCategory::where('status', 'active')->orderBy('name')->get();
+
+        $otherLocations = Location::where('status', 'active')
+            ->where('id', '!=', $location->id)
+            ->orderByDesc('is_popular')
+            ->orderBy('name')
+            ->take(5)
+            ->get();
+
+        return view('public.locations.show', compact('location', 'properties', 'otherLocations', 'categories', 'settings'));
     }
 }

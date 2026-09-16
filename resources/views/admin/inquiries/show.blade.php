@@ -15,6 +15,24 @@
 </div>
 @endif
 
+<!-- Error Notification Banner -->
+@if($errors->any())
+<div class="settings-danger-alert" id="error-session-banner" style="margin-bottom: 24px; background-color: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 8px; padding: 14px 18px; color: #991B1B; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+    <div style="display: flex; align-items: flex-start; gap: 10px;">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #DC2626; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0; margin-top: 2px;">!</div>
+        <div>
+            <strong style="font-size: 14px; display: block; margin-bottom: 4px;">There were problems with your request:</strong>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px;">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+    <button type="button" onclick="document.getElementById('error-session-banner').remove()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991B1B; line-height: 1;">&times;</button>
+</div>
+@endif
+
 <!-- Page Header Controls -->
 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
     <div>
@@ -122,11 +140,20 @@
                         </span>
                         <div>
                             <div style="font-size: 11px; color: #64748B;">Phone / WhatsApp</div>
-                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                                <span style="font-size: 15px; font-weight: 600; color: #1F2937;">{{ $inquiry->phone }}</span>
-                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $inquiry->phone) }}" target="_blank" style="font-size: 12px; font-weight: 600; color: #15803D; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background-color: #DCFCE7; padding: 2px 8px; border-radius: 4px;">
-                                    <i data-lucide="message-circle" style="width: 14px; height: 14px; color: #15803D;"></i> Open WhatsApp
-                                </a>
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px;">
+                                <span style="font-size: 15px; font-weight: 600; color: #1F2937;">{{ $inquiry->phone ?: 'Not provided' }}</span>
+                                @if($inquiry->whatsapp_url)
+                                    <a href="{{ $inquiry->whatsapp_url }}" target="_blank" rel="noopener noreferrer" style="font-size: 12px; font-weight: 600; color: #15803D; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; background-color: #DCFCE7; padding: 2px 8px; border-radius: 4px;">
+                                        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true" style="flex-shrink: 0;">
+                                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                                        </svg>
+                                        Open WhatsApp
+                                    </a>
+                                @else
+                                    <span style="font-size: 11px; font-weight: 500; color: #94A3B8; background-color: #F1F5F9; padding: 2px 6px; border-radius: 4px;">
+                                        No WhatsApp
+                                    </span>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -148,7 +175,7 @@
                                 <div style="font-size: 11px; color: #64748B;">Property Name & Price</div>
                                 <div style="margin-bottom: 12px;">
                                     <a href="{{ route('properties.show', $inquiry->property->slug) }}" target="_blank" style="font-size: 15px; font-weight: 700; color: #1E3A8A; text-decoration: none; hover: underline;">
-                                        {{ $inquiry->property->name }} (${{ number_format($inquiry->property->price) }})
+                                        {{ $inquiry->property->name }} ({{ $inquiry->property->formatted_price_admin }})
                                     </a>
                                 </div>
                                 <a href="{{ route('properties.show', $inquiry->property->slug) }}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; font-size: 12px; font-weight: 600; color: #1E3A8A; border: 1px solid #BFDBFE; border-radius: 6px; text-decoration: none; background-color: #FFFFFF;">
@@ -275,6 +302,111 @@
                     </td>
                 </tr>
             </table>
+        </div>
+        
+        <!-- Card: Reply via WhatsApp -->
+        <div class="detail-card">
+            <div class="detail-card-header">
+                <div class="detail-card-icon" style="background-color: #DCFCE7; color: #15803D; display: flex; align-items: center; justify-content: center;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                    </svg>
+                </div>
+                <h3 class="detail-card-title">Reply via WhatsApp</h3>
+            </div>
+            
+            <div style="font-size: 13px; font-family: 'Poppins', sans-serif;">
+                <div style="margin-bottom: 12px;">
+                    <div style="font-size: 11px; font-weight: 600; color: #64748B; text-transform: uppercase; margin-bottom: 2px;">Customer</div>
+                    <div style="font-weight: 700; color: #1F2937;">{{ $inquiry->customer_name }}</div>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <div style="font-size: 11px; font-weight: 600; color: #64748B; text-transform: uppercase; margin-bottom: 2px;">WhatsApp Number</div>
+                    @if($inquiry->whatsapp_number)
+                        <div style="font-weight: 600; color: #1F2937;">{{ $inquiry->phone }} <span style="font-size: 12px; color: #64748B; font-weight: 400;">(+{{ $inquiry->whatsapp_number }})</span></div>
+                    @else
+                        <div style="color: #94A3B8; font-style: italic; font-size: 12px;">No valid WhatsApp phone number available for this inquiry.</div>
+                    @endif
+                </div>
+
+                @if($inquiry->whatsapp_url)
+                    <a href="{{ $inquiry->whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #16A34A; color: #FFFFFF; font-weight: 600; font-size: 13px; padding: 10px 16px; border-radius: 8px; text-decoration: none; border: none; box-sizing: border-box;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" style="flex-shrink: 0;">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        </svg>
+                        Open WhatsApp
+                    </a>
+                @else
+                    <button type="button" class="btn" disabled style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #E2E8F0; color: #94A3B8; font-weight: 600; font-size: 13px; padding: 10px 16px; border-radius: 8px; cursor: not-allowed; border: 1px solid #CBD5E1; box-sizing: border-box;">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true" style="flex-shrink: 0;">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        </svg>
+                        WhatsApp Unavailable
+                    </button>
+                @endif
+            </div>
+        </div>
+
+        <!-- Card: Reply via Email -->
+        <div class="detail-card">
+            <div class="detail-card-header">
+                <div class="detail-card-icon" style="background-color: #EFF6FF; color: #2563EB;">
+                    <i data-lucide="mail" style="width: 20px; height: 20px;"></i>
+                </div>
+                <h3 class="detail-card-title">Reply via Email</h3>
+            </div>
+            
+            @if(empty($inquiry->email))
+                <div style="background-color: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 8px; padding: 16px; text-align: center; color: #64748B; font-size: 13px; font-family: 'Poppins', sans-serif;">
+                    Customer email address is not available for this inquiry.
+                </div>
+            @else
+                <form action="{{ route('admin.inquiries.reply-email', $inquiry->id) }}" method="POST" id="inquiry-email-reply-form" onsubmit="return handleEmailReplySubmit(event)">
+                    @csrf
+                    
+                    <!-- To (Read Only Recipient) -->
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label style="font-weight: 600; font-size: 12px; display: block; margin-bottom: 4px; color: #4B5563;">To</label>
+                        <input type="text" class="form-control" value="{{ $inquiry->email }} ({{ $inquiry->customer_name }})" readonly style="background-color: #F8FAFC; color: #475569; font-size: 13px; border: 1px solid #E2E8F0; border-radius: 6px; padding: 8px 12px; width: 100%; box-sizing: border-box; cursor: not-allowed; font-family: 'Poppins', sans-serif;">
+                        @error('email')
+                            <div style="color: #DC2626; font-size: 11px; margin-top: 4px;">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label for="email_subject" style="font-weight: 600; font-size: 12px; display: block; margin-bottom: 4px; color: #4B5563;">Subject *</label>
+                        <input type="text" name="subject" id="email_subject" class="form-control" required value="{{ old('subject', $inquiry->default_reply_subject) }}" placeholder="Subject..." style="font-size: 13px; border: 1px solid #CBD5E1; border-radius: 6px; padding: 8px 12px; width: 100%; box-sizing: border-box; font-family: 'Poppins', sans-serif;">
+                        @error('subject')
+                            <div style="color: #DC2626; font-size: 11px; margin-top: 4px;">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Message -->
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label for="email_message" style="font-weight: 600; font-size: 12px; display: block; margin-bottom: 4px; color: #4B5563;">Message *</label>
+                        <textarea name="message" id="email_message" rows="6" class="form-control" required placeholder="Type your reply to the customer..." style="font-size: 13px; border: 1px solid #CBD5E1; border-radius: 6px; padding: 10px 12px; width: 100%; box-sizing: border-box; resize: vertical; font-family: 'Poppins', sans-serif; line-height: 1.5;">{{ old('message', $inquiry->default_reply_message) }}</textarea>
+                        @error('message')
+                            <div style="color: #DC2626; font-size: 11px; margin-top: 4px;">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="send-email-btn" class="btn btn-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #1E3A8A !important; border-color: #1E3A8A !important; color: #FFFFFF !important; font-weight: 600; font-size: 13px; padding: 10px 16px; border-radius: 8px; cursor: pointer; height: 40px; box-sizing: border-box; font-family: 'Poppins', sans-serif;">
+                        <i data-lucide="send" style="width: 15px; height: 15px;"></i>
+                        <span id="send-email-text">Send Email</span>
+                    </button>
+                    
+                    @if($inquiry->mailto_url)
+                    <div style="text-align: center; margin-top: 10px;">
+                        <a href="{{ $inquiry->mailto_url }}" style="font-size: 12px; color: #64748B; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                            <i data-lucide="external-link" style="width: 12px; height: 12px;"></i> Open in Mail App (Desktop Client)
+                        </a>
+                    </div>
+                    @endif
+                </form>
+            @endif
         </div>
         
         <!-- Card 5: Card Inquiry Timeline (kanan bawah) -->
@@ -408,6 +540,33 @@ function closeDeleteModal(e) {
 // Confirm Delete - Form Submit
 function confirmDeleteInquiry() {
     document.getElementById('delete-inquiry-form').submit();
+}
+
+// Handle Email Reply submission state
+let isSendingInquiryEmail = false;
+function handleEmailReplySubmit(e) {
+    if (isSendingInquiryEmail) {
+        if (e) e.preventDefault();
+        return false;
+    }
+    const subjectEl = document.getElementById('email_subject');
+    const messageEl = document.getElementById('email_message');
+    if (!subjectEl || !messageEl || !subjectEl.value.trim() || !messageEl.value.trim()) {
+        return true; // Let browser HTML5 validation handle empty required fields
+    }
+    
+    isSendingInquiryEmail = true;
+    const btn = document.getElementById('send-email-btn');
+    const textSpan = document.getElementById('send-email-text');
+    if (btn) {
+        btn.style.opacity = '0.75';
+        btn.style.pointerEvents = 'none';
+        btn.style.cursor = 'not-allowed';
+    }
+    if (textSpan) {
+        textSpan.textContent = 'Sending Email...';
+    }
+    return true;
 }
 </script>
 

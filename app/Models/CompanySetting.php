@@ -1,5 +1,7 @@
 <?php
 
+// Tara handles company settings here.
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,16 +41,114 @@ class CompanySetting extends Model
             'company_name' => 'PT Lovina North Bali Real Estate Agency',
             'site_title' => 'PT Lovina North Bali Real Estate Agency',
             'tagline' => 'Your Trusted Property Partner in North Bali',
-            'phone' => '+62 812 3456 7890',
-            'whatsapp' => '+62 812 3456 7890',
-            'email' => 'info@lovinanorthbali.com',
-            'address' => 'Jl. Raya Kalibukbuk-Anturan, Lovina, Buleleng, Bali 81119, Indonesia',
+            'phone' => '0859 3666 6384',
+            'whatsapp' => '0859 3666 6384',
+            'email' => 'lovinanorthbaliagency2023@gmail.com',
+            'address' => 'Jl. Desa Kalibukbuk-Anturan, Buleleng, Bali',
+            'facebook_url' => 'https://www.facebook.com/people/Lovina-North-Bali-Real-Estate-Agency/61552694420689/',
+            'youtube_url' => 'https://www.youtube.com/@LOVINANORTHBALIREALESTATEAGENC',
+            'google_maps_embed_url' => 'https://maps.google.com/maps?q=Lovina+North+Bali+Real+Estate+Agency,+Jl.+Desa+Kalibukbuk-Anturan,+Kalibukbuk,+Kec.+Buleleng,+Kabupaten+Buleleng,+Bali+81119&t=&z=16&ie=UTF8&iwloc=&output=embed',
             'google_maps_direction_url' => 'https://maps.app.goo.gl/scYXTttd854dwuWc9?g_st=ic',
             'business_hours' => json_encode([
-                ['day' => 'Monday - Friday', 'hours' => '09:00 - 17:00'],
-                ['day' => 'Saturday', 'hours' => '09:00 - 14:00'],
-                ['day' => 'Sunday', 'hours' => 'Closed'],
+                ['day' => 'Monday – Friday', 'hours' => '09.00 – 12.00, 13.00 – 17.00'],
             ]),
         ]);
+    }
+
+    public function getCleanWhatsappAttribute(): string
+    {
+        $phone = preg_replace('/[^0-9]/', '', $this->whatsapp ?? '085936666384');
+        if (str_starts_with($phone, '0')) {
+            $phone = '62' . substr($phone, 1);
+        }
+        return $phone ?: '6285936666384';
+    }
+
+    public function getCleanPhoneAttribute(): string
+    {
+        $phone = preg_replace('/[^0-9+]/', '', $this->phone ?? '085936666384');
+        return $phone ?: '085936666384';
+    }
+
+    public function getWhatsappUrlAttribute(): string
+    {
+        $phone = $this->clean_whatsapp;
+        $defaultMsg = rawurlencode("Hello, I would like to get more information about properties in North Bali.");
+        return "https://wa.me/{$phone}?text={$defaultMsg}";
+    }
+
+    public function getGoogleMapsEmbedSrcAttribute()
+    {
+        if (!empty($this->google_maps_embed_url)) {
+            if (preg_match('/src="([^"]+)"/', $this->google_maps_embed_url, $match)) {
+                return $match[1];
+            }
+            return $this->google_maps_embed_url;
+        }
+
+        $query = urlencode(($this->company_name ?? 'Lovina North Bali Real Estate Agency') . ', ' . ($this->address ?? 'Jl. Desa Kalibukbuk-Anturan, Buleleng, Bali'));
+        return "https://maps.google.com/maps?q={$query}&t=&z=16&ie=UTF8&iwloc=&output=embed";
+    }
+
+    public function getFormattedBusinessHoursAttribute(): array
+    {
+        $raw = $this->business_hours;
+        if (is_string($raw)) {
+            $decoded = json_decode($raw, true);
+            if (is_array($decoded)) {
+                $raw = $decoded;
+            }
+        }
+
+        if (is_array($raw)) {
+            $formatted = [];
+            // Sequential array with 'day' and 'hours'
+            if (isset($raw[0]) && is_array($raw[0])) {
+                foreach ($raw as $item) {
+                    if (!empty($item['day']) && !empty($item['hours'])) {
+                        $formatted[] = [
+                            'day' => $item['day'],
+                            'hours' => $item['hours'],
+                        ];
+                    }
+                }
+                if (!empty($formatted)) {
+                    return $formatted;
+                }
+            }
+
+            // Associative key-value pair
+            $dayLabels = [
+                'monday_friday' => 'Monday – Friday',
+                'saturday' => 'Saturday',
+                'sunday' => 'Sunday',
+            ];
+            foreach ($raw as $key => $val) {
+                if (is_string($val) && !empty($val)) {
+                    $day = $dayLabels[$key] ?? ucfirst(str_replace('_', ' ', $key));
+                    $formatted[] = [
+                        'day' => $day,
+                        'hours' => $val,
+                    ];
+                }
+            }
+            if (!empty($formatted)) {
+                return $formatted;
+            }
+        }
+
+        return [
+            ['day' => 'Monday – Friday', 'hours' => '09.00 – 12.00, 13.00 – 17.00'],
+        ];
+    }
+
+    public function getBusinessHoursSummaryAttribute(): string
+    {
+        $hours = $this->formatted_business_hours;
+        $parts = [];
+        foreach ($hours as $h) {
+            $parts[] = "{$h['day']}: {$h['hours']}";
+        }
+        return implode(' | ', $parts);
     }
 }

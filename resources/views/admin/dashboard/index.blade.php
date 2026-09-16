@@ -114,6 +114,29 @@
             @endforeach
         </ul>
     </div>
+
+    <!-- Top Articles -->
+    <div class="admin-card">
+        <div class="admin-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="admin-card-title">Top Articles (By Views)</div>
+            <a href="{{ route('admin.articles.index') }}" style="font-size: 12px; color: #2563EB; font-weight: 600; text-decoration: none;">Manage &rarr;</a>
+        </div>
+        <ul style="list-style: none; padding: 0;">
+            @foreach($topArticles as $ta)
+                <li style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F1F5F9;">
+                    <div style="max-width: 75%;">
+                        <div style="font-size: 13px; font-weight: 600; color: #0F172A; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                            <a href="{{ route('admin.articles.edit', $ta->id) }}" style="color: #0F172A; text-decoration: none;">{{ $ta->title }}</a>
+                        </div>
+                        <div style="font-size: 11px; color: #64748B;">{{ $ta->category }}</div>
+                    </div>
+                    <div style="font-size: 13px; font-weight: 600; color: #10B981; display: flex; align-items: center; gap: 4px;">
+                        <i data-lucide="eye" style="width: 14px; height: 14px; color: #10B981;"></i> {{ number_format($ta->views_count) }}
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    </div>
 </div>
 
 <!-- Bottom Row: Recent Inquiries Table + Properties Status Donut + Quick Actions -->
@@ -175,14 +198,17 @@
             <a href="{{ route('admin.properties.create') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #EFF6FF; border-radius: 8px; text-decoration: none; color: #1E40AF; font-weight: 600;">
                 <i data-lucide="plus" style="width: 18px; height: 18px; color: #1E40AF;"></i> Add New Property
             </a>
+            <a href="{{ route('admin.articles.create') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #EFF6FF; border-radius: 8px; text-decoration: none; color: #1E40AF; font-weight: 600;">
+                <i data-lucide="newspaper" style="width: 18px; height: 18px; color: #1E40AF;"></i> Add New Article
+            </a>
+            <a href="{{ route('admin.articles.index') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; text-decoration: none; color: #334155; font-weight: 600;">
+                <i data-lucide="file-text" style="width: 18px; height: 18px; color: #334155;"></i> Manage News Articles
+            </a>
             <a href="{{ route('admin.properties.index') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; text-decoration: none; color: #334155; font-weight: 600;">
                 <i data-lucide="clipboard-list" style="width: 18px; height: 18px; color: #334155;"></i> View Properties List
             </a>
             <a href="{{ route('admin.inquiries.index') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; text-decoration: none; color: #334155; font-weight: 600;">
                 <i data-lucide="mail" style="width: 18px; height: 18px; color: #334155;"></i> View Inquiries
-            </a>
-            <a href="{{ route('admin.cms.index') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; text-decoration: none; color: #334155; font-weight: 600;">
-                <i data-lucide="monitor" style="width: 18px; height: 18px; color: #334155;"></i> Manage Website Content
             </a>
             <a href="{{ route('admin.settings.index') }}" style="display: flex; align-items: center; gap: 12px; padding: 14px; background-color: #FEF3C7; border-radius: 8px; text-decoration: none; color: #92400E; font-weight: 600;">
                 <i data-lucide="settings" style="width: 18px; height: 18px; color: #92400E;"></i> General Settings
