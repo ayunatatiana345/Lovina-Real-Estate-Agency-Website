@@ -51,18 +51,82 @@
         border-color: #93C5FD;
         color: #1D4ED8;
     }
-    .editor-textarea {
+    .editor-visual-box {
         width: 100%;
         min-height: 380px;
         border: 1px solid #CBD5E1;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
-        padding: 16px;
+        padding: 18px 20px;
         font-family: inherit;
         font-size: 15px;
-        line-height: 1.7;
+        line-height: 1.8;
         color: #1E293B;
-        resize: vertical;
+        background: #FFFFFF;
+        outline: none;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+    .editor-visual-box:focus {
+        border-color: #2563EB;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .editor-visual-box h1 {
+        font-size: 26px;
+        font-weight: 700;
+        color: #0F172A;
+        margin: 20px 0 10px 0;
+    }
+    .editor-visual-box h2 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0F172A;
+        margin: 18px 0 10px 0;
+    }
+    .editor-visual-box h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #0F172A;
+        margin: 16px 0 8px 0;
+    }
+    .editor-visual-box p {
+        margin: 0 0 16px 0;
+    }
+    .editor-visual-box ul, .editor-visual-box ol {
+        padding-left: 24px;
+        margin: 0 0 16px 0;
+    }
+    .editor-visual-box li {
+        margin-bottom: 6px;
+    }
+    .editor-visual-box table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+    }
+    .editor-visual-box th, .editor-visual-box td {
+        border: 1px solid #CBD5E1;
+        padding: 8px 12px;
+        text-align: left;
+    }
+    .editor-visual-box th {
+        background-color: #F8FAFC;
+        font-weight: 600;
+    }
+    .editor-visual-box img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        margin: 12px 0;
+    }
+    .editor-visual-box a {
+        color: #2563EB;
+        text-decoration: underline;
+    }
+    .editor-visual-box:empty:before {
+        content: attr(data-placeholder);
+        color: #94A3B8;
+        pointer-events: none;
     }
     .image-dropzone {
         border: 2px dashed #CBD5E1;
@@ -267,18 +331,20 @@
                 <!-- WRITE PANEL -->
                 <div id="panelWrite">
                     <div class="editor-toolbar">
-                        <button type="button" class="editor-btn" onclick="formatContent('h2')"><b>H2</b></button>
-                        <button type="button" class="editor-btn" onclick="formatContent('h3')"><b>H3</b></button>
-                        <button type="button" class="editor-btn" onclick="formatContent('b')"><b>B</b></button>
-                        <button type="button" class="editor-btn" onclick="formatContent('i')"><i>I</i></button>
-                        <button type="button" class="editor-btn" onclick="formatContent('ul')">• List</button>
-                        <button type="button" class="editor-btn" onclick="formatContent('ol')">1. List</button>
-                        <button type="button" class="editor-btn" onclick="formatContent('p')">Paragraph</button>
-                        <button type="button" class="editor-btn" onclick="formatContent('table')">Table</button>
-                        <button type="button" class="editor-btn" onclick="formatContent('link')">Link</button>
-                        <button type="button" class="editor-btn" onclick="formatContent('img')">Image</button>
+                        <button type="button" class="editor-btn" onclick="execFormat('p')" title="Normal Paragraph">Paragraph</button>
+                        <button type="button" class="editor-btn" onclick="execFormat('h1')" title="Heading 1"><b>H1</b></button>
+                        <button type="button" class="editor-btn" onclick="execFormat('h2')" title="Heading 2"><b>H2</b></button>
+                        <button type="button" class="editor-btn" onclick="execFormat('h3')" title="Heading 3"><b>H3</b></button>
+                        <button type="button" class="editor-btn" onclick="execFormat('bold')" title="Bold (Ctrl+B)"><b>B</b></button>
+                        <button type="button" class="editor-btn" onclick="execFormat('italic')" title="Italic (Ctrl+I)"><i>I</i></button>
+                        <button type="button" class="editor-btn" onclick="execFormat('ul')" title="Bullet List">• List</button>
+                        <button type="button" class="editor-btn" onclick="execFormat('ol')" title="Numbered List">1. List</button>
+                        <button type="button" class="editor-btn" onclick="execFormat('link')" title="Insert Link">Link</button>
+                        <button type="button" class="editor-btn" onclick="execFormat('table')" title="Insert Table">Table</button>
+                        <button type="button" class="editor-btn" onclick="execFormat('img')" title="Insert Image">Image</button>
                     </div>
-                    <textarea name="content" id="articleContent" required class="editor-textarea" placeholder="Write main article body content here..." oninput="updateWordCount()">{{ old('content') }}</textarea>
+                    <div id="visualEditor" class="editor-visual-box" contenteditable="true" spellcheck="true" data-placeholder="Write main article body content here..." oninput="syncEditorContent()"></div>
+                    <textarea name="content" id="articleContent" required style="display: none;">{{ old('content') }}</textarea>
                 </div>
 
                 <!-- LIVE PREVIEW PANEL -->
@@ -389,33 +455,81 @@ function previewHeroImage(input) {
     }
 }
 
-function formatContent(tag) {
+function execFormat(command) {
+    const editor = document.getElementById('visualEditor');
+    editor.focus();
+
+    if (command === 'p') {
+        document.execCommand('formatBlock', false, '<p>');
+    } else if (command === 'h1') {
+        document.execCommand('formatBlock', false, '<h1>');
+    } else if (command === 'h2') {
+        document.execCommand('formatBlock', false, '<h2>');
+    } else if (command === 'h3') {
+        document.execCommand('formatBlock', false, '<h3>');
+    } else if (command === 'bold') {
+        document.execCommand('bold', false, null);
+    } else if (command === 'italic') {
+        document.execCommand('italic', false, null);
+    } else if (command === 'ul') {
+        document.execCommand('insertUnorderedList', false, null);
+    } else if (command === 'ol') {
+        document.execCommand('insertOrderedList', false, null);
+    } else if (command === 'link') {
+        const selection = window.getSelection();
+        const selectedText = selection.toString();
+        const url = prompt('Enter destination URL (e.g. https://example.com):', 'https://');
+        if (url && url.trim() && url !== 'https://') {
+            document.execCommand('createLink', false, url.trim());
+        }
+    } else if (command === 'table') {
+        const tableHtml = `<table class="article-table"><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Data cell 1</td><td>Data cell 2</td></tr><tr><td>Data cell 3</td><td>Data cell 4</td></tr></tbody></table><p><br></p>`;
+        document.execCommand('insertHTML', false, tableHtml);
+    } else if (command === 'img') {
+        const imgUrl = prompt('Enter Image URL:', 'https://via.placeholder.com/800x400');
+        if (imgUrl && imgUrl.trim()) {
+            const caption = prompt('Enter Image Caption (optional):', '');
+            let imgHtml = `<img src="${imgUrl.trim()}" alt="Article image" class="article-content-img" style="max-width: 100%; border-radius: 8px; margin: 16px 0;">`;
+            if (caption && caption.trim()) {
+                imgHtml += `<p class="article-img-caption" style="font-size: 13px; color: #64748B; font-style: italic; margin-top: -8px; margin-bottom: 16px;">${caption.trim()}</p>`;
+            }
+            imgHtml += `<p><br></p>`;
+            document.execCommand('insertHTML', false, imgHtml);
+        }
+    }
+
+    syncEditorContent();
+}
+
+function sanitizeHtml(html) {
+    return html
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        .replace(/on\w+="[^"]*"/gi, '')
+        .replace(/on\w+='[^']*'/gi, '')
+        .replace(/javascript:[^"']*/gi, '#');
+}
+
+function syncEditorContent() {
+    const editor = document.getElementById('visualEditor');
     const textarea = document.getElementById('articleContent');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = textarea.value.substring(start, end);
-
-    let formatted = '';
-    if (tag === 'h2') formatted = `<h2>${selectedText || 'Heading 2'}</h2>\n`;
-    else if (tag === 'h3') formatted = `<h3>${selectedText || 'Heading 3'}</h3>\n`;
-    else if (tag === 'b') formatted = `<b>${selectedText || 'bold text'}</b>`;
-    else if (tag === 'i') formatted = `<i>${selectedText || 'italic text'}</i>`;
-    else if (tag === 'ul') formatted = `<ul>\n  <li>${selectedText || 'List item 1'}</li>\n  <li>List item 2</li>\n</ul>\n`;
-    else if (tag === 'ol') formatted = `<ol>\n  <li>${selectedText || 'List item 1'}</li>\n  <li>List item 2</li>\n</ol>\n`;
-    else if (tag === 'p') formatted = `<p>${selectedText || 'Paragraph text...'}</p>\n`;
-    else if (tag === 'table') formatted = `<table class="article-table">\n  <thead>\n    <tr><th>Header 1</th><th>Header 2</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Data 1</td><td>Data 2</td></tr>\n  </tbody>\n</table>\n`;
-    else if (tag === 'link') formatted = `<a href="https://example.com" target="_blank">${selectedText || 'link text'}</a>`;
-    else if (tag === 'img') formatted = `<img src="https://via.placeholder.com/800x400" alt="${selectedText || 'Article image'}" class="article-content-img">\n<p class="article-img-caption">Image caption text</p>\n`;
-
-    textarea.setRangeText(formatted, start, end, 'select');
-    updateWordCount();
+    if (editor && textarea) {
+        let contentHtml = editor.innerHTML;
+        if (contentHtml === '<p><br></p>' || contentHtml === '<br>') {
+            contentHtml = '';
+        }
+        textarea.value = sanitizeHtml(contentHtml);
+        updateWordCount();
+    }
 }
 
 function updateWordCount() {
-    const text = document.getElementById('articleContent').value.replace(/<[^>]*>/g, '');
-    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-    document.getElementById('contentWordCount').innerText = words + ' words';
-    document.getElementById('prevReadTime').innerText = Math.max(1, Math.ceil(words / 200)) + ' min read';
+    const editor = document.getElementById('visualEditor');
+    const text = editor ? (editor.innerText || editor.textContent || '') : '';
+    const words = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
+    const wordCountEl = document.getElementById('contentWordCount');
+    if (wordCountEl) wordCountEl.innerText = words + ' words';
+    const prevReadTimeEl = document.getElementById('prevReadTime');
+    if (prevReadTimeEl) prevReadTimeEl.innerText = Math.max(1, Math.ceil(words / 200)) + ' min read';
 }
 
 function updateExcerptCount() {
@@ -440,6 +554,7 @@ function switchEditorTab(tab) {
         document.getElementById('prevCategory').innerText = document.getElementById('articleCategory').value || 'Uncategorized';
         document.getElementById('prevExcerpt').innerText = document.getElementById('articleExcerpt').value || 'No summary provided yet.';
         
+        syncEditorContent();
         const contentVal = document.getElementById('articleContent').value;
         document.getElementById('prevContent').innerHTML = contentVal ? contentVal : '<em style="color:#94A3B8;">No article content entered yet.</em>';
     }
@@ -457,8 +572,20 @@ document.querySelectorAll('button[name="submit_action"]').forEach(btn => {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+    const editor = document.getElementById('visualEditor');
+    const textarea = document.getElementById('articleContent');
+    if (editor && textarea && textarea.value) {
+        editor.innerHTML = textarea.value;
+    }
     updateWordCount();
     updateExcerptCount();
+
+    const articleForm = document.getElementById('articleForm');
+    if (articleForm) {
+        articleForm.addEventListener('submit', function() {
+            syncEditorContent();
+        });
+    }
 });
 </script>
 @endsection

@@ -115,6 +115,21 @@
 
     <!-- Main Page Content -->
     <main id="main-content">
+        @if(session('success'))
+            <div id="flash-success-toast" style="position: fixed; top: 85px; right: 24px; z-index: 9999; background-color: #0F172A; color: #FFFFFF; padding: 12px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; transition: opacity 0.5s ease;">
+                <i data-lucide="check-circle" style="width: 18px; height: 18px; color: #22C55E;"></i>
+                <span>{{ session('success') }}</span>
+            </div>
+            <script>
+                setTimeout(function() {
+                    var toast = document.getElementById('flash-success-toast');
+                    if (toast) {
+                        toast.style.opacity = '0';
+                        setTimeout(function() { toast.remove(); }, 500);
+                    }
+                }, 4000);
+            </script>
+        @endif
         @yield('content')
     </main>
 

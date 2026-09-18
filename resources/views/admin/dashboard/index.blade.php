@@ -37,7 +37,7 @@
             <div class="admin-stat-val">{{ $totalInquiries }}</div>
             <div style="font-size: 12px; color: #64748B; margin-top: 4px;">
                 <span style="color: #2563EB; font-weight: 600;">New {{ $newInquiries }}</span> &bull; 
-                <span>Read {{ $readInquiries }}</span> &bull; 
+                <span>In Progress {{ $readInquiries }}</span> &bull; 
                 <span>Replied {{ $repliedInquiries }}</span>
             </div>
         </div>
@@ -51,8 +51,8 @@
         <div>
             <div class="admin-stat-lbl">Total Views (30 Days)</div>
             <div class="admin-stat-val">{{ number_format($totalViews) }}</div>
-            <div style="font-size: 12px; color: #16A34A; font-weight: 600; margin-top: 4px;">
-                ↑ 24.5% vs last 30 days
+            <div style="font-size: 12px; color: {{ $viewsGrowthPositive ? '#16A34A' : '#DC2626' }}; font-weight: 600; margin-top: 4px;">
+                {{ $viewsGrowthText }}
             </div>
         </div>
     </div>
@@ -65,8 +65,8 @@
         <div>
             <div class="admin-stat-lbl">Unique Visitors (30 Days)</div>
             <div class="admin-stat-val">{{ number_format($uniqueVisitors) }}</div>
-            <div style="font-size: 12px; color: #16A34A; font-weight: 600; margin-top: 4px;">
-                ↑ 18.2% vs last 30 days
+            <div style="font-size: 12px; color: {{ $visitorsGrowthPositive ? '#16A34A' : '#DC2626' }}; font-weight: 600; margin-top: 4px;">
+                {{ $visitorsGrowthText }}
             </div>
         </div>
     </div>
@@ -226,11 +226,11 @@ document.addEventListener('DOMContentLoaded', function() {
     new Chart(ctxLine, {
         type: 'line',
         data: {
-            labels: ['May 13', 'May 20', 'May 27', 'Jun 3', 'Jun 9'],
+            labels: {!! json_encode($chartLabels) !!},
             datasets: [
                 {
                     label: 'Page Views',
-                    data: [1200, 1900, 1500, 2100, 1842],
+                    data: {!! json_encode($chartPageViews) !!},
                     borderColor: '#2563EB',
                     backgroundColor: 'rgba(37, 99, 235, 0.1)',
                     tension: 0.3,
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 {
                     label: 'Unique Visitors',
-                    data: [500, 750, 620, 910, 856],
+                    data: {!! json_encode($chartUniqueVisitors) !!},
                     borderColor: '#10B981',
                     backgroundColor: 'rgba(16, 185, 129, 0.1)',
                     tension: 0.3,
@@ -249,7 +249,15 @@ document.addEventListener('DOMContentLoaded', function() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { position: 'top' } }
+            plugins: { legend: { position: 'top' } },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
         }
     });
 
@@ -258,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Chart(ctxInq, {
         type: 'doughnut',
         data: {
-            labels: ['New', 'In Progress / Read', 'Replied'],
+            labels: ['New', 'In Progress', 'Replied'],
             datasets: [{
                 data: [{{ $newInquiries }}, {{ $readInquiries }}, {{ $repliedInquiries }}],
                 backgroundColor: ['#2563EB', '#F59E0B', '#10B981']

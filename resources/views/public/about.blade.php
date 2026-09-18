@@ -94,10 +94,28 @@
 @endsection
 
 @section('content')
-<section class="section-spacing bg-light-blue" style="padding-top: 60px; padding-bottom: 60px;">
+@php
+    $hasBannerImage = !empty($banner['image']) && (
+        \Illuminate\Support\Facades\Storage::disk('public')->exists($banner['image']) ||
+        file_exists(public_path('storage/' . $banner['image'])) ||
+        file_exists(public_path($banner['image']))
+    );
+    $bannerImageUrl = $hasBannerImage ? (
+        file_exists(public_path('storage/' . $banner['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($banner['image'])
+            ? asset('storage/' . $banner['image'])
+            : asset($banner['image'])
+    ) : null;
+@endphp
+
+<section class="section-spacing bg-light-blue" style="{{ $hasBannerImage ? "background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('" . $bannerImageUrl . "') center/cover no-repeat; color: #FFFFFF;" : '' }} padding-top: 60px; padding-bottom: 60px;">
     <div class="container">
-        <h1 style="margin-bottom: 12px;">{{ $banner['title'] ?? 'About PT Lovina North Bali' }}</h1>
-        <p class="body-text" style="color: var(--text-secondary);">{{ $banner['subtitle'] ?? 'Your trusted real estate partner in North Bali. Established in 2023.' }}</p>
+        @if(!empty($banner['breadcrumb']))
+            <nav aria-label="Breadcrumb" style="font-size: 13px; color: {{ $hasBannerImage ? '#93C5FD' : 'var(--text-muted)' }}; margin-bottom: 8px;">
+                {{ $banner['breadcrumb'] }}
+            </nav>
+        @endif
+        <h1 style="margin-bottom: 12px; {{ $hasBannerImage ? 'color: #FFFFFF;' : '' }}">{{ $banner['title'] ?? 'About PT Lovina North Bali' }}</h1>
+        <p class="body-text" style="color: {{ $hasBannerImage ? '#DBEAFE' : 'var(--text-secondary)' }}; margin-bottom: 0;">{{ $banner['subtitle'] ?? 'Your trusted real estate partner in North Bali. Established in 2023.' }}</p>
     </div>
 </section>
 
@@ -105,7 +123,29 @@
     <div class="container">
         <!-- Our Story -->
         <div class="about-story-container">
+            @if(!empty($story['label']))
+                <div style="font-size: 13px; font-weight: 700; color: var(--secondary-gold); text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-bottom: 8px;">
+                    {{ $story['label'] }}
+                </div>
+            @endif
             <h2>{{ $story['heading'] ?? $story['title'] ?? 'Our Story' }}</h2>
+            @php
+                $hasStoryImage = !empty($story['image']) && (
+                    \Illuminate\Support\Facades\Storage::disk('public')->exists($story['image']) ||
+                    file_exists(public_path('storage/' . $story['image'])) ||
+                    file_exists(public_path($story['image']))
+                );
+                $storyImageUrl = $hasStoryImage ? (
+                    file_exists(public_path('storage/' . $story['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($story['image'])
+                        ? asset('storage/' . $story['image'])
+                        : asset($story['image'])
+                ) : null;
+            @endphp
+            @if($hasStoryImage)
+                <div style="margin-bottom: 24px; text-align: center;">
+                    <img src="{{ $storyImageUrl }}" alt="{{ $story['heading'] ?? 'Our Story' }}" style="max-width: 100%; height: auto; max-height: 400px; border-radius: var(--radius-md); object-fit: cover; box-shadow: var(--shadow-sm);">
+                </div>
+            @endif
             <p class="body-text">
                 {{ $story['description'] ?? 'Established in 2023, PT Lovina North Bali Real Estate Agency has established itself as a dedicated property agency serving North Bali. We specialize in selecting existing villas, houses, hotels, and restaurants to offer you the best options available in beautiful North Bali.' }}
             </p>
@@ -146,13 +186,18 @@
             <!-- Our Mission -->
             <div class="about-card">
                 <h3 style="margin-bottom: 20px;">{{ $mission['title'] ?? 'Our Mission' }}</h3>
+                @if(!empty($mission['description']))
+                    <p class="body-text" style="margin-bottom: 16px; color: var(--text-secondary);">{{ $mission['description'] }}</p>
+                @endif
                 <ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
                     @if(isset($mission['points']) && is_array($mission['points']))
                         @foreach($mission['points'] as $m)
-                            <li style="margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; font-size: 16px;">
-                                <i data-lucide="check" class="lucide-icon lucide-icon-sm" style="color: var(--secondary-gold); margin-top: 4px; flex-shrink: 0;"></i>
-                                <span style="text-align: justify;">{{ $m }}</span>
-                            </li>
+                            @if(!empty($m))
+                                <li style="margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; font-size: 16px;">
+                                    <i data-lucide="check" class="lucide-icon lucide-icon-sm" style="color: var(--secondary-gold); margin-top: 4px; flex-shrink: 0;"></i>
+                                    <span style="text-align: justify;">{{ $m }}</span>
+                                </li>
+                            @endif
                         @endforeach
                     @endif
                 </ul>
@@ -162,7 +207,7 @@
         <!-- Why Choose Us -->
         <div style="margin-bottom: 64px;">
             <div style="text-align: center; max-width: 600px; margin: 0 auto 40px auto;">
-                <h2>Why International Buyers Trust Us</h2>
+                <h2>{{ $whyChoose['heading'] ?? 'Why International Buyers Trust Us' }}</h2>
             </div>
             <div class="benefits-grid">
                 @foreach($benefits as $b)
@@ -177,6 +222,7 @@
             </div>
         </div>
 
+        @if($aboutStats['show_homepage_stats'] ?? true)
         <!-- Stats -->
         <div class="info-stats-grid" style="background-color: var(--primary-navy); padding: 48px; border-radius: var(--radius-lg);">
             @foreach($statistics as $stat)
@@ -193,6 +239,7 @@
                 </div>
             @endforeach
         </div>
+        @endif
     </div>
 </section>
 @endsection

@@ -66,6 +66,10 @@ Route::get('/sitemap.xml', function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('admin.dashboard');
+    });
+
     // Auth Routes
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
     Route::get('/login-redirect', [AdminAuthController::class, 'showLoginForm'])->name('login');

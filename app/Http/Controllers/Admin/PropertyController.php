@@ -10,6 +10,7 @@ use App\Models\PropertyCategory;
 use App\Models\Location;
 use App\Models\PropertyImage;
 use App\Models\CompanySetting;
+use App\Models\CmsContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -97,7 +98,7 @@ class PropertyController extends Controller
             $featuredCount = Property::where('is_featured', true)->count();
             if ($featuredCount >= 6) {
                 return redirect()->back()->withInput()->withErrors([
-                    'is_featured' => 'Maximum limit reached. The Featured section supports up to 6 properties. Please unfeature another property first.'
+                    'is_featured' => 'Maximum of 6 featured properties reached. Please unfeature an existing property before selecting another.'
                 ]);
             }
         }
@@ -132,6 +133,14 @@ class PropertyController extends Controller
                 }
             }
         });
+
+        // Sync cms_contents selected_ids
+        $currentFeaturedIds = Property::where('is_featured', true)->pluck('id')->toArray();
+        $featuredContent = CmsContent::getContent('homepage', 'featured', [
+            'section_title' => 'Featured North Bali Properties',
+        ]);
+        $featuredContent['selected_ids'] = $currentFeaturedIds;
+        CmsContent::updateOrCreate(['page' => 'homepage', 'section_key' => 'featured'], ['content' => $featuredContent]);
 
         return redirect()->route('admin.properties.index')->with('success', 'Property created successfully.');
     }
@@ -194,7 +203,7 @@ class PropertyController extends Controller
             $featuredCount = Property::where('is_featured', true)->where('id', '!=', $property->id)->count();
             if ($featuredCount >= 6) {
                 return redirect()->back()->withInput()->withErrors([
-                    'is_featured' => 'Maximum limit reached. The Featured section supports up to 6 properties. Please unfeature another property first.'
+                    'is_featured' => 'Maximum of 6 featured properties reached. Please unfeature an existing property before selecting another.'
                 ]);
             }
         }
@@ -243,6 +252,14 @@ class PropertyController extends Controller
             }
         });
 
+        // Sync cms_contents selected_ids
+        $currentFeaturedIds = Property::where('is_featured', true)->pluck('id')->toArray();
+        $featuredContent = CmsContent::getContent('homepage', 'featured', [
+            'section_title' => 'Featured North Bali Properties',
+        ]);
+        $featuredContent['selected_ids'] = $currentFeaturedIds;
+        CmsContent::updateOrCreate(['page' => 'homepage', 'section_key' => 'featured'], ['content' => $featuredContent]);
+
         return redirect()->route('admin.properties.edit', $property->id)->with('success', 'Property updated successfully.');
     }
 
@@ -256,26 +273,55 @@ class PropertyController extends Controller
             $property->delete();
         });
 
+        // Sync cms_contents selected_ids
+        $currentFeaturedIds = Property::where('is_featured', true)->pluck('id')->toArray();
+        $featuredContent = CmsContent::getContent('homepage', 'featured', [
+            'section_title' => 'Featured North Bali Properties',
+        ]);
+        $featuredContent['selected_ids'] = $currentFeaturedIds;
+        CmsContent::updateOrCreate(['page' => 'homepage', 'section_key' => 'featured'], ['content' => $featuredContent]);
+
         return redirect()->route('admin.properties.index')->with('success', 'Property deleted successfully.');
     }
 
-    public function toggleFeatured($id)
+    public function toggleFeatured(Request $request, $id)
     {
         $property = Property::findOrFail($id);
 
         if (!$property->is_featured) {
             $featuredCount = Property::where('is_featured', true)->count();
             if ($featuredCount >= 6) {
-                return redirect()->back()->with('error', 'Maximum limit reached. The Featured section supports up to 6 properties. Please unfeature another property first.');
+                $errorMsg = 'Maximum of 6 featured properties reached. Please unfeature an existing property before selecting another.';
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json(['success' => false, 'message' => $errorMsg], 422);
+                }
+                return redirect()->back()->with('error', $errorMsg);
             }
             $property->is_featured = true;
-            $msg = 'Property "' . $property->name . '" is now featured on the homepage.';
+            $msg = 'Featured property updated successfully.';
         } else {
             $property->is_featured = false;
-            $msg = 'Property "' . $property->name . '" was removed from the featured section.';
+            $msg = 'Featured property updated successfully.';
         }
 
         $property->save();
+
+        // Synchronize cms_contents selected_ids
+        $currentFeaturedIds = Property::where('is_featured', true)->pluck('id')->toArray();
+        $featuredContent = CmsContent::getContent('homepage', 'featured', [
+            'section_title' => 'Featured North Bali Properties',
+        ]);
+        $featuredContent['selected_ids'] = $currentFeaturedIds;
+        CmsContent::updateOrCreate(['page' => 'homepage', 'section_key' => 'featured'], ['content' => $featuredContent]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => $msg,
+                'is_featured' => (bool)$property->is_featured,
+                'featured_count' => count($currentFeaturedIds)
+            ]);
+        }
 
         return redirect()->back()->with('success', $msg);
     }

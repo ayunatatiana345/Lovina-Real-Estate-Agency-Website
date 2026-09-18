@@ -109,7 +109,7 @@
     </div>
 </section>
 
-<!-- 2. Featured Properties Section (Max 3) -->
+<!-- 2. Featured Properties Section (Max 6) -->
 @if($featuredProperties->count() > 0)
 <section class="section-spacing bg-white">
     <div class="container">

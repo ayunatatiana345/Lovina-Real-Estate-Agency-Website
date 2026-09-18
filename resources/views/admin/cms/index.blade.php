@@ -15,7 +15,7 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             Preview {{ $tab === 'about' ? 'About Us' : 'Homepage' }}
         </a>
-        <button type="submit" form="cms-main-form" class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; background-color: #1E3A8A; border-color: #1E3A8A;" id="btn-save-all-header">
+        <button type="submit" form="cms-main-form" name="section" value="all" class="btn btn-primary" style="padding: 10px 24px; font-size: 14px; background-color: #1E3A8A; border-color: #1E3A8A;" id="btn-save-all-header">
             Save All Changes
         </button>
     </div>
@@ -32,11 +32,29 @@
 </div>
 
 @if($tab === 'homepage')
+<!-- Notification Banners -->
+<div class="settings-success-alert" id="cms-home-success-toast" style="{{ session('success') ? 'display: flex;' : 'display: none;' }} margin-bottom: 24px; background-color: #DCFCE7; border: 1px solid #86EFAC; color: #166534; padding: 14px 18px; border-radius: 8px; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #16A34A; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">✓</div>
+        <span id="cms-home-success-text">{{ session('success') ?? 'Changes saved successfully.' }}</span>
+    </div>
+    <button type="button" onclick="document.getElementById('cms-home-success-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #15803D;">&times;</button>
+</div>
+
+<div class="settings-error-alert" id="cms-home-error-toast" style="{{ (session('error') || (isset($errors) && $errors->any())) ? 'display: flex;' : 'display: none;' }} margin-bottom: 24px; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 18px; border-radius: 8px; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #DC2626; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">!</div>
+        <span id="cms-home-error-text">{{ session('error') ?? ((isset($errors) && $errors->any()) ? $errors->first() : 'An error occurred while saving.') }}</span>
+    </div>
+    <button type="button" onclick="document.getElementById('cms-home-error-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991B1B;">&times;</button>
+</div>
+
 <!-- =========================================================
      TAB 1: HOMEPAGE (9 SECTIONS) - 3 COLUMN LAYOUT
      ========================================================= -->
-<form action="{{ route('admin.cms.homepage.update') }}" method="POST" enctype="multipart/form-data" id="cms-main-form">
+<form action="{{ route('admin.cms.homepage.update') }}" method="POST" enctype="multipart/form-data" id="cms-main-form" novalidate>
     @csrf
+    <input type="hidden" name="active_section" id="active_section_input" value="{{ request('section', 'sec-hero') }}">
 
     <div class="cms-3col-layout">
         <!-- COLUMN 1: Section Navigation List (Left) -->
@@ -289,7 +307,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="submit" name="section" value="sec-hero" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -326,7 +344,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="submit" name="section" value="sec-search" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -335,7 +353,7 @@
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">
                     <div>
                         <h3 style="font-size: 18px; font-weight: 700; color: #0F172A;">3. Featured Properties Section</h3>
-                        <p style="font-size: 13px; color: #64748B;">Manage the title and select featured properties (maximum 3).</p>
+                        <p style="font-size: 13px; color: #64748B;">Manage the title and select featured properties (maximum 6).</p>
                     </div>
                 </div>
 
@@ -345,12 +363,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Select Featured Properties (Check up to 3)</label>
+                    <label class="form-label">Select Featured Properties (Check up to 6)</label>
                     <div style="max-height: 240px; overflow-y: auto; border: 1px solid #CBD5E1; border-radius: 8px; padding: 12px; background-color: #F8FAFC;">
                         @foreach($allProperties as $p)
                             <label style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-bottom: 1px solid #E2E8F0; cursor: pointer;">
                                 <div style="display: flex; align-items: center; gap: 10px;">
-                                    <input type="checkbox" name="featured_ids[]" value="{{ $p->id }}" {{ in_array($p->id, $featuredSection['selected_ids'] ?? []) ? 'checked' : '' }}>
+                                    <input type="checkbox" name="featured_ids[]" value="{{ $p->id }}" class="featured-prop-checkbox" {{ $p->is_featured ? 'checked' : '' }}>
                                     <span style="font-weight: 600; font-size: 14px;">{{ $p->name }}</span>
                                 </div>
                                 <span style="font-size: 13px; color: #16A34A; font-weight: 600;">{{ $p->formatted_price_admin }}</span>
@@ -360,7 +378,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="submit" name="section" value="sec-featured" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -391,7 +409,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="submit" name="section" value="sec-latest" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -422,7 +440,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="submit" name="section" value="sec-categories" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -453,7 +471,7 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                         @foreach($allLocations as $loc)
                             <label style="display: flex; align-items: center; gap: 8px; padding: 10px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; cursor: pointer;">
-                                <input type="checkbox" name="popular_location_ids[]" value="{{ $loc->id }}" {{ in_array($loc->id, $locationsSection['selected_ids'] ?? []) ? 'checked' : '' }}>
+                                <input type="checkbox" name="popular_location_ids[]" value="{{ $loc->id }}" class="popular-loc-checkbox" {{ $loc->is_popular ? 'checked' : '' }}>
                                 <span style="font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 4px;">
                                     <i data-lucide="map-pin" style="width: 14px; height: 14px; stroke-width: 2.5px; color: #475569;"></i> {{ $loc->name }}
                                 </span>
@@ -463,7 +481,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="submit" name="section" value="sec-locations" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -492,7 +510,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="submit" name="section" value="sec-why" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -525,7 +543,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="submit" name="section" value="sec-stats" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -548,7 +566,7 @@
 
                 <div class="form-group">
                     <label class="form-label" for="cta_description">CTA Description *</label>
-                    <textarea name="cta_description" id="cta_description" class="form-control" style="min-height: 100px; resize: vertical;" required oninput="updatePreview()">{{ $cta['description'] ?? 'Speak directly with our experienced property advisors today.' }}</textarea>
+                    <textarea name="cta_description" id="cta_description" class="form-control" style="min-height: 100px; resize: vertical;" required oninput="updatePreview()">{{ !empty($cta['description']) ? $cta['description'] : 'Speak directly with our experienced property advisors today.' }}</textarea>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
@@ -564,7 +582,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="submit" name="section" value="sec-cta" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
         </div>
@@ -603,7 +621,7 @@
                     <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
                         <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 10px;" id="prev-featured-title">{{ $featuredSection['section_title'] ?? 'Featured Properties' }}</div>
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                            @foreach($featuredProperties->take(3) as $fp)
+                            @foreach($featuredProperties->take(6) as $fp)
                                 <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px; font-size: 10px; overflow: hidden;">
                                     @if($fp->real_cover_image_url)
                                         <img src="{{ $fp->real_cover_image_url }}" alt="Cover" style="width: 100%; height: 45px; object-fit: cover; border-radius: 4px; margin-bottom: 4px;">
@@ -644,7 +662,7 @@
                     <div style="background-color: #F4F1FA; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
                         <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 6px;" id="prev-loc-heading">{{ $locationsSection['heading'] ?? 'Popular Locations' }}</div>
                         <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                            @foreach($popularLocations->take(4) as $pl)
+                            @foreach($popularLocations as $pl)
                                 <span style="background-color: #FFFFFF; border: 1px solid #CBD5E1; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; color: #1E3A8A;">📍 {{ $pl->name }}</span>
                             @endforeach
                         </div>
@@ -678,7 +696,24 @@
 <!-- =========================================================
      TAB 2: ABOUT US (7 SECTIONS) - 3 COLUMN LAYOUT
      ========================================================= -->
-<form action="{{ route('admin.cms.about.update') }}" method="POST" enctype="multipart/form-data" id="cms-main-form">
+<!-- Notification Banners -->
+<div class="settings-success-alert" id="cms-success-toast" style="{{ session('success') ? 'display: flex;' : 'display: none;' }} margin-bottom: 24px; background-color: #DCFCE7; border: 1px solid #86EFAC; color: #166534; padding: 14px 18px; border-radius: 8px; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #16A34A; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">✓</div>
+        <span id="cms-success-toast-text">{{ session('success') ?? 'Changes saved successfully.' }}</span>
+    </div>
+    <button type="button" onclick="document.getElementById('cms-success-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #15803D;">&times;</button>
+</div>
+
+<div class="settings-error-alert" id="cms-error-toast" style="{{ (session('error') || (isset($errors) && $errors->any())) ? 'display: flex;' : 'display: none;' }} margin-bottom: 24px; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 18px; border-radius: 8px; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #DC2626; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">!</div>
+        <span id="cms-error-toast-text">{{ session('error') ?? ((isset($errors) && $errors->any()) ? $errors->first() : 'An error occurred while saving.') }}</span>
+    </div>
+    <button type="button" onclick="document.getElementById('cms-error-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991B1B;">&times;</button>
+</div>
+
+<form action="{{ route('admin.cms.about.update') }}" method="POST" enctype="multipart/form-data" id="cms-main-form" novalidate>
     @csrf
 
     <div class="cms-3col-layout">
@@ -802,7 +837,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Banner Image</label>
+                    <label class="form-label" for="banner_image">Banner Image</label>
+                    @php
+                        $hasBImg = !empty($aboutBanner['image']) && (file_exists(public_path('storage/' . $aboutBanner['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutBanner['image']) || file_exists(public_path($aboutBanner['image'])));
+                        $bImgSrc = $hasBImg ? (file_exists(public_path('storage/' . $aboutBanner['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutBanner['image']) ? asset('storage/' . $aboutBanner['image']) : asset($aboutBanner['image'])) : '';
+                    @endphp
+                    <div id="banner-img-thumb-container" style="margin-bottom: 10px; width: 160px; height: 80px; border-radius: 6px; overflow: hidden; border: 1px solid #CBD5E1; {{ $hasBImg ? '' : 'display: none;' }}">
+                        <img src="{{ $bImgSrc }}" id="prev-banner-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
                     <input type="file" name="banner_image" id="banner_image" class="form-control" accept="image/*">
                 </div>
 
@@ -812,7 +854,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="button" class="btn btn-primary btn-save-section" data-section="sec-ab-banner" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -822,7 +864,7 @@
 
                 <div class="form-group">
                     <label class="form-label" for="story_label">Section Label</label>
-                    <input type="text" name="story_label" id="story_label" class="form-control" value="{{ $aboutStory['label'] ?? 'OUR STORY' }}">
+                    <input type="text" name="story_label" id="story_label" class="form-control" value="{{ $aboutStory['label'] ?? 'OUR STORY' }}" oninput="updateAboutPreview()">
                 </div>
 
                 <div class="form-group">
@@ -831,12 +873,24 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label" for="story_image">Story Image</label>
+                    @php
+                        $hasSImg = !empty($aboutStory['image']) && (file_exists(public_path('storage/' . $aboutStory['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutStory['image']) || file_exists(public_path($aboutStory['image'])));
+                        $sImgSrc = $hasSImg ? (file_exists(public_path('storage/' . $aboutStory['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutStory['image']) ? asset('storage/' . $aboutStory['image']) : asset($aboutStory['image'])) : '';
+                    @endphp
+                    <div id="story-img-thumb-container" style="margin-bottom: 10px; width: 160px; height: 80px; border-radius: 6px; overflow: hidden; border: 1px solid #CBD5E1; {{ $hasSImg ? '' : 'display: none;' }}">
+                        <img src="{{ $sImgSrc }}" id="prev-story-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <input type="file" name="story_image" id="story_image" class="form-control" accept="image/*">
+                </div>
+
+                <div class="form-group">
                     <label class="form-label" for="story_description">Company Description *</label>
                     <textarea name="story_description" id="story_description" class="form-control" style="min-height: 140px;" required oninput="updateAboutPreview()">{{ $aboutStory['description'] ?? '' }}</textarea>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="button" class="btn btn-primary btn-save-section" data-section="sec-ab-story" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -846,26 +900,26 @@
 
                 <div class="form-group">
                     <label class="form-label" for="real_estate_title">Section Title *</label>
-                    <input type="text" name="real_estate_title" id="real_estate_title" class="form-control" value="{{ $aboutRealEstate['title'] ?? 'Real Estate' }}" required>
+                    <input type="text" name="real_estate_title" id="real_estate_title" class="form-control" value="{{ $aboutRealEstate['title'] ?? 'Real Estate' }}" required oninput="updateAboutPreview()">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="real_estate_p1">Paragraph 1 *</label>
-                    <textarea name="real_estate_p1" id="real_estate_p1" class="form-control" style="min-height: 100px;" required>{{ $aboutRealEstate['paragraph_1'] ?? '' }}</textarea>
+                    <textarea name="real_estate_p1" id="real_estate_p1" class="form-control" style="min-height: 100px;" required oninput="updateAboutPreview()">{{ $aboutRealEstate['paragraph_1'] ?? '' }}</textarea>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="real_estate_p2">Paragraph 2 *</label>
-                    <textarea name="real_estate_p2" id="real_estate_p2" class="form-control" style="min-height: 90px;" required>{{ $aboutRealEstate['paragraph_2'] ?? '' }}</textarea>
+                    <label class="form-label" for="real_estate_p2">Paragraph 2</label>
+                    <textarea name="real_estate_p2" id="real_estate_p2" class="form-control" style="min-height: 90px;" oninput="updateAboutPreview()">{{ $aboutRealEstate['paragraph_2'] ?? '' }}</textarea>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="real_estate_p3">Paragraph 3 *</label>
-                    <textarea name="real_estate_p3" id="real_estate_p3" class="form-control" style="min-height: 80px;" required>{{ $aboutRealEstate['paragraph_3'] ?? '' }}</textarea>
+                    <label class="form-label" for="real_estate_p3">Paragraph 3</label>
+                    <textarea name="real_estate_p3" id="real_estate_p3" class="form-control" style="min-height: 80px;" oninput="updateAboutPreview()">{{ $aboutRealEstate['paragraph_3'] ?? '' }}</textarea>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="button" class="btn btn-primary btn-save-section" data-section="sec-ab-real-estate" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -875,16 +929,16 @@
 
                 <div class="form-group">
                     <label class="form-label" for="and_further_title">Section Title *</label>
-                    <input type="text" name="and_further_title" id="and_further_title" class="form-control" value="{{ $aboutAndFurther['title'] ?? 'And further' }}" required>
+                    <input type="text" name="and_further_title" id="and_further_title" class="form-control" value="{{ $aboutAndFurther['title'] ?? 'And further' }}" required oninput="updateAboutPreview()">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="and_further_desc">Body Content *</label>
-                    <textarea name="and_further_desc" id="and_further_desc" class="form-control" style="min-height: 120px;" required>{{ $aboutAndFurther['description'] ?? '' }}</textarea>
+                    <textarea name="and_further_desc" id="and_further_desc" class="form-control" style="min-height: 120px;" required oninput="updateAboutPreview()">{{ $aboutAndFurther['description'] ?? '' }}</textarea>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="button" class="btn btn-primary btn-save-section" data-section="sec-ab-and-further" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -903,7 +957,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="button" class="btn btn-primary btn-save-section" data-section="sec-ab-vision" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -913,16 +967,21 @@
 
                 <div class="form-group">
                     <label class="form-label" for="mission_title">Mission Title *</label>
-                    <input type="text" name="mission_title" id="mission_title" class="form-control" value="{{ $aboutMission['title'] ?? 'Our Mission' }}" required>
+                    <input type="text" name="mission_title" id="mission_title" class="form-control" value="{{ $aboutMission['title'] ?? 'Our Mission' }}" required oninput="updateAboutPreview()">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="mission_description">Mission Subtitle / Description (Optional)</label>
+                    <input type="text" name="mission_description" id="mission_description" class="form-control" value="{{ $aboutMission['description'] ?? '' }}" oninput="updateAboutPreview()">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Mission Points</label>
                     <div id="mission-points-list">
                         @foreach($aboutMission['points'] ?? ['Deliver uncompromised legal integrity.', 'Provide personalized consultation.'] as $pIdx => $point)
-                            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                                <input type="text" name="mission_points[]" class="form-control" value="{{ $point }}" placeholder="Mission point statement">
-                                <button type="button" class="btn btn-outline" style="color: #DC2626; border-color: #FCA5A5;" onclick="this.parentElement.remove()">Remove</button>
+                            <div style="display: flex; gap: 8px; margin-bottom: 8px;" class="mission-point-row">
+                                <input type="text" name="mission_points[]" class="form-control mission-point-input" value="{{ $point }}" placeholder="Mission point statement" oninput="updateAboutPreview()">
+                                <button type="button" class="btn btn-outline" style="color: #DC2626; border-color: #FCA5A5;" onclick="this.parentElement.remove(); updateAboutPreview();">Remove</button>
                             </div>
                         @endforeach
                     </div>
@@ -930,13 +989,18 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="button" class="btn btn-primary btn-save-section" data-section="sec-ab-mission" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
             <!-- G. Why Choose Us -->
             <div class="admin-card cms-ab-section" id="sec-ab-why" style="display: none;">
                 <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">G. Why Choose Us</h3>
+
+                <div class="form-group">
+                    <label class="form-label" for="why_heading">Section Heading</label>
+                    <input type="text" name="why_heading" id="why_heading" class="form-control" value="{{ $aboutWhyChoose['heading'] ?? 'Why International Buyers Trust Us' }}" oninput="updateAboutPreview()">
+                </div>
 
                 <div class="form-group">
                     <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; cursor: pointer;">
@@ -954,7 +1018,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="button" class="btn btn-primary btn-save-section" data-section="sec-ab-why" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
 
@@ -970,7 +1034,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Save Section</button>
+                    <button type="button" class="btn btn-primary btn-save-section" data-section="sec-ab-stats" style="padding: 10px 24px;">Save Section</button>
                 </div>
             </div>
         </div>
@@ -982,23 +1046,61 @@
                     About Us Preview
                 </div>
                 <div class="cms-preview-body">
-                    <!-- Preview Banner -->
-                    <div style="background-color: #1E3A8A; color: white; padding: 24px 16px; border-radius: 8px; text-align: center; margin-bottom: 16px;">
+                    <!-- Preview 1: Banner -->
+                    <div id="prev-ab-banner-box" style="background-color: #1E3A8A; color: white; padding: 24px 16px; border-radius: 8px; text-align: center; margin-bottom: 16px; {{ $hasBImg ? "background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('" . $bImgSrc . "') center/cover no-repeat;" : '' }}">
                         <h2 style="font-size: 20px; color: white; margin-bottom: 4px;" id="prev-ab-title">{{ $aboutBanner['title'] ?? 'About PT Lovina North Bali' }}</h2>
                         <div style="font-size: 11px; color: #93C5FD; margin-bottom: 4px;" id="prev-ab-sub">{{ $aboutBanner['subtitle'] ?? 'Your trusted real estate partner in North Bali.' }}</div>
                         <div style="font-size: 10px; color: #CBD5E1;" id="prev-ab-bc">{{ $aboutBanner['breadcrumb'] ?? 'Home / About Us' }}</div>
                     </div>
 
-                    <!-- Preview Story -->
+                    <!-- Preview 2: Story -->
                     <div style="background-color: white; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+                        <div style="font-size: 10px; font-weight: 700; color: #D97706; text-transform: uppercase; margin-bottom: 4px;" id="prev-ab-story-label">{{ $aboutStory['label'] ?? 'OUR STORY' }}</div>
                         <h4 style="font-size: 14px; color: #1E3A8A; margin-bottom: 6px;" id="prev-ab-heading">{{ $aboutStory['heading'] ?? 'Our Story' }}</h4>
-                        <p style="font-size: 11px; color: #475569; line-height: 1.5;" id="prev-ab-desc">{{ Str::limit($aboutStory['description'] ?? '', 160) }}</p>
+                        <div id="prev-ab-story-img-container" style="margin-bottom: 8px; {{ $hasSImg ? '' : 'display: none;' }}">
+                            <img src="{{ $sImgSrc }}" id="prev-ab-story-img" style="width: 100%; height: 70px; object-fit: cover; border-radius: 4px;">
+                        </div>
+                        <p style="font-size: 11px; color: #475569; line-height: 1.5; margin: 0;" id="prev-ab-desc">{{ Str::limit($aboutStory['description'] ?? '', 160) }}</p>
                     </div>
 
-                    <!-- Preview Vision -->
+                    <!-- Preview 3: Real Estate -->
+                    <div style="background-color: white; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+                        <h4 style="font-size: 14px; color: #1E3A8A; margin-bottom: 6px;" id="prev-ab-re-title">{{ $aboutRealEstate['title'] ?? 'Real Estate' }}</h4>
+                        <p style="font-size: 11px; color: #475569; line-height: 1.5; margin: 0;" id="prev-ab-re-desc">{{ Str::limit($aboutRealEstate['paragraph_1'] ?? '', 140) }}</p>
+                    </div>
+
+                    <!-- Preview 4: And Further -->
+                    <div style="background-color: white; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+                        <h4 style="font-size: 14px; color: #1E3A8A; margin-bottom: 6px;" id="prev-ab-af-title">{{ $aboutAndFurther['title'] ?? 'And further' }}</h4>
+                        <p style="font-size: 11px; color: #475569; line-height: 1.5; margin: 0;" id="prev-ab-af-desc">{{ Str::limit($aboutAndFurther['description'] ?? '', 140) }}</p>
+                    </div>
+
+                    <!-- Preview 5: Vision -->
                     <div style="background-color: #F4F1FA; border-left: 4px solid #1E3A8A; padding: 12px; border-radius: 4px; margin-bottom: 16px;">
                         <div style="font-weight: 700; font-size: 12px; color: #1E3A8A;" id="prev-ab-vision-title">{{ $aboutVision['title'] ?? 'Our Vision' }}</div>
-                        <div style="font-size: 11px; color: #475569;" id="prev-ab-vision-desc">{{ $aboutVision['description'] ?? '' }}</div>
+                        <div style="font-size: 11px; color: #475569; margin-top: 4px;" id="prev-ab-vision-desc">{{ $aboutVision['description'] ?? '' }}</div>
+                    </div>
+
+                    <!-- Preview 6: Mission -->
+                    <div style="background-color: white; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+                        <div style="font-weight: 700; font-size: 13px; color: #1E3A8A; margin-bottom: 6px;" id="prev-ab-mission-title">{{ $aboutMission['title'] ?? 'Our Mission' }}</div>
+                        <ul style="padding-left: 16px; margin: 0; font-size: 11px; color: #475569;" id="prev-ab-mission-list">
+                            @foreach($aboutMission['points'] ?? [] as $mp)
+                                <li>{{ Str::limit($mp, 50) }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+
+                    <!-- Preview 7: Why Choose Us -->
+                    <div style="background-color: white; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+                        <div style="font-size: 12px; font-weight: 700; color: #1E3A8A; margin-bottom: 6px;" id="prev-ab-why-heading">{{ $aboutWhyChoose['heading'] ?? 'Why International Buyers Trust Us' }}</div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+                            @foreach($benefits->take(3) as $ben)
+                                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 4px; border-radius: 4px; text-align: center; font-size: 9px; font-weight: 600; color: #1E3A8A;">
+                                    {{ Str::limit($ben->title, 14) }}
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1038,12 +1140,25 @@
 @endsection
 
 @section('scripts')
+<style>
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.spin-icon {
+    display: inline-block;
+    animation: spin 1s infinite linear;
+}
+</style>
 <script>
 // Accordion Switcher for Homepage Sections (Column 1 -> Column 2)
 function switchSection(sectionId) {
     document.querySelectorAll('.cms-section-editor').forEach(el => el.style.display = 'none');
     const target = document.getElementById(sectionId);
     if (target) target.style.display = 'block';
+
+    const activeSecInput = document.getElementById('active_section_input');
+    if (activeSecInput) activeSecInput.value = sectionId;
 
     document.querySelectorAll('#section-nav-list .cms-nav-card').forEach(card => {
         card.classList.remove('active');
@@ -1062,6 +1177,9 @@ function switchSection(sectionId) {
             chevron.textContent = '▲';
             chevron.style.color = '#2563EB';
         }
+    }
+    if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', '?tab=homepage&section=' + sectionId);
     }
 }
 
@@ -1088,6 +1206,9 @@ function switchSectionAbout(sectionId) {
             chevron.textContent = '▲';
             chevron.style.color = '#2563EB';
         }
+    }
+    if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', '?tab=about&section=' + sectionId);
     }
 }
 
@@ -1122,9 +1243,10 @@ function addMissionPointRow() {
     div.style.display = 'flex';
     div.style.gap = '8px';
     div.style.marginBottom = '8px';
+    div.className = 'mission-point-row';
     div.innerHTML = `
-        <input type="text" name="mission_points[]" class="form-control" placeholder="Mission point statement">
-        <button type="button" class="btn btn-outline" style="color: #DC2626; border-color: #FCA5A5;" onclick="this.parentElement.remove()">Remove</button>
+        <input type="text" name="mission_points[]" class="form-control mission-point-input" placeholder="Mission point statement" oninput="updateAboutPreview()">
+        <button type="button" class="btn btn-outline" style="color: #DC2626; border-color: #FCA5A5;" onclick="this.parentElement.remove(); updateAboutPreview();">Remove</button>
     `;
     container.appendChild(div);
 }
@@ -1182,14 +1304,10 @@ function updatePreview() {
 
 // Real-Time Live Preview Update for About Us
 function updateAboutPreview() {
+    // 1. Banner
     const bannerTitle = document.getElementById('banner_title');
     const bannerSub = document.getElementById('banner_subtitle');
     const bannerBc = document.getElementById('banner_breadcrumb');
-    const storyHead = document.getElementById('story_heading');
-    const storyDesc = document.getElementById('story_description');
-    const visionTitle = document.getElementById('vision_title');
-    const visionDesc = document.getElementById('vision_description');
-
     if (bannerTitle && document.getElementById('prev-ab-title')) {
         document.getElementById('prev-ab-title').textContent = bannerTitle.value;
     }
@@ -1199,17 +1317,72 @@ function updateAboutPreview() {
     if (bannerBc && document.getElementById('prev-ab-bc')) {
         document.getElementById('prev-ab-bc').textContent = bannerBc.value;
     }
+
+    // 2. Story
+    const storyLabel = document.getElementById('story_label');
+    const storyHead = document.getElementById('story_heading');
+    const storyDesc = document.getElementById('story_description');
+    if (storyLabel && document.getElementById('prev-ab-story-label')) {
+        document.getElementById('prev-ab-story-label').textContent = storyLabel.value;
+    }
     if (storyHead && document.getElementById('prev-ab-heading')) {
         document.getElementById('prev-ab-heading').textContent = storyHead.value;
     }
     if (storyDesc && document.getElementById('prev-ab-desc')) {
         document.getElementById('prev-ab-desc').textContent = storyDesc.value;
     }
+
+    // 3. Real Estate
+    const reTitle = document.getElementById('real_estate_title');
+    const reP1 = document.getElementById('real_estate_p1');
+    if (reTitle && document.getElementById('prev-ab-re-title')) {
+        document.getElementById('prev-ab-re-title').textContent = reTitle.value;
+    }
+    if (reP1 && document.getElementById('prev-ab-re-desc')) {
+        document.getElementById('prev-ab-re-desc').textContent = reP1.value;
+    }
+
+    // 4. And Further
+    const afTitle = document.getElementById('and_further_title');
+    const afDesc = document.getElementById('and_further_desc');
+    if (afTitle && document.getElementById('prev-ab-af-title')) {
+        document.getElementById('prev-ab-af-title').textContent = afTitle.value;
+    }
+    if (afDesc && document.getElementById('prev-ab-af-desc')) {
+        document.getElementById('prev-ab-af-desc').textContent = afDesc.value;
+    }
+
+    // 5. Vision
+    const visionTitle = document.getElementById('vision_title');
+    const visionDesc = document.getElementById('vision_description');
     if (visionTitle && document.getElementById('prev-ab-vision-title')) {
         document.getElementById('prev-ab-vision-title').textContent = visionTitle.value;
     }
     if (visionDesc && document.getElementById('prev-ab-vision-desc')) {
         document.getElementById('prev-ab-vision-desc').textContent = visionDesc.value;
+    }
+
+    // 6. Mission
+    const missionTitle = document.getElementById('mission_title');
+    if (missionTitle && document.getElementById('prev-ab-mission-title')) {
+        document.getElementById('prev-ab-mission-title').textContent = missionTitle.value;
+    }
+    const missionList = document.getElementById('prev-ab-mission-list');
+    if (missionList) {
+        const pointInputs = document.querySelectorAll('input[name="mission_points[]"]');
+        let listHtml = '';
+        pointInputs.forEach(input => {
+            if (input.value.trim()) {
+                listHtml += `<li>${input.value.trim()}</li>`;
+            }
+        });
+        missionList.innerHTML = listHtml;
+    }
+
+    // 7. Why Choose Us
+    const whyHead = document.getElementById('why_heading');
+    if (whyHead && document.getElementById('prev-ab-why-heading')) {
+        document.getElementById('prev-ab-why-heading').textContent = whyHead.value;
     }
 }
 
@@ -1230,5 +1403,309 @@ if (heroBgInput) {
         }
     });
 }
+
+// Live local file preview for Banner image upload
+const bannerImgInput = document.getElementById('banner_image');
+if (bannerImgInput) {
+    bannerImgInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const container = document.getElementById('banner-img-thumb-container');
+                if (container) {
+                    container.style.display = 'block';
+                    container.innerHTML = `<img src="${evt.target.result}" id="prev-banner-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
+                }
+                const bannerBox = document.getElementById('prev-ab-banner-box');
+                if (bannerBox) {
+                    bannerBox.style.background = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('${evt.target.result}') center/cover no-repeat`;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+// Live local file preview for Story image upload
+const storyImgInput = document.getElementById('story_image');
+if (storyImgInput) {
+    storyImgInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const container = document.getElementById('story-img-thumb-container');
+                if (container) {
+                    container.style.display = 'block';
+                    container.innerHTML = `<img src="${evt.target.result}" id="prev-story-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
+                }
+                const prevStoryCont = document.getElementById('prev-ab-story-img-container');
+                const prevStoryImg = document.getElementById('prev-ab-story-img');
+                if (prevStoryCont && prevStoryImg) {
+                    prevStoryCont.style.display = 'block';
+                    prevStoryImg.src = evt.target.result;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+// Toast notification helper
+function showCmsToast(type, message) {
+    const successToast = document.getElementById('cms-success-toast');
+    const successText = document.getElementById('cms-success-toast-text');
+    const errorToast = document.getElementById('cms-error-toast');
+    const errorText = document.getElementById('cms-error-toast-text');
+
+    if (type === 'success') {
+        if (errorToast) errorToast.style.display = 'none';
+        if (successToast && successText) {
+            successText.innerHTML = message;
+            successToast.style.display = 'flex';
+            successToast.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => {
+                successToast.style.display = 'none';
+            }, 6000);
+        }
+    } else {
+        if (successToast) successToast.style.display = 'none';
+        if (errorToast && errorText) {
+            errorText.innerHTML = message;
+            errorToast.style.display = 'flex';
+            errorToast.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+}
+
+// Section mapping for About Us
+const sectionMap = {
+    'sec-ab-banner': 'banner',
+    'sec-ab-story': 'story',
+    'sec-ab-real-estate': 'real_estate',
+    'sec-ab-and-further': 'and_further',
+    'sec-ab-vision': 'vision',
+    'sec-ab-mission': 'mission',
+    'sec-ab-why': 'why_choose',
+    'sec-ab-stats': 'stats'
+};
+
+// Section save button handler (Save Section)
+document.querySelectorAll('.btn-save-section').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const secId = this.getAttribute('data-section');
+        const sectionName = sectionMap[secId] || secId;
+        const form = document.getElementById('cms-main-form');
+        if (!form) return;
+
+        const originalText = this.innerHTML;
+        this.disabled = true;
+        this.innerHTML = '<span class="spin-icon">↻</span> Saving...';
+
+        const formData = new FormData(form);
+        formData.set('section', sectionName);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(async response => {
+            const data = await response.json();
+            if (!response.ok) {
+                throw data;
+            }
+            return data;
+        })
+        .then(data => {
+            showCmsToast('success', data.message || 'Section updated successfully!');
+            if (data.images) {
+                if (data.images.banner_image) {
+                    const bThumbCont = document.getElementById('banner-img-thumb-container');
+                    if (bThumbCont) {
+                        bThumbCont.style.display = 'block';
+                        bThumbCont.innerHTML = `<img src="${data.images.banner_image}" id="prev-banner-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    }
+                    const bPrevBox = document.getElementById('prev-ab-banner-box');
+                    if (bPrevBox) {
+                        bPrevBox.style.background = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('${data.images.banner_image}') center/cover no-repeat`;
+                    }
+                }
+                if (data.images.story_image) {
+                    const sThumbCont = document.getElementById('story-img-thumb-container');
+                    if (sThumbCont) {
+                        sThumbCont.style.display = 'block';
+                        sThumbCont.innerHTML = `<img src="${data.images.story_image}" id="prev-story-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    }
+                    const sPrevCont = document.getElementById('prev-ab-story-img-container');
+                    const sPrevImg = document.getElementById('prev-ab-story-img');
+                    if (sPrevCont && sPrevImg) {
+                        sPrevCont.style.display = 'block';
+                        sPrevImg.src = data.images.story_image;
+                    }
+                }
+            }
+            updateAboutPreview();
+        })
+        .catch(error => {
+            console.error('Save error:', error);
+            let errMsg = 'Failed to save section.';
+            if (error && error.errors) {
+                errMsg = Object.values(error.errors).flat().join('<br>');
+            } else if (error && error.message) {
+                errMsg = error.message;
+            }
+            showCmsToast('error', errMsg);
+        })
+        .finally(() => {
+            this.disabled = false;
+            this.innerHTML = originalText;
+        });
+    });
+});
+
+// Save All Changes Header Button (for About tab)
+const btnSaveAllHeader = document.getElementById('btn-save-all-header');
+if (btnSaveAllHeader) {
+    const isAboutTab = "{{ $tab }}" === 'about';
+    if (isAboutTab) {
+        btnSaveAllHeader.addEventListener('click', function(e) {
+            e.preventDefault();
+            const form = document.getElementById('cms-main-form');
+            if (!form) return;
+
+            const originalText = this.innerHTML;
+            this.disabled = true;
+            this.innerHTML = '<span class="spin-icon">↻</span> Saving All...';
+
+            const formData = new FormData(form);
+            formData.set('section', 'all');
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(async response => {
+                const data = await response.json();
+                if (!response.ok) {
+                    throw data;
+                }
+                return data;
+            })
+            .then(data => {
+                showCmsToast('success', data.message || 'All About Us sections updated successfully!');
+                if (data.images) {
+                    if (data.images.banner_image) {
+                        const bThumbCont = document.getElementById('banner-img-thumb-container');
+                        if (bThumbCont) {
+                            bThumbCont.style.display = 'block';
+                            bThumbCont.innerHTML = `<img src="${data.images.banner_image}" id="prev-banner-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
+                        }
+                        const bPrevBox = document.getElementById('prev-ab-banner-box');
+                        if (bPrevBox) {
+                            bPrevBox.style.background = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('${data.images.banner_image}') center/cover no-repeat`;
+                        }
+                    }
+                    if (data.images.story_image) {
+                        const sThumbCont = document.getElementById('story-img-thumb-container');
+                        if (sThumbCont) {
+                            sThumbCont.style.display = 'block';
+                            sThumbCont.innerHTML = `<img src="${data.images.story_image}" id="prev-story-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
+                        }
+                        const sPrevCont = document.getElementById('prev-ab-story-img-container');
+                        const sPrevImg = document.getElementById('prev-ab-story-img');
+                        if (sPrevCont && sPrevImg) {
+                            sPrevCont.style.display = 'block';
+                            sPrevImg.src = data.images.story_image;
+                        }
+                    }
+                }
+                updateAboutPreview();
+            })
+            .catch(error => {
+                console.error('Save all error:', error);
+                let errMsg = 'Failed to save all sections.';
+                if (error && error.errors) {
+                    errMsg = Object.values(error.errors).flat().join('<br>');
+                } else if (error && error.message) {
+                    errMsg = error.message;
+                }
+                showCmsToast('error', errMsg);
+            })
+            .finally(() => {
+                this.disabled = false;
+                this.innerHTML = originalText;
+            });
+        });
+    }
+}
+
+// Check URL query param for active section on load and attach limiters
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeSection = urlParams.get('section');
+    if (activeSection) {
+        if ("{{ $tab }}" === 'about') {
+            switchSectionAbout(activeSection);
+        } else {
+            switchSection(activeSection);
+        }
+    }
+
+    // Real-time limiter for Homepage Featured Properties checkboxes (Max 6)
+    const featuredCheckboxes = document.querySelectorAll('.featured-prop-checkbox');
+    featuredCheckboxes.forEach(cb => {
+        cb.addEventListener('change', function(e) {
+            const checkedCount = document.querySelectorAll('.featured-prop-checkbox:checked').length;
+            if (checkedCount > 6) {
+                this.checked = false;
+                alert('Maximum of 6 featured properties reached. Please unfeature an existing property before selecting another.');
+            }
+        });
+    });
+
+    // Handle Homepage CMS form submission validation (validate only active section)
+    const homepageForm = document.getElementById('cms-main-form');
+    if (homepageForm && "{{ $tab }}" === 'homepage') {
+        let lastClickedSubmitBtn = null;
+        homepageForm.querySelectorAll('button[type="submit"]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                lastClickedSubmitBtn = this;
+                const secVal = this.value;
+                if (secVal && secVal.startsWith('sec-')) {
+                    const activeSecInput = document.getElementById('active_section_input');
+                    if (activeSecInput) activeSecInput.value = secVal;
+                }
+            });
+        });
+
+        homepageForm.addEventListener('submit', function(e) {
+            const submittedSection = (lastClickedSubmitBtn && lastClickedSubmitBtn.value) ? lastClickedSubmitBtn.value : 'all';
+            if (submittedSection !== 'all') {
+                const activeContainer = document.getElementById(submittedSection);
+                if (activeContainer) {
+                    const requiredFields = activeContainer.querySelectorAll('[required]');
+                    for (const field of requiredFields) {
+                        if (!field.value || !field.value.trim()) {
+                            e.preventDefault();
+                            field.focus();
+                            alert('Please fill out the required field "' + (field.labels && field.labels[0] ? field.labels[0].innerText.replace('*', '').trim() : field.name) + '" before saving this section.');
+                            return false;
+                        }
+                    }
+                }
+            }
+        });
+    }
+});
 </script>
 @endsection

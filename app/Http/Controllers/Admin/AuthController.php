@@ -28,7 +28,7 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        $remember = $request->has('remember');
+        $remember = $request->boolean('remember');
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
@@ -42,10 +42,29 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        $user = Auth::user();
+        if ($user) {
+            $user->setRememberToken(\Illuminate\Support\Str::random(60));
+            $user->save();
+        }
+
+        $recallerCookie = Auth::guard('web')->getRecallerName();
+
+        Auth::guard('web')->logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login');
+        \Illuminate\Support\Facades\Cookie::queue(\Illuminate\Support\Facades\Cookie::forget($recallerCookie));
+
+        foreach ($request->cookies->keys() as $cookieName) {
+            if (str_starts_with($cookieName, 'remember_')) {
+                \Illuminate\Support\Facades\Cookie::queue(\Illuminate\Support\Facades\Cookie::forget($cookieName));
+            }
+        }
+
+        return redirect()->route('home')
+            ->withCookie(\Illuminate\Support\Facades\Cookie::forget($recallerCookie))
+            ->with('success', 'Logged out successfully.');
     }
 }

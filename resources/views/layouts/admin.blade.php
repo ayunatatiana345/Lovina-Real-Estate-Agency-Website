@@ -75,9 +75,12 @@
         </div>
 
         <div style="padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-            <a href="#" class="admin-nav-link" id="sidebarLogoutBtn" style="color: #FCA5A5; display: flex; align-items: center; gap: 10px;">
-                <i data-lucide="log-out" style="width: 18px; height: 18px;"></i> Logout
-            </a>
+            <form action="{{ route('admin.logout') }}" method="POST" id="sidebarLogoutForm" style="margin: 0;">
+                @csrf
+                <button type="submit" class="admin-nav-link" id="sidebarLogoutBtn" style="background: none; border: none; width: 100%; cursor: pointer; text-align: left; padding: 10px 14px; font: inherit; color: #FCA5A5; display: flex; align-items: center; gap: 10px; border-radius: 6px;">
+                    <i data-lucide="log-out" style="width: 18px; height: 18px;"></i> Logout
+                </button>
+            </form>
         </div>
     </aside>
 
@@ -126,21 +129,6 @@
 
             @yield('content')
         </main>
-    </div>
-
-    <!-- Logout Confirmation Modal (Matching 4.10 prompt requirements) -->
-    <div class="modal-overlay" id="logoutModal" style="display: none;">
-        <div class="modal-box" style="max-width: 440px;">
-            <h3 style="font-size: 24px; font-weight: 700; color: #0F172A; margin-bottom: 12px;">Confirm Logout</h3>
-            <p style="color: #64748B; margin-bottom: 24px; font-size: 15px;">Are you sure you want to logout from the admin portal?</p>
-            <div style="display: flex; gap: 12px; justify-content: center;">
-                <button class="btn btn-outline" id="cancelLogoutBtn" style="padding: 10px 24px;">Cancel</button>
-                <form action="{{ route('admin.logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-primary" style="background-color: #DC2626; border-color: #DC2626; padding: 10px 24px;">Logout</button>
-                </form>
-            </div>
-        </div>
     </div>
 
     <script src="{{ asset('js/admin.js') }}"></script>

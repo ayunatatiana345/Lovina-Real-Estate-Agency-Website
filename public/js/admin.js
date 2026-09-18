@@ -52,22 +52,4 @@ document.addEventListener('DOMContentLoaded', function () {
       charCounter.textContent = `${len} / 500`;
     });
   }
-
-  // Logout Modal Confirmation Toggle
-  const logoutBtn = document.getElementById('sidebarLogoutBtn');
-  const logoutModal = document.getElementById('logoutModal');
-  const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');
-
-  if (logoutBtn && logoutModal) {
-    logoutBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      logoutModal.style.display = 'flex';
-    });
-  }
-
-  if (cancelLogoutBtn && logoutModal) {
-    cancelLogoutBtn.addEventListener('click', function () {
-      logoutModal.style.display = 'none';
-    });
-  }
 });
