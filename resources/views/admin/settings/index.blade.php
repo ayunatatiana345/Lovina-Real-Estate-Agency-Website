@@ -333,12 +333,12 @@
 
                 <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px;">
                     <div style="font-size: 12px; color: #64748B; font-weight: 600; text-transform: uppercase; margin-bottom: 6px;">Rate Publication Date</div>
-                    <div style="font-size: 15px; font-weight: 700; color: #0F172A;">{{ $currencyMeta['rate_date'] ?? date('Y-m-d') }}</div>
+                    <div style="font-size: 15px; font-weight: 700; color: #0F172A;">{{ $currencyMeta['rate_date'] ?? date('d M Y') }}</div>
                 </div>
 
                 <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px;">
                     <div style="font-size: 12px; color: #64748B; font-weight: 600; text-transform: uppercase; margin-bottom: 6px;">Last Refreshed</div>
-                    <div style="font-size: 15px; font-weight: 700; color: #0F172A;">{{ $currencyMeta['last_updated'] ?? date('Y-m-d H:i') }}</div>
+                    <div style="font-size: 15px; font-weight: 700; color: #0F172A;">{{ $currencyMeta['last_updated'] ?? now()->format('d M Y, h:i A \W\I\T\A') }}</div>
                 </div>
             </div>
 

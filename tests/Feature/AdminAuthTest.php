@@ -60,6 +60,7 @@ class AdminAuthTest extends TestCase
         $this->article = Article::create([
             'title' => 'Living in Lovina',
             'slug' => 'living-in-lovina',
+            'category' => 'Guides',
             'content' => 'Sample article content about Lovina living.',
             'status' => 'published',
             'published_at' => now(),

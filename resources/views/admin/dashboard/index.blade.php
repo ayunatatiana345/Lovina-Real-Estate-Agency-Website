@@ -165,7 +165,7 @@
                             <td style="font-weight: 600;">{{ $inq->customer_name }}</td>
                             <td>{{ $inq->phone }}</td>
                             <td style="font-size: 13px;">{{ $inq->property->name ?? 'General Inquiry' }}</td>
-                            <td style="font-size: 12px; color: #64748B;">{{ $inq->created_at->format('M d, H:i') }}</td>
+                            <td style="font-size: 12px; color: #64748B; white-space: nowrap;">{{ $inq->created_at->format('d M Y, h:i A \W\I\T\A') }}</td>
                             <td>
                                 <span class="status-badge badge-{{ $inq->status }}">{{ ucfirst(str_replace('_', ' ', $inq->status)) }}</span>
                             </td>

@@ -31,23 +31,24 @@
     </a>
 </div>
 
-@if($tab === 'homepage')
-<!-- Notification Banners -->
-<div class="settings-success-alert" id="cms-home-success-toast" style="{{ session('success') ? 'display: flex;' : 'display: none;' }} margin-bottom: 24px; background-color: #DCFCE7; border: 1px solid #86EFAC; color: #166534; padding: 14px 18px; border-radius: 8px; align-items: center; justify-content: space-between;">
+<!-- Notification Banners (Below Heading and Tabs) -->
+<div class="settings-success-alert" id="cms-success-toast" style="{{ session('success') ? 'display: flex;' : 'display: none;' }} margin-bottom: 24px; background-color: #DCFCE7; border: 1px solid #86EFAC; color: #166534; padding: 14px 18px; border-radius: 8px; align-items: center; justify-content: space-between;">
     <div style="display: flex; align-items: center; gap: 10px;">
         <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #16A34A; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">✓</div>
-        <span id="cms-home-success-text">{{ session('success') ?? 'Changes saved successfully.' }}</span>
+        <span id="cms-success-toast-text">{{ session('success') ?? 'Changes saved successfully.' }}</span>
     </div>
-    <button type="button" onclick="document.getElementById('cms-home-success-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #15803D;">&times;</button>
+    <button type="button" onclick="document.getElementById('cms-success-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #15803D;">&times;</button>
 </div>
 
-<div class="settings-error-alert" id="cms-home-error-toast" style="{{ (session('error') || (isset($errors) && $errors->any())) ? 'display: flex;' : 'display: none;' }} margin-bottom: 24px; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 18px; border-radius: 8px; align-items: center; justify-content: space-between;">
+<div class="settings-error-alert" id="cms-error-toast" style="{{ (session('error') || (isset($errors) && $errors->any())) ? 'display: flex;' : 'display: none;' }} margin-bottom: 24px; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 18px; border-radius: 8px; align-items: center; justify-content: space-between;">
     <div style="display: flex; align-items: center; gap: 10px;">
         <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #DC2626; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">!</div>
-        <span id="cms-home-error-text">{{ session('error') ?? ((isset($errors) && $errors->any()) ? $errors->first() : 'An error occurred while saving.') }}</span>
+        <span id="cms-error-toast-text">{{ session('error') ?? ((isset($errors) && $errors->any()) ? $errors->first() : 'An error occurred while saving.') }}</span>
     </div>
-    <button type="button" onclick="document.getElementById('cms-home-error-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991B1B;">&times;</button>
+    <button type="button" onclick="document.getElementById('cms-error-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991B1B;">&times;</button>
 </div>
+
+@if($tab === 'homepage')
 
 <!-- =========================================================
      TAB 1: HOMEPAGE (9 SECTIONS) - 3 COLUMN LAYOUT
@@ -254,28 +255,6 @@
                     <textarea name="hero_subheading" id="hero_subheading" class="form-control" style="min-height: 100px; resize: vertical;" required oninput="updatePreview()">{{ $hero['subheading'] ?? '' }}</textarea>
                 </div>
 
-                <!-- Hero Buttons Manager -->
-                <div style="border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px; margin-bottom: 20px; background-color: #F8FAFC;">
-                    <div style="font-size: 14px; font-weight: 700; color: #0F172A; margin-bottom: 12px;">Hero Buttons</div>
-                    
-                    <div id="hero-buttons-container">
-                        @php $buttons = $hero['buttons'] ?? [['text' => 'Browse Properties', 'link' => '/properties', 'style' => 'primary']]; @endphp
-                        @foreach($buttons as $bIdx => $btn)
-                            <div style="display: grid; grid-template-columns: 2fr 2fr 1.5fr auto; gap: 10px; margin-bottom: 10px; align-items: center;" class="hero-btn-row">
-                                <input type="text" name="buttons_text[]" class="form-control btn-txt-input" value="{{ $btn['text'] }}" placeholder="Button Label" oninput="updatePreview()">
-                                <input type="text" name="buttons_link[]" class="form-control" value="{{ $btn['link'] }}" placeholder="/properties">
-                                <select name="buttons_style[]" class="form-select">
-                                    <option value="primary" {{ $btn['style'] === 'primary' ? 'selected' : '' }}>Primary</option>
-                                    <option value="outline" {{ $btn['style'] === 'outline' ? 'selected' : '' }}>Outline</option>
-                                </select>
-                                <button type="button" class="btn btn-outline" style="padding: 8px 12px; color: #DC2626; border-color: #FCA5A5;" onclick="this.parentElement.remove(); updatePreview();">Remove</button>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <button type="button" class="btn btn-outline" style="font-size: 13px; padding: 6px 14px; margin-top: 6px;" onclick="addHeroButtonRow()">+ Add Button</button>
-                </div>
-
                 <!-- Display Settings -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
                     <div class="form-group" style="margin-bottom: 0;">
@@ -333,9 +312,6 @@
                     <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                         <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
                             <input type="checkbox" name="search_filter_type" value="1" {{ ($searchSection['filter_type'] ?? true) ? 'checked' : '' }}> Property Type Dropdown
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
-                            <input type="checkbox" name="search_filter_location" value="1" {{ ($searchSection['filter_location'] ?? true) ? 'checked' : '' }}> Location Dropdown
                         </label>
                         <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
                             <input type="checkbox" name="search_filter_price" value="1" {{ ($searchSection['filter_price'] ?? true) ? 'checked' : '' }}> Price Range Dropdown
@@ -494,10 +470,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="why_label">Section Label</label>
-                    <input type="text" name="why_label" id="why_label" class="form-control" value="{{ $whyChooseSection['section_label'] ?? 'WHY CHOOSE US' }}">
-                </div>
+                <input type="hidden" name="why_label" id="why_label" value="{{ $whyChooseSection['section_label'] ?? 'WHY CHOOSE US' }}">
 
                 <div class="form-group">
                     <label class="form-label" for="why_heading">Section Heading *</label>
@@ -507,6 +480,40 @@
                 <div class="form-group">
                     <label class="form-label" for="why_description">Section Description</label>
                     <textarea name="why_description" id="why_description" class="form-control" style="min-height: 80px;" oninput="updatePreview()">{{ $whyChooseSection['description'] ?? 'Your trusted local partner for smooth real estate acquisitions.' }}</textarea>
+                </div>
+
+                <!-- 3 Benefit Cards Editor -->
+                <div style="margin-top: 24px; border-top: 1px solid #E2E8F0; padding-top: 20px;">
+                    <h4 style="font-size: 15px; font-weight: 700; color: #0F172A; margin-bottom: 16px;">Why Choose Us Cards (3 Benefit Cards)</h4>
+                    
+                    @php
+                        $benefitItems = $benefits->count() > 0 ? $benefits : collect([
+                            (object)['id' => null, 'title' => 'North Bali Property Focus', 'description' => 'We specialize in villas, houses, land, hotels, and restaurants across beautiful North Bali.', 'icon' => 'home'],
+                            (object)['id' => null, 'title' => 'Tailored Property Search', 'description' => 'On request, we can specifically search for properties based on what you are looking for and what your wishes are.', 'icon' => 'search'],
+                            (object)['id' => null, 'title' => 'Local Property Support', 'description' => 'We can help you find a property that suits your requirements and provide support based on your specific needs.', 'icon' => 'shield'],
+                        ]);
+                    @endphp
+
+                    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px;">
+                        @foreach($benefitItems as $bIdx => $ben)
+                            <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px;">
+                                <input type="hidden" name="benefit_ids[{{ $bIdx }}]" value="{{ $ben->id ?? '' }}">
+                                <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                                    <span>Benefit Card {{ $bIdx + 1 }}</span>
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom: 12px;">
+                                    <label class="form-label" for="benefit_title_{{ $bIdx }}" style="font-size: 13px;">Title *</label>
+                                    <input type="text" name="benefit_titles[{{ $bIdx }}]" id="benefit_title_{{ $bIdx }}" class="form-control benefit-title-input" value="{{ $ben->title }}" required oninput="updatePreview()">
+                                </div>
+                                
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label" for="benefit_desc_{{ $bIdx }}" style="font-size: 13px;">Description *</label>
+                                    <textarea name="benefit_descriptions[{{ $bIdx }}]" id="benefit_desc_{{ $bIdx }}" class="form-control benefit-desc-input" style="min-height: 70px; resize: vertical;" required oninput="updatePreview()">{{ $ben->description }}</textarea>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end;">
@@ -595,31 +602,26 @@
                 </div>
                 <div class="cms-preview-body">
                     <!-- Preview 1: Hero -->
-                    <div id="prev-hero-box" style="background-color: #1E3A8A; color: #FFFFFF; padding: 24px 16px; border-radius: 8px; margin-bottom: 16px; position: relative; overflow: hidden;">
-                        <div style="font-size: 11px; color: #93C5FD; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;" id="prev-hero-small-title">{{ $hero['small_title'] ?? 'Find Your Dream' }}</div>
-                        <h3 style="font-size: 18px; font-weight: 700; color: #FFFFFF; margin-bottom: 8px;" id="prev-hero-heading">{{ $hero['heading'] ?? '' }}</h3>
-                        <p style="font-size: 12px; color: #DBEAFE; line-height: 1.5; margin-bottom: 16px;" id="prev-hero-subheading">{{ $hero['subheading'] ?? '' }}</p>
+                    <div id="prev-hero-box" style="background-color: #F1F5F9; border: 1px solid #E2E8F0; color: #0F172A; padding: 20px 16px; border-radius: 8px; margin-bottom: 16px; position: relative;">
+                        <div style="font-size: 11px; color: #1E3A8A; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;" id="prev-hero-small-title">{{ $hero['small_title'] ?? 'Find Your Dream' }}</div>
+                        <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin-bottom: 6px; line-height: 1.3;" id="prev-hero-heading">{{ $hero['heading'] ?? '' }}</h3>
+                        <p style="font-size: 12px; color: #475569; line-height: 1.5; margin-bottom: 14px;" id="prev-hero-subheading">{{ $hero['subheading'] ?? '' }}</p>
                         
-                        <div style="display: flex; gap: 8px;" id="prev-hero-buttons">
-                            @foreach($buttons as $b)
-                                <button type="button" class="btn {{ $b['style'] === 'primary' ? 'btn-primary' : 'btn-outline' }}" style="padding: 6px 12px; font-size: 11px;">{{ $b['text'] }}</button>
-                            @endforeach
+                        <!-- Hero Search Box Inside Hero Container (Matching Public Homepage) -->
+                        <div id="prev-search-box" style="background-color: #FFFFFF; border: 1px solid #CBD5E1; padding: 10px; border-radius: 6px; font-size: 11px;">
+                            <div style="font-weight: 600; color: #0F172A; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="prev-search-ph">{{ $searchSection['placeholder'] ?? 'Search Location / Property Name...' }}</div>
+                            <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                <span style="background-color: #F1F5F9; border: 1px solid #E2E8F0; padding: 3px 6px; border-radius: 4px; color: #334155;">Property Type ▼</span>
+                                <span style="background-color: #F1F5F9; border: 1px solid #E2E8F0; padding: 3px 6px; border-radius: 4px; color: #334155;">Price Range ▼</span>
+                                <span style="background-color: #1E3A8A; color: white; padding: 3px 8px; border-radius: 4px; font-weight: 600;">Search</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Preview 2: Search -->
-                    <div id="prev-search-box" style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 12px;">
-                        <div style="font-weight: 700; color: #1E3A8A; margin-bottom: 6px;" id="prev-search-ph">{{ $searchSection['placeholder'] ?? 'Search...' }}</div>
-                        <div style="display: flex; gap: 6px;">
-                            <span style="background-color: #F1F5F9; padding: 4px 8px; border-radius: 4px;">Type ▼</span>
-                            <span style="background-color: #F1F5F9; padding: 4px 8px; border-radius: 4px;">Location ▼</span>
-                            <span style="background-color: #1E3A8A; color: white; padding: 4px 8px; border-radius: 4px;">Search</span>
-                        </div>
-                    </div>
-
-                    <!-- Preview 3: Featured -->
+                    <!-- Preview 2: Featured Properties (Max 6) -->
                     <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-                        <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 10px;" id="prev-featured-title">{{ $featuredSection['section_title'] ?? 'Featured Properties' }}</div>
+                        <div style="font-size: 10px; font-weight: 700; color: #1E3A8A; text-transform: uppercase; margin-bottom: 2px;">Featured Selection</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 10px;" id="prev-featured-title">{{ $featuredSection['section_title'] ?? 'Featured North Bali Properties' }}</div>
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
                             @foreach($featuredProperties->take(6) as $fp)
                                 <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px; font-size: 10px; overflow: hidden;">
@@ -633,21 +635,22 @@
                         </div>
                     </div>
 
-                    <!-- Preview 4: Categories -->
+                    <!-- Preview 3: Categories -->
                     <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-                        <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 6px;" id="prev-cat-heading">{{ $categoriesSection['heading'] ?? 'Categories' }}</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 4px;" id="prev-cat-heading">{{ $categoriesSection['heading'] ?? 'Explore Property Categories' }}</div>
+                        <div style="font-size: 11px; color: #64748B; margin-bottom: 8px;" id="prev-cat-desc">{{ $categoriesSection['description'] ?? 'Find your perfect real estate match by category in North Bali.' }}</div>
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
                             @foreach($categories->take(6) as $cat)
-                                <div style="border: 1px solid #E2E8F0; padding: 6px; text-align: center; border-radius: 4px; font-size: 10px; font-weight: 600;">
+                                <div style="border: 1px solid #E2E8F0; background-color: #F8FAFC; padding: 6px; text-align: center; border-radius: 4px; font-size: 10px; font-weight: 600; color: #1E3A8A;">
                                     {{ $cat->name }}
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
-                    <!-- Preview 5: Latest Properties -->
+                    <!-- Preview 4: Latest Properties -->
                     <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-                        <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 6px;" id="prev-latest-title">{{ $latestSection['section_title'] ?? 'Latest Added Properties' }}</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 6px;" id="prev-latest-title">{{ $latestSection['section_title'] ?? 'Latest Added Properties' }}</div>
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
                             @foreach($latestProperties->take(3) as $lp)
                                 <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 6px; font-size: 10px;">
@@ -658,9 +661,10 @@
                         </div>
                     </div>
 
-                    <!-- Preview 6: Popular Locations -->
+                    <!-- Preview 5: Popular Locations -->
                     <div style="background-color: #F4F1FA; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-                        <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 6px;" id="prev-loc-heading">{{ $locationsSection['heading'] ?? 'Popular Locations' }}</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 4px;" id="prev-loc-heading">{{ $locationsSection['heading'] ?? 'Popular Locations in North Bali' }}</div>
+                        <div style="font-size: 11px; color: #64748B; margin-bottom: 8px;" id="prev-loc-desc">{{ $locationsSection['description'] ?? 'Prime coastal & mountain regions in Buleleng Regency.' }}</div>
                         <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                             @foreach($popularLocations as $pl)
                                 <span style="background-color: #FFFFFF; border: 1px solid #CBD5E1; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; color: #1E3A8A;">📍 {{ $pl->name }}</span>
@@ -668,23 +672,49 @@
                         </div>
                     </div>
 
-                    <!-- Preview 7: Why Choose Us -->
+                    <!-- Preview 6: Why Choose Us -->
                     <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-                        <div style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 4px;" id="prev-why-heading">{{ $whyChooseSection['heading'] ?? 'Why Choose PT Lovina North Bali' }}</div>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px;">
-                            @foreach($benefits->take(3) as $ben)
+                        <div style="font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 4px;" id="prev-why-heading">{{ $whyChooseSection['heading'] ?? 'Why Choose PT Lovina North Bali' }}</div>
+                        <div style="font-size: 11px; color: #64748B; margin-bottom: 8px;" id="prev-why-desc">{{ $whyChooseSection['description'] ?? 'Your trusted local partner for smooth real estate acquisitions.' }}</div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px;" id="prev-benefits-grid">
+                            @php
+                                $previewBenefits = $benefits->count() > 0 ? $benefits : collect([
+                                    (object)['title' => 'North Bali Property Focus', 'description' => 'Specializing in North Bali real estate.'],
+                                    (object)['title' => 'Tailored Property Search', 'description' => 'Personalized property discovery on request.'],
+                                    (object)['title' => 'Local Property Support', 'description' => 'Dedicated local guidance and assistance.'],
+                                ]);
+                            @endphp
+                            @foreach($previewBenefits->take(3) as $bIdx => $ben)
                                 <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 6px; border-radius: 4px; text-align: center; font-size: 10px;">
-                                    <div style="font-weight: 700; color: #1E3A8A;">{{ $ben->title }}</div>
+                                    <div style="font-weight: 700; color: #1E3A8A; margin-bottom: 2px;" id="prev-ben-title-{{ $bIdx }}">{{ $ben->title }}</div>
+                                    <div style="font-size: 9px; color: #64748B; line-height: 1.3;" id="prev-ben-desc-{{ $bIdx }}">{{ Str::limit($ben->description, 60) }}</div>
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
-                    <!-- Preview 9: Contact CTA -->
+                    <!-- Preview 7: Key Facts & Services (Company Statistics) -->
+                    <div style="background-color: #0F172A; border: 1px solid #334155; padding: 14px; border-radius: 8px; margin-bottom: 16px; color: white;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center;">
+                            @php $previewStats = $statsSection['items'] ?? [
+                                ['number' => '120+', 'label' => 'Curated properties', 'icon' => 'Properties Listed'],
+                                ['number' => '3+', 'label' => 'Serving since 2023', 'icon' => 'Years Established'],
+                                ['number' => '90%+', 'label' => 'Satisfaction priority', 'icon' => 'Customer Satisfaction'],
+                            ]; @endphp
+                            @foreach($previewStats as $st)
+                                <div style="background-color: rgba(255,255,255,0.08); padding: 6px; border-radius: 4px;">
+                                    <div style="font-size: 14px; font-weight: 700; color: #93C5FD;">{{ $st['number'] }}</div>
+                                    <div style="font-size: 9px; font-weight: 600; color: #E2E8F0;">{{ $st['icon'] }}</div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Preview 8: Contact CTA -->
                     <div id="prev-cta-box" style="background-color: #D6E6F7; text-align: center; padding: 16px; border-radius: 8px;">
-                        <h4 style="font-size: 14px; color: #1E3A8A; margin-bottom: 4px;" id="prev-cta-heading">{{ $cta['heading'] ?? '' }}</h4>
+                        <h4 style="font-size: 13px; font-weight: 700; color: #1E3A8A; margin-bottom: 4px;" id="prev-cta-heading">{{ $cta['heading'] ?? '' }}</h4>
                         <p style="font-size: 11px; color: #334155; margin-bottom: 8px;" id="prev-cta-desc">{{ $cta['description'] ?? '' }}</p>
-                        <button type="button" class="btn btn-primary" style="padding: 4px 12px; font-size: 11px;" id="prev-cta-btn">{{ $cta['button_text'] ?? 'Contact' }}</button>
+                        <button type="button" class="btn btn-primary" style="padding: 4px 12px; font-size: 11px;" id="prev-cta-btn">{{ $cta['button_text'] ?? 'Contact Us Today' }} &rarr;</button>
                     </div>
                 </div>
             </div>
@@ -696,22 +726,6 @@
 <!-- =========================================================
      TAB 2: ABOUT US (7 SECTIONS) - 3 COLUMN LAYOUT
      ========================================================= -->
-<!-- Notification Banners -->
-<div class="settings-success-alert" id="cms-success-toast" style="{{ session('success') ? 'display: flex;' : 'display: none;' }} margin-bottom: 24px; background-color: #DCFCE7; border: 1px solid #86EFAC; color: #166534; padding: 14px 18px; border-radius: 8px; align-items: center; justify-content: space-between;">
-    <div style="display: flex; align-items: center; gap: 10px;">
-        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #16A34A; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">✓</div>
-        <span id="cms-success-toast-text">{{ session('success') ?? 'Changes saved successfully.' }}</span>
-    </div>
-    <button type="button" onclick="document.getElementById('cms-success-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #15803D;">&times;</button>
-</div>
-
-<div class="settings-error-alert" id="cms-error-toast" style="{{ (session('error') || (isset($errors) && $errors->any())) ? 'display: flex;' : 'display: none;' }} margin-bottom: 24px; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 18px; border-radius: 8px; align-items: center; justify-content: space-between;">
-    <div style="display: flex; align-items: center; gap: 10px;">
-        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #DC2626; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">!</div>
-        <span id="cms-error-toast-text">{{ session('error') ?? ((isset($errors) && $errors->any()) ? $errors->first() : 'An error occurred while saving.') }}</span>
-    </div>
-    <button type="button" onclick="document.getElementById('cms-error-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991B1B;">&times;</button>
-</div>
 
 <form action="{{ route('admin.cms.about.update') }}" method="POST" enctype="multipart/form-data" id="cms-main-form" novalidate>
     @csrf
@@ -848,10 +862,6 @@
                     <input type="file" name="banner_image" id="banner_image" class="form-control" accept="image/*">
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="banner_breadcrumb">Breadcrumb Text (Optional)</label>
-                    <input type="text" name="banner_breadcrumb" id="banner_breadcrumb" class="form-control" value="{{ $aboutBanner['breadcrumb'] ?? 'Home / About Us' }}" oninput="updateAboutPreview()">
-                </div>
 
                 <div style="display: flex; justify-content: flex-end;">
                     <button type="button" class="btn btn-primary btn-save-section" data-section="sec-ab-banner" style="padding: 10px 24px;">Save Section</button>
@@ -862,10 +872,6 @@
             <div class="admin-card cms-ab-section" id="sec-ab-story" style="display: none;">
                 <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">B. Our Story</h3>
 
-                <div class="form-group">
-                    <label class="form-label" for="story_label">Section Label</label>
-                    <input type="text" name="story_label" id="story_label" class="form-control" value="{{ $aboutStory['label'] ?? 'OUR STORY' }}" oninput="updateAboutPreview()">
-                </div>
 
                 <div class="form-group">
                     <label class="form-label" for="story_heading">Heading *</label>
@@ -1047,57 +1053,74 @@
                 </div>
                 <div class="cms-preview-body">
                     <!-- Preview 1: Banner -->
-                    <div id="prev-ab-banner-box" style="background-color: #1E3A8A; color: white; padding: 24px 16px; border-radius: 8px; text-align: center; margin-bottom: 16px; {{ $hasBImg ? "background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('" . $bImgSrc . "') center/cover no-repeat;" : '' }}">
-                        <h2 style="font-size: 20px; color: white; margin-bottom: 4px;" id="prev-ab-title">{{ $aboutBanner['title'] ?? 'About PT Lovina North Bali' }}</h2>
-                        <div style="font-size: 11px; color: #93C5FD; margin-bottom: 4px;" id="prev-ab-sub">{{ $aboutBanner['subtitle'] ?? 'Your trusted real estate partner in North Bali.' }}</div>
-                        <div style="font-size: 10px; color: #CBD5E1;" id="prev-ab-bc">{{ $aboutBanner['breadcrumb'] ?? 'Home / About Us' }}</div>
+                    <div id="prev-ab-banner-box" style="{{ $hasBImg ? "background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('" . $bImgSrc . "') center/cover no-repeat; color: white;" : "background-color: #F0F7FF; border: 1px solid #DBEAFE; color: #0F172A;" }} padding: 18px 14px; border-radius: 8px; text-align: center; margin-bottom: 14px;">
+                        <h3 style="font-size: 15px; font-weight: 700; color: {{ $hasBImg ? '#FFFFFF' : '#0F172A' }}; margin-bottom: 4px; line-height: 1.3;" id="prev-ab-title">{{ $aboutBanner['title'] ?? 'About PT Lovina North Bali' }}</h3>
+                        <div style="font-size: 11px; color: {{ $hasBImg ? '#DBEAFE' : '#475569' }}; line-height: 1.4;" id="prev-ab-sub">{{ $aboutBanner['subtitle'] ?? 'Your trusted real estate partner in North Bali.' }}</div>
                     </div>
 
                     <!-- Preview 2: Story -->
-                    <div style="background-color: white; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-                        <div style="font-size: 10px; font-weight: 700; color: #D97706; text-transform: uppercase; margin-bottom: 4px;" id="prev-ab-story-label">{{ $aboutStory['label'] ?? 'OUR STORY' }}</div>
-                        <h4 style="font-size: 14px; color: #1E3A8A; margin-bottom: 6px;" id="prev-ab-heading">{{ $aboutStory['heading'] ?? 'Our Story' }}</h4>
+                    <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 14px;">
+                        <h4 style="font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 6px;" id="prev-ab-heading">{{ $aboutStory['heading'] ?? 'Our Story' }}</h4>
                         <div id="prev-ab-story-img-container" style="margin-bottom: 8px; {{ $hasSImg ? '' : 'display: none;' }}">
-                            <img src="{{ $sImgSrc }}" id="prev-ab-story-img" style="width: 100%; height: 70px; object-fit: cover; border-radius: 4px;">
+                            <img src="{{ $sImgSrc }}" id="prev-ab-story-img" style="width: 100%; height: 75px; object-fit: cover; border-radius: 6px;">
                         </div>
-                        <p style="font-size: 11px; color: #475569; line-height: 1.5; margin: 0;" id="prev-ab-desc">{{ Str::limit($aboutStory['description'] ?? '', 160) }}</p>
+                        <p style="font-size: 11px; color: #475569; line-height: 1.5; margin: 0; text-align: justify;" id="prev-ab-desc">{{ Str::limit($aboutStory['description'] ?? '', 160) }}</p>
                     </div>
 
                     <!-- Preview 3: Real Estate -->
-                    <div style="background-color: white; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-                        <h4 style="font-size: 14px; color: #1E3A8A; margin-bottom: 6px;" id="prev-ab-re-title">{{ $aboutRealEstate['title'] ?? 'Real Estate' }}</h4>
-                        <p style="font-size: 11px; color: #475569; line-height: 1.5; margin: 0;" id="prev-ab-re-desc">{{ Str::limit($aboutRealEstate['paragraph_1'] ?? '', 140) }}</p>
+                    <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 14px;">
+                        <h4 style="font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 6px;" id="prev-ab-re-title">{{ $aboutRealEstate['title'] ?? 'Real Estate' }}</h4>
+                        <p style="font-size: 11px; color: #475569; line-height: 1.5; margin: 0; text-align: justify;" id="prev-ab-re-desc">{{ Str::limit($aboutRealEstate['paragraph_1'] ?? '', 140) }}</p>
                     </div>
 
                     <!-- Preview 4: And Further -->
-                    <div style="background-color: white; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-                        <h4 style="font-size: 14px; color: #1E3A8A; margin-bottom: 6px;" id="prev-ab-af-title">{{ $aboutAndFurther['title'] ?? 'And further' }}</h4>
-                        <p style="font-size: 11px; color: #475569; line-height: 1.5; margin: 0;" id="prev-ab-af-desc">{{ Str::limit($aboutAndFurther['description'] ?? '', 140) }}</p>
+                    <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 14px;">
+                        <h4 style="font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 6px;" id="prev-ab-af-title">{{ $aboutAndFurther['title'] ?? 'And further' }}</h4>
+                        <p style="font-size: 11px; color: #475569; line-height: 1.5; margin: 0; text-align: justify;" id="prev-ab-af-desc">{{ Str::limit($aboutAndFurther['description'] ?? '', 140) }}</p>
                     </div>
 
-                    <!-- Preview 5: Vision -->
-                    <div style="background-color: #F4F1FA; border-left: 4px solid #1E3A8A; padding: 12px; border-radius: 4px; margin-bottom: 16px;">
-                        <div style="font-weight: 700; font-size: 12px; color: #1E3A8A;" id="prev-ab-vision-title">{{ $aboutVision['title'] ?? 'Our Vision' }}</div>
-                        <div style="font-size: 11px; color: #475569; margin-top: 4px;" id="prev-ab-vision-desc">{{ $aboutVision['description'] ?? '' }}</div>
+                    <!-- Preview 5: Vision & Mission Grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;">
+                        <div style="background-color: #F0F7FF; border: 1px solid #DBEAFE; padding: 12px; border-radius: 8px; display: flex; flex-direction: column;">
+                            <div style="font-weight: 700; font-size: 12px; color: #0F172A; margin-bottom: 4px;" id="prev-ab-vision-title">{{ $aboutVision['title'] ?? 'Our Vision' }}</div>
+                            <div style="font-size: 10px; color: #475569; line-height: 1.4;" id="prev-ab-vision-desc">{{ Str::limit($aboutVision['description'] ?? '', 90) }}</div>
+                        </div>
+
+                        <div style="background-color: #F0F7FF; border: 1px solid #DBEAFE; padding: 12px; border-radius: 8px; display: flex; flex-direction: column;">
+                            <div style="font-weight: 700; font-size: 12px; color: #0F172A; margin-bottom: 4px;" id="prev-ab-mission-title">{{ $aboutMission['title'] ?? 'Our Mission' }}</div>
+                            <ul style="padding-left: 12px; margin: 0; font-size: 10px; color: #475569; line-height: 1.4;" id="prev-ab-mission-list">
+                                @foreach($aboutMission['points'] ?? [] as $mp)
+                                    <li>{{ Str::limit($mp, 40) }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
 
-                    <!-- Preview 6: Mission -->
-                    <div style="background-color: white; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-                        <div style="font-weight: 700; font-size: 13px; color: #1E3A8A; margin-bottom: 6px;" id="prev-ab-mission-title">{{ $aboutMission['title'] ?? 'Our Mission' }}</div>
-                        <ul style="padding-left: 16px; margin: 0; font-size: 11px; color: #475569;" id="prev-ab-mission-list">
-                            @foreach($aboutMission['points'] ?? [] as $mp)
-                                <li>{{ Str::limit($mp, 50) }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-
-                    <!-- Preview 7: Why Choose Us -->
-                    <div style="background-color: white; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
-                        <div style="font-size: 12px; font-weight: 700; color: #1E3A8A; margin-bottom: 6px;" id="prev-ab-why-heading">{{ $aboutWhyChoose['heading'] ?? 'Why International Buyers Trust Us' }}</div>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+                    <!-- Preview 6: Why Choose Us -->
+                    <div style="background-color: #FFFFFF; border: 1px solid #E2E8F0; padding: 14px; border-radius: 8px; margin-bottom: 14px;">
+                        <div style="font-size: 12px; font-weight: 700; color: #0F172A; margin-bottom: 8px; text-align: center;" id="prev-ab-why-heading">{{ $aboutWhyChoose['heading'] ?? 'Why International Buyers Trust Us' }}</div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
                             @foreach($benefits->take(3) as $ben)
-                                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 4px; border-radius: 4px; text-align: center; font-size: 9px; font-weight: 600; color: #1E3A8A;">
-                                    {{ Str::limit($ben->title, 14) }}
+                                <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 6px 4px; border-radius: 6px; text-align: center;">
+                                    <div style="font-size: 10px; font-weight: 700; color: #1E3A8A; margin-bottom: 2px;">{{ Str::limit($ben->title, 16) }}</div>
+                                    <div style="font-size: 8px; color: #64748B; line-height: 1.2;">{{ Str::limit($ben->description, 35) }}</div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Preview 7: Company Statistics -->
+                    <div style="background-color: #0F172A; border: 1px solid #334155; padding: 12px 10px; border-radius: 8px; color: white;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center;">
+                            @php $previewStats = [
+                                ['number' => '120+', 'icon' => 'Properties Listed'],
+                                ['number' => '3+', 'icon' => 'Years Established'],
+                                ['number' => '90%+', 'icon' => 'Satisfaction'],
+                            ]; @endphp
+                            @foreach($previewStats as $st)
+                                <div style="background-color: rgba(255,255,255,0.08); padding: 6px 4px; border-radius: 4px;">
+                                    <div style="font-size: 13px; font-weight: 700; color: #93C5FD;">{{ $st['number'] }}</div>
+                                    <div style="font-size: 8px; font-weight: 600; color: #E2E8F0;">{{ $st['icon'] }}</div>
                                 </div>
                             @endforeach
                         </div>
@@ -1148,6 +1171,90 @@
 .spin-icon {
     display: inline-block;
     animation: spin 1s infinite linear;
+}
+
+/* Website CMS Form Polish: Spacing & Alignment */
+.cms-section-editor, .cms-ab-section {
+    padding: 24px;
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+}
+
+.cms-section-editor .form-group,
+.cms-ab-section .form-group {
+    margin-bottom: 18px;
+}
+
+.cms-section-editor .form-group:last-child,
+.cms-ab-section .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.cms-section-editor .form-label,
+.cms-ab-section .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+.cms-section-editor .form-control,
+.cms-section-editor .form-select,
+.cms-ab-section .form-control,
+.cms-ab-section .form-select {
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #0F172A;
+    background-color: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    border-radius: 6px;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+.cms-section-editor .form-control:focus,
+.cms-section-editor .form-select:focus,
+.cms-ab-section .form-control:focus,
+.cms-ab-section .form-select:focus {
+    outline: none;
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.cms-section-editor textarea.form-control,
+.cms-ab-section textarea.form-control {
+    min-height: 90px;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+/* Save Section Button Footer Alignment */
+.cms-section-editor > div:last-child,
+.cms-ab-section > div:last-child {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid #F1F5F9;
+}
+
+.cms-section-editor > div:last-child button,
+.cms-ab-section > div:last-child button {
+    padding: 9px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 </style>
 <script>
@@ -1212,29 +1319,6 @@ function switchSectionAbout(sectionId) {
     }
 }
 
-// Dynamic Hero Button Adder
-function addHeroButtonRow() {
-    const container = document.getElementById('hero-buttons-container');
-    if (!container) return;
-    const div = document.createElement('div');
-    div.style.display = 'grid';
-    div.style.gridTemplateColumns = '2fr 2fr 1.5fr auto';
-    div.style.gap = '10px';
-    div.style.marginBottom = '10px';
-    div.style.alignItems = 'center';
-    div.className = 'hero-btn-row';
-    div.innerHTML = `
-        <input type="text" name="buttons_text[]" class="form-control btn-txt-input" placeholder="Button Label" oninput="updatePreview()">
-        <input type="text" name="buttons_link[]" class="form-control" placeholder="/contact">
-        <select name="buttons_style[]" class="form-select">
-            <option value="primary">Primary</option>
-            <option value="outline">Outline</option>
-        </select>
-        <button type="button" class="btn btn-outline" style="padding: 8px 12px; color: #DC2626; border-color: #FCA5A5;" onclick="this.parentElement.remove(); updatePreview();">Remove</button>
-    `;
-    container.appendChild(div);
-}
-
 // Dynamic Mission Point Adder
 function addMissionPointRow() {
     const container = document.getElementById('mission-points-list');
@@ -1271,7 +1355,7 @@ function updatePreview() {
     // 2. Search
     const searchPh = document.getElementById('search_placeholder');
     if (searchPh && document.getElementById('prev-search-ph')) {
-        document.getElementById('prev-search-ph').textContent = searchPh.value;
+        document.getElementById('prev-search-ph').textContent = searchPh.value || 'Search Location / Property Name...';
     }
 
     // 3. Featured Title
@@ -1280,10 +1364,55 @@ function updatePreview() {
         document.getElementById('prev-featured-title').textContent = featTitle.value;
     }
 
+    // 4. Latest Properties
+    const latestTitle = document.getElementById('latest_title');
+    if (latestTitle && document.getElementById('prev-latest-title')) {
+        document.getElementById('prev-latest-title').textContent = latestTitle.value;
+    }
+
     // 5. Categories
     const catHeading = document.getElementById('categories_heading');
+    const catDesc = document.getElementById('categories_description');
     if (catHeading && document.getElementById('prev-cat-heading')) {
         document.getElementById('prev-cat-heading').textContent = catHeading.value;
+    }
+    if (catDesc && document.getElementById('prev-cat-desc')) {
+        document.getElementById('prev-cat-desc').textContent = catDesc.value;
+    }
+
+    // 6. Locations
+    const locHeading = document.getElementById('locations_heading');
+    const locDesc = document.getElementById('locations_description');
+    if (locHeading && document.getElementById('prev-loc-heading')) {
+        document.getElementById('prev-loc-heading').textContent = locHeading.value;
+    }
+    if (locDesc && document.getElementById('prev-loc-desc')) {
+        document.getElementById('prev-loc-desc').textContent = locDesc.value;
+    }
+
+    // 7. Why Choose Us
+    const whyHeading = document.getElementById('why_heading');
+    const whyDesc = document.getElementById('why_description');
+    if (whyHeading && document.getElementById('prev-why-heading')) {
+        document.getElementById('prev-why-heading').textContent = whyHeading.value;
+    }
+    if (whyDesc && document.getElementById('prev-why-desc')) {
+        document.getElementById('prev-why-desc').textContent = whyDesc.value;
+    }
+
+    // Benefit cards live update
+    for (let i = 0; i < 3; i++) {
+        const bTitleInput = document.getElementById(`benefit_title_${i}`);
+        const bDescInput = document.getElementById(`benefit_desc_${i}`);
+        const prevTitleEl = document.getElementById(`prev-ben-title-${i}`);
+        const prevDescEl = document.getElementById(`prev-ben-desc-${i}`);
+
+        if (bTitleInput && prevTitleEl) {
+            prevTitleEl.textContent = bTitleInput.value;
+        }
+        if (bDescInput && prevDescEl) {
+            prevDescEl.textContent = bDescInput.value.length > 60 ? bDescInput.value.substring(0, 60) + '...' : bDescInput.value;
+        }
     }
 
     // 9. CTA
@@ -1298,7 +1427,7 @@ function updatePreview() {
         document.getElementById('prev-cta-desc').textContent = ctaDesc.value;
     }
     if (ctaBtn && document.getElementById('prev-cta-btn')) {
-        document.getElementById('prev-cta-btn').textContent = ctaBtn.value;
+        document.getElementById('prev-cta-btn').textContent = (ctaBtn.value || 'Contact Us Today') + ' →';
     }
 }
 
@@ -1420,6 +1549,13 @@ if (bannerImgInput) {
                 const bannerBox = document.getElementById('prev-ab-banner-box');
                 if (bannerBox) {
                     bannerBox.style.background = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('${evt.target.result}') center/cover no-repeat`;
+                    bannerBox.style.color = '#FFFFFF';
+                    const titleEl = document.getElementById('prev-ab-title');
+                    if (titleEl) titleEl.style.color = '#FFFFFF';
+                    const subEl = document.getElementById('prev-ab-sub');
+                    if (subEl) subEl.style.color = '#DBEAFE';
+                    const bcEl = document.getElementById('prev-ab-bc');
+                    if (bcEl) bcEl.style.color = '#93C5FD';
                 }
             };
             reader.readAsDataURL(file);
@@ -1651,6 +1787,14 @@ if (btnSaveAllHeader) {
 
 // Check URL query param for active section on load and attach limiters
 document.addEventListener('DOMContentLoaded', function() {
+    // Auto-dismiss success notification banner if visible
+    const successToast = document.getElementById('cms-success-toast');
+    if (successToast && successToast.style.display !== 'none') {
+        setTimeout(() => {
+            successToast.style.display = 'none';
+        }, 6000);
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const activeSection = urlParams.get('section');
     if (activeSection) {

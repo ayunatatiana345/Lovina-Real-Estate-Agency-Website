@@ -109,11 +109,6 @@
 
 <section class="section-spacing bg-light-blue" style="{{ $hasBannerImage ? "background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('" . $bannerImageUrl . "') center/cover no-repeat; color: #FFFFFF;" : '' }} padding-top: 60px; padding-bottom: 60px;">
     <div class="container">
-        @if(!empty($banner['breadcrumb']))
-            <nav aria-label="Breadcrumb" style="font-size: 13px; color: {{ $hasBannerImage ? '#93C5FD' : 'var(--text-muted)' }}; margin-bottom: 8px;">
-                {{ $banner['breadcrumb'] }}
-            </nav>
-        @endif
         <h1 style="margin-bottom: 12px; {{ $hasBannerImage ? 'color: #FFFFFF;' : '' }}">{{ $banner['title'] ?? 'About PT Lovina North Bali' }}</h1>
         <p class="body-text" style="color: {{ $hasBannerImage ? '#DBEAFE' : 'var(--text-secondary)' }}; margin-bottom: 0;">{{ $banner['subtitle'] ?? 'Your trusted real estate partner in North Bali. Established in 2023.' }}</p>
     </div>
@@ -123,11 +118,6 @@
     <div class="container">
         <!-- Our Story -->
         <div class="about-story-container">
-            @if(!empty($story['label']))
-                <div style="font-size: 13px; font-weight: 700; color: var(--secondary-gold); text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-bottom: 8px;">
-                    {{ $story['label'] }}
-                </div>
-            @endif
             <h2>{{ $story['heading'] ?? $story['title'] ?? 'Our Story' }}</h2>
             @php
                 $hasStoryImage = !empty($story['image']) && (

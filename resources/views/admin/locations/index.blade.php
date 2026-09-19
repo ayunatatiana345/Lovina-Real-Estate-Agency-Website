@@ -20,31 +20,21 @@
 </div>
 
 <!-- Success Notification Banner -->
-<div class="settings-success-alert" id="success-toast-banner" style="display: none; margin-bottom: 24px;">
+<div class="settings-success-alert" id="locations-success-toast" style="{{ session('success') ? 'display: flex;' : 'display: none;' }} margin-bottom: 24px; background-color: #DCFCE7; border: 1px solid #86EFAC; color: #166534; padding: 14px 18px; border-radius: 8px; align-items: center; justify-content: space-between;">
     <div style="display: flex; align-items: center; gap: 10px;">
         <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #16A34A; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">✓</div>
-        <span id="success-toast-text">Location deleted successfully.</span>
+        <span id="locations-success-toast-text">{{ session('success') ?? 'Action completed successfully.' }}</span>
     </div>
-    <button type="button" onclick="document.getElementById('success-toast-banner').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #15803D;">&times;</button>
+    <button type="button" onclick="document.getElementById('locations-success-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #15803D;">&times;</button>
 </div>
-
-@if(session('success'))
-<div class="settings-success-alert" id="success-session-banner" style="margin-bottom: 24px;">
-    <div style="display: flex; align-items: center; gap: 10px;">
-        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #16A34A; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">✓</div>
-        <span>{{ session('success') }}</span>
-    </div>
-    <button type="button" onclick="document.getElementById('success-session-banner').remove()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #15803D;">&times;</button>
-</div>
-@endif
 
 @if(session('error'))
-<div class="settings-error-alert" id="error-session-banner" style="margin-bottom: 24px; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 18px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
+<div class="settings-error-alert" id="locations-error-toast" style="margin-bottom: 24px; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 18px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
     <div style="display: flex; align-items: center; gap: 10px;">
         <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #DC2626; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">!</div>
         <span>{{ session('error') }}</span>
     </div>
-    <button type="button" onclick="document.getElementById('error-session-banner').remove()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991B1B;">&times;</button>
+    <button type="button" onclick="document.getElementById('locations-error-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991B1B;">&times;</button>
 </div>
 @endif
 
@@ -395,6 +385,15 @@
 
 @section('scripts')
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const successToast = document.getElementById('locations-success-toast');
+    if (successToast && successToast.style.display !== 'none') {
+        setTimeout(() => {
+            successToast.style.display = 'none';
+        }, 6000);
+    }
+});
+
 // Open Drawer Slide Panel (Add / Edit mode)
 function openLocationDrawer(mode, data = null) {
     const drawer = document.getElementById('locationSlidePanel');

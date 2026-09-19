@@ -28,7 +28,10 @@ class PropertyController extends Controller
             $keyword = $request->keyword;
             $query->where(function ($q) use ($keyword) {
                 $q->where('name', 'like', "%{$keyword}%")
-                  ->orWhere('description', 'like', "%{$keyword}%");
+                  ->orWhere('description', 'like', "%{$keyword}%")
+                  ->orWhereHas('location', function ($lq) use ($keyword) {
+                      $lq->where('name', 'like', "%{$keyword}%");
+                  });
             });
         }
 

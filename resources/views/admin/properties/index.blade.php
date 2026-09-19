@@ -17,15 +17,25 @@
     </div>
 </div>
 
+<!-- Success Notification Banner -->
 @if(session('success'))
-    <div style="background-color: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46; padding: 12px 16px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; font-weight: 500;">
-        {{ session('success') }}
+<div class="settings-success-alert" id="properties-success-toast" style="margin-bottom: 24px; background-color: #DCFCE7; border: 1px solid #86EFAC; color: #166534; padding: 14px 18px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #16A34A; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">✓</div>
+        <span id="properties-success-toast-text">{{ session('success') }}</span>
     </div>
+    <button type="button" onclick="document.getElementById('properties-success-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #15803D;">&times;</button>
+</div>
 @endif
+
 @if(session('error'))
-    <div style="background-color: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; padding: 12px 16px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; font-weight: 500;">
-        {{ session('error') }}
+<div class="settings-error-alert" id="properties-error-toast" style="margin-bottom: 24px; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 18px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #DC2626; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">!</div>
+        <span>{{ session('error') }}</span>
     </div>
+    <button type="button" onclick="document.getElementById('properties-error-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991B1B;">&times;</button>
+</div>
 @endif
 
 <!-- Search & Filters -->
@@ -94,7 +104,7 @@
                     <td>
                         <span class="status-badge badge-{{ $prop->status }}">{{ ucfirst($prop->status) }}</span>
                     </td>
-                    <td style="font-size: 13px; color: #64748B; white-space: nowrap;">{{ $prop->created_at->format('d M Y, H:i') }}</td>
+                    <td style="font-size: 13px; color: #64748B; white-space: nowrap;">{{ $prop->created_at->format('d M Y, h:i A \W\I\T\A') }}</td>
                     <td style="text-align: right;">
                         <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
                             <form action="{{ route('admin.properties.toggle-featured', $prop->id) }}" method="POST" style="display: inline;">
@@ -249,6 +259,15 @@
 
 @section('scripts')
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const successToast = document.getElementById('properties-success-toast');
+    if (successToast) {
+        setTimeout(() => {
+            successToast.style.display = 'none';
+        }, 6000);
+    }
+});
+
 function openEditCategoryModal(id, name, icon, status) {
     const modal = document.getElementById('editCategoryModal');
     const form = document.getElementById('editCategoryForm');

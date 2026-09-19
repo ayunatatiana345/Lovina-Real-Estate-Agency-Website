@@ -98,7 +98,7 @@
                         <td style="font-size: 13px; font-weight: 600;">
                             {{ $inq->property->name ?? 'General Inquiry' }}
                         </td>
-                        <td style="font-size: 12px; color: #64748B;">{{ $inq->created_at->format('M d, Y H:i') }}</td>
+                        <td style="font-size: 12px; color: #64748B; white-space: nowrap;">{{ $inq->created_at->format('d M Y, h:i A \W\I\T\A') }}</td>
                         <td>
                             <span class="status-badge badge-{{ $inq->status }}">
                                 {{ ucfirst(str_replace('_', ' ', $inq->status)) }}
@@ -112,7 +112,7 @@
                                     'customer_name' => $inq->customer_name,
                                     'email' => $inq->email,
                                     'property_name' => $inq->property->name ?? 'General Inquiry',
-                                    'date_received' => $inq->created_at->format('M d, Y H:i')
+                                    'date_received' => $inq->created_at->format('d M Y, h:i A \W\I\T\A')
                                 ]) }}">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="3 6 5 6 21 6"></polyline>

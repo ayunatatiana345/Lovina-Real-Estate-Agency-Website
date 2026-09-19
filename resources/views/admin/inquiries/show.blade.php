@@ -84,7 +84,7 @@
                     </div>
                     <div>
                         <h1 style="font-size: 22px; font-weight: 700; color: #1F2937; margin: 0; line-height: 1.3;">{{ $generatedSubject }}</h1>
-                        <p style="font-size: 13px; color: #64748B; margin: 4px 0 0 0;">Received on {{ $inquiry->created_at->format('F d, Y \a\t h:i A') }}</p>
+                        <p style="font-size: 13px; color: #64748B; margin: 4px 0 0 0;">Received on {{ $inquiry->created_at->format('d M Y, h:i A \W\I\T\A') }}</p>
                     </div>
                 </div>
                 <div>
@@ -275,7 +275,7 @@
                 </tr>
                 <tr style="border-bottom: 1px solid #F1F5F9;">
                     <td style="padding: 10px 0; color: #64748B; font-weight: 500;">Date Received</td>
-                    <td style="padding: 10px 0; color: #1F2937; font-weight: 600; text-align: right;">{{ $inquiry->created_at->format('M d, Y H:i') }}</td>
+                    <td style="padding: 10px 0; color: #1F2937; font-weight: 600; text-align: right;">{{ $inquiry->created_at->format('d M Y, h:i A \W\I\T\A') }}</td>
                 </tr>
                 <tr style="border-bottom: 1px solid #F1F5F9;">
                     <td style="padding: 10px 0; color: #64748B; font-weight: 500;">Status</td>
@@ -434,7 +434,7 @@
                                 @endif
                             </div>
                             <div style="font-size: 11px; color: #64748B; margin-top: 2px;">
-                                {{ $log->changed_at->format('M d, Y h:i A') }}
+                                {{ $log->changed_at->format('d M Y, h:i A \W\I\T\A') }}
                             </div>
                         </div>
                     </div>
@@ -444,7 +444,7 @@
                         <div class="timeline-content">
                             <div style="font-weight: 600; color: #1F2937;">Inquiry received</div>
                             <div style="font-size: 11px; color: #64748B; margin-top: 2px;">
-                                {{ $inquiry->created_at->format('M d, Y h:i A') }}
+                                {{ $inquiry->created_at->format('d M Y, h:i A \W\I\T\A') }}
                             </div>
                         </div>
                     </div>
@@ -482,7 +482,7 @@
         <div style="background-color: #F8F9FA; border-radius: 12px; padding: 18px 20px; text-align: left; margin-bottom: 24px; border: 1px solid #E5E7EB; font-family: 'Poppins', sans-serif;">
             <div style="font-weight: 700; font-size: 16px; color: #1F2937; margin-bottom: 4px;">{{ $inquiry->customer_name }}</div>
             <div style="font-size: 14px; color: #2563EB; margin-bottom: 8px; word-break: break-all;">{{ $inquiry->email }}</div>
-            <div style="font-size: 12px; color: #6B7280;">{{ $inquiry->property->name ?? 'General Inquiry' }} &bull; {{ $inquiry->created_at->format('M d, Y H:i') }}</div>
+            <div style="font-size: 12px; color: #6B7280;">{{ $inquiry->property->name ?? 'General Inquiry' }} &bull; {{ $inquiry->created_at->format('d M Y, h:i A \W\I\T\A') }}</div>
         </div>
         
         <!-- 5. Tombol aksi -->

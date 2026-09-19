@@ -42,7 +42,7 @@ class WebsiteCmsController extends Controller
             'enabled' => true,
             'placeholder' => 'Search Location / Property Name...',
             'filter_type' => true,
-            'filter_location' => true,
+            'filter_location' => false,
             'filter_price' => true,
         ]);
 
@@ -250,6 +250,8 @@ class WebsiteCmsController extends Controller
             $rules['why_label'] = 'nullable|string|max:100';
             $rules['why_heading'] = 'nullable|string|max:255';
             $rules['why_description'] = 'nullable|string';
+            $rules['benefit_titles.*'] = 'nullable|string|max:255';
+            $rules['benefit_descriptions.*'] = 'nullable|string';
         }
         if ($targetSection === 'stats' || $targetSection === 'all') {
             $rules['stat_numbers.*'] = 'nullable|string|max:100';
@@ -315,7 +317,7 @@ class WebsiteCmsController extends Controller
                     'enabled' => $request->has('search_enabled'),
                     'placeholder' => $request->input('search_placeholder', 'Search Location / Property Name...'),
                     'filter_type' => $request->has('search_filter_type'),
-                    'filter_location' => $request->has('search_filter_location'),
+                    'filter_location' => false,
                     'filter_price' => $request->has('search_filter_price'),
                 ]
             ]);
@@ -397,6 +399,34 @@ class WebsiteCmsController extends Controller
                     'description' => $request->input('why_description', ''),
                 ]
             ]);
+
+            if ($request->has('benefit_titles')) {
+                foreach ($request->input('benefit_titles') as $idx => $title) {
+                    if (!empty($title)) {
+                        $desc = $request->input("benefit_descriptions.{$idx}", '');
+                        $benefitId = $request->input("benefit_ids.{$idx}", null);
+
+                        if ($benefitId) {
+                            $benefit = Benefit::find($benefitId);
+                            if ($benefit) {
+                                $benefit->update([
+                                    'title' => $title,
+                                    'description' => $desc,
+                                ]);
+                            }
+                        } else {
+                            Benefit::updateOrCreate(
+                                ['page' => 'homepage', 'sort_order' => $idx + 1],
+                                [
+                                    'title' => $title,
+                                    'description' => $desc,
+                                    'icon' => $idx === 0 ? 'home' : ($idx === 1 ? 'search' : 'shield'),
+                                ]
+                            );
+                        }
+                    }
+                }
+            }
         }
 
         // 8. Company Statistics Section
@@ -446,13 +476,19 @@ class WebsiteCmsController extends Controller
             ]);
         }
 
-        $activeSection = $request->input('active_section', 'sec-hero');
-        if ($rawSection !== 'all' && str_starts_with($rawSection, 'sec-')) {
-            $activeSection = $rawSection;
+        $activeSection = $request->input('active_section', null);
+        if (!$activeSection) {
+            if ($rawSection !== 'all' && str_starts_with($rawSection, 'sec-')) {
+                $activeSection = $rawSection;
+            } elseif ($targetSection !== 'all') {
+                $activeSection = 'sec-' . str_replace('_', '-', $targetSection);
+            } else {
+                $activeSection = 'sec-hero';
+            }
         }
 
         $successMessage = ($targetSection === 'all')
-            ? 'All Homepage sections saved successfully.'
+            ? 'All homepage settings saved successfully.'
             : 'Homepage section saved successfully.';
 
         if ($request->ajax() || $request->wantsJson()) {

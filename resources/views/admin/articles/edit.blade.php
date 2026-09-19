@@ -214,7 +214,7 @@
             </a>
             <div>
                 <h2 style="font-size: 22px; font-weight: 700; color: #0F172A; margin: 0;">Edit Article</h2>
-                <span style="color: #64748B; font-size: 13px;">ID: #{{ $article->id }} &bull; Last updated {{ $article->updated_at ? $article->updated_at->diffForHumans() : 'recently' }}</span>
+                <span style="color: #64748B; font-size: 13px;">ID: #{{ $article->id }} &bull; Last updated {{ $article->updated_at ? $article->updated_at->format('d M Y, h:i A \W\I\T\A') : 'recently' }}</span>
             </div>
         </div>
         <div style="display: flex; gap: 12px; align-items: center;">

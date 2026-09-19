@@ -382,6 +382,90 @@ body.admin-body {
   overflow-y: auto;
 }
 
+/* Website CMS Form Polish: Spacing & Alignment */
+.cms-section-editor, .cms-ab-section {
+  padding: 24px;
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+}
+
+.cms-section-editor .form-group,
+.cms-ab-section .form-group {
+  margin-bottom: 18px;
+}
+
+.cms-section-editor .form-group:last-child,
+.cms-ab-section .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.cms-section-editor .form-label,
+.cms-ab-section .form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.cms-section-editor .form-control,
+.cms-section-editor .form-select,
+.cms-ab-section .form-control,
+.cms-ab-section .form-select {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #0F172A;
+  background-color: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+.cms-section-editor .form-control:focus,
+.cms-section-editor .form-select:focus,
+.cms-ab-section .form-control:focus,
+.cms-ab-section .form-select:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.cms-section-editor textarea.form-control,
+.cms-ab-section textarea.form-control {
+  min-height: 90px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+/* Save Section Button Footer Alignment */
+.cms-section-editor > div:last-child,
+.cms-ab-section > div:last-child {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.cms-section-editor > div:last-child button,
+.cms-ab-section > div:last-child button {
+  padding: 9px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
 /* Company Settings Layout (Matching Reference Screenshot) */
 .settings-row-2col {
   display: grid;

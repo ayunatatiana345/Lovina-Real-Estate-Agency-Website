@@ -369,10 +369,10 @@ class CurrencyService
             'usd_to_idr_rate' => $rate,
             'formatted_rate' => $rate ? '1 USD = Rp ' . number_format($rate, 0, ',', '.') : null,
             'date' => $payload['date'] ?? date('Y-m-d'),
-            'rate_date' => $payload['date'] ?? date('Y-m-d'),
+            'rate_date' => isset($payload['date']) ? \Carbon\Carbon::parse($payload['date'])->format('d M Y') : date('d M Y'),
             'provider' => $payload['provider'] ?? 'Frankfurter (European Central Bank reference)',
             'fetched_at' => $payload['fetched_at'] ?? now()->toIso8601String(),
-            'last_updated' => isset($payload['fetched_at']) ? date('Y-m-d H:i:s', strtotime($payload['fetched_at'])) : date('Y-m-d H:i:s'),
+            'last_updated' => isset($payload['fetched_at']) ? \Carbon\Carbon::parse($payload['fetched_at'])->setTimezone('Asia/Makassar')->format('d M Y, h:i A \W\I\T\A') : now()->setTimezone('Asia/Makassar')->format('d M Y, h:i A \W\I\T\A'),
             'status' => $status,
             'is_available' => ($rate !== null && $rate > 0),
         ];

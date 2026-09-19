@@ -87,8 +87,8 @@
                             </span>
                         </td>
                         <td style="font-size: 13px; color: #475569;">{{ $article->author_name ?? 'Lovina Agency' }}</td>
-                        <td style="font-size: 13px; color: #64748B;">
-                            {{ $article->published_at ? $article->published_at->format('M d, Y H:i') : $article->created_at->format('M d, Y H:i') }}
+                        <td style="font-size: 13px; color: #64748B; white-space: nowrap;">
+                            {{ $article->published_at ? $article->published_at->format('d M Y, h:i A \W\I\T\A') : $article->created_at->format('d M Y, h:i A \W\I\T\A') }}
                         </td>
                         <td style="font-size: 14px; font-weight: 600; color: #0F172A;">
                             {{ number_format($article->views_count) }}

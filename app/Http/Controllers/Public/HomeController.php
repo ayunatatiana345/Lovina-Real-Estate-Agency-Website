@@ -111,7 +111,7 @@ class HomeController extends Controller
             'enabled' => true,
             'placeholder' => 'Search Location / Property Name...',
             'filter_type' => true,
-            'filter_location' => true,
+            'filter_location' => false,
             'filter_price' => true,
         ]);
 
