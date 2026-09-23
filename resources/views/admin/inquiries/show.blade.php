@@ -230,7 +230,6 @@
                         <option value="new" {{ $inquiry->status == 'new' ? 'selected' : '' }}>New</option>
                         <option value="in_progress" {{ $inquiry->status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
                         <option value="responded" {{ $inquiry->status == 'responded' ? 'selected' : '' }}>Responded</option>
-                        <option value="closed" {{ $inquiry->status == 'closed' ? 'selected' : '' }}>Closed</option>
                     </select>
                 </div>
 

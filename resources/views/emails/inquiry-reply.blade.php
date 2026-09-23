@@ -94,8 +94,8 @@
         <div class="email-container">
             <!-- Header -->
             <div class="email-header">
-                <h1>{{ $settings->site_name ?? 'PT Lovina North Bali' }}</h1>
-                <p>Real Estate Agency & Property Investment Services</p>
+                <h1>{{ $settings->company_name ?? $settings->site_title ?? 'PT Lovina North Bali Real Estate Agency' }}</h1>
+                <p>{{ $settings->tagline ?? 'Real Estate Agency & Property Investment Services' }}</p>
             </div>
 
             <!-- Body -->
@@ -118,10 +118,10 @@
 
             <!-- Footer -->
             <div class="email-footer">
-                <p style="margin: 0 0 6px 0;"><strong>PT Lovina North Bali Real Estate Agency</strong></p>
-                <p style="margin: 0 0 6px 0;">{{ $settings->address ?? 'Jl. Raya Kalibukbuk-Anturan, Lovina, Buleleng, Bali 81119, Indonesia' }}</p>
+                <p style="margin: 0 0 6px 0;"><strong>{{ $settings->company_name ?? 'PT Lovina North Bali Real Estate Agency' }}</strong></p>
+                <p style="margin: 0 0 6px 0;">{{ $settings->address ?? 'Jl. Desa Kalibukbuk-Anturan, Buleleng, Bali' }}</p>
                 <p style="margin: 0;">
-                    Phone: {{ $settings->phone ?? '+62 812-3456-7890' }} | Email: {{ $settings->email ?? 'info@lovinanorthbali.com' }}
+                    Phone: {{ $settings->phone ?? '0859 3666 6384' }} | Email: {{ $settings->email ?? 'info@lovinanorthbali.com' }}
                 </p>
             </div>
         </div>

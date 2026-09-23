@@ -63,6 +63,11 @@ class Property extends Model
         return $this->belongsTo(PropertyCategory::class, 'category_id');
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(PropertyCategory::class, 'category_property', 'property_id', 'category_id')->withTimestamps();
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class, 'location_id');
@@ -111,6 +116,19 @@ class Property extends Model
 
     public function getFormattedPriceAttribute(): string
     {
+        if ($this->name === 'House/Homestay in Kalibukbuk') {
+            return 'IDR 4 billion + IDR 3 billion';
+        }
+        if ($this->name === '2 plots of land 50 meter from the beach Banjar') {
+            return 'IDR 100 million per are separately';
+        }
+        if ($this->name === 'Beautiful Sumatra House') {
+            return '80,000 Euro / 135,000 Euro';
+        }
+        if ($this->price === null) {
+            return 'Price on Request';
+        }
+
         $formatted = app(\App\Services\CurrencyService::class)->formatPropertyPrice($this->price);
         if ($this->category && in_array(strtolower($this->category->slug ?? $this->category->name ?? ''), ['rent', 'rental', 'rentals'])) {
             return $formatted . ' / month';
@@ -134,6 +152,15 @@ class Property extends Model
 
     public function getFormattedPriceAdminAttribute(): string
     {
+        if ($this->name === 'House/Homestay in Kalibukbuk') {
+            return 'IDR 4 billion + IDR 3 billion';
+        }
+        if ($this->name === '2 plots of land 50 meter from the beach Banjar') {
+            return 'IDR 100 million per are separately';
+        }
+        if ($this->name === 'Beautiful Sumatra House') {
+            return '80,000 Euro / 135,000 Euro';
+        }
         if ($this->price === null) {
             return 'Price on Request';
         }
@@ -142,6 +169,40 @@ class Property extends Model
             return $formatted . ' / month';
         }
         return $formatted;
+    }
+
+    public function getCategoryBadgeAttribute(): string
+    {
+        $cats = $this->relationLoaded('categories') ? $this->categories : $this->categories()->get();
+
+        if ($cats->isNotEmpty()) {
+            // Canonical sort order: Land (1), Restaurant (2), Bar (3), Hotel (4), House (5), Villa (6), Others (7)
+            $sorted = $cats->sortBy(function ($c) {
+                $slug = strtolower($c->slug ?? '');
+                $name = strtolower($c->name ?? '');
+                if ($slug === 'land' || str_contains($name, 'land')) return 1;
+                if ($slug === 'restaurant' || str_contains($name, 'restaurant')) return 2;
+                if ($slug === 'bar' || str_contains($name, 'bar')) return 3;
+                if ($slug === 'hotel' || str_contains($name, 'hotel')) return 4;
+                if ($slug === 'house' || str_contains($name, 'house')) return 5;
+                if ($slug === 'villa' || str_contains($name, 'villa')) return 6;
+                return 7;
+            });
+
+            $names = $sorted->map(function ($c) {
+                return $c->name;
+            })->unique()->values();
+
+            if ($names->isNotEmpty()) {
+                return $names->implode(' / ');
+            }
+        }
+
+        if ($this->category) {
+            return $this->category->name;
+        }
+
+        return 'Villa';
     }
 
     public function inquiries()

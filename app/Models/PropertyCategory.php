@@ -15,6 +15,11 @@ class PropertyCategory extends Model
 
     public function properties()
     {
+        return $this->belongsToMany(Property::class, 'category_property', 'category_id', 'property_id')->withTimestamps();
+    }
+
+    public function primaryProperties()
+    {
         return $this->hasMany(Property::class, 'category_id');
     }
 }

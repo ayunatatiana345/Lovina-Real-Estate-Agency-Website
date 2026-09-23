@@ -11,6 +11,7 @@ use App\Models\Location;
 use App\Models\PropertyImage;
 use App\Models\CompanySetting;
 use App\Models\CmsContent;
+use App\Services\PropertyImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -18,16 +19,29 @@ use Illuminate\Support\Facades\DB;
 
 class PropertyController extends Controller
 {
+    protected PropertyImageService $imageService;
+
+    public function __construct(PropertyImageService $imageService)
+    {
+        $this->imageService = $imageService;
+    }
+
     public function index(Request $request)
     {
         $settings = CompanySetting::getSettings();
         $categories = PropertyCategory::orderBy('name', 'asc')->get();
         $locations = Location::orderBy('name', 'asc')->get();
 
-        $query = Property::with(['category', 'location', 'images']);
+        $query = Property::with(['category', 'categories', 'location', 'images']);
 
         if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
+            $catId = $request->category_id;
+            $query->where(function ($q) use ($catId) {
+                $q->where('category_id', $catId)
+                  ->orWhereHas('categories', function ($cq) use ($catId) {
+                      $cq->where('property_categories.id', $catId);
+                  });
+            });
         }
         if ($request->filled('location_id')) {
             $query->where('location_id', $request->location_id);
@@ -63,6 +77,8 @@ class PropertyController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:properties,slug',
             'category_id' => 'required|exists:property_categories,id',
+            'category_ids' => 'nullable|array',
+            'category_ids.*' => 'exists:property_categories,id',
             'location_id' => 'required|exists:locations,id',
             'price' => 'nullable|numeric|min:0',
             'ownership_type' => 'required|string',
@@ -109,18 +125,27 @@ class PropertyController extends Controller
 
         DB::transaction(function () use ($validated, $request) {
             $property = Property::create($validated);
+            $catIds = $request->input('category_ids', [$property->category_id]);
+            if (!empty($catIds)) {
+                $property->categories()->sync($catIds);
+            }
 
             if ($request->hasFile('images')) {
                 $chosenCoverIndex = (int)$request->input('cover_index', 0);
+                $seq = 0;
                 foreach ($request->file('images') as $index => $file) {
                     if ($file->isValid()) {
-                        $path = $file->store('properties', 'public');
-                        PropertyImage::create([
-                            'property_id' => $property->id,
-                            'image_path' => $path,
-                            'is_cover' => ($index === $chosenCoverIndex),
-                            'sort_order' => $index + 1,
-                        ]);
+                        $seq++;
+                        $processed = $this->imageService->processAndStore($file, $property, $seq);
+                        if ($processed) {
+                            PropertyImage::create([
+                                'property_id' => $property->id,
+                                'image_path' => $processed['path'],
+                                'image_alt' => $processed['alt'],
+                                'is_cover' => ($index === $chosenCoverIndex),
+                                'sort_order' => $seq,
+                            ]);
+                        }
                     }
                 }
 
@@ -148,7 +173,7 @@ class PropertyController extends Controller
     public function edit($id)
     {
         $settings = CompanySetting::getSettings();
-        $property = Property::with(['category', 'location', 'images'])->findOrFail($id);
+        $property = Property::with(['category', 'categories', 'location', 'images'])->findOrFail($id);
         $categories = PropertyCategory::where('status', 'active')
             ->orWhere('id', $property->category_id)
             ->orderBy('name', 'asc')
@@ -169,6 +194,8 @@ class PropertyController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:properties,slug,' . $property->id,
             'category_id' => 'required|exists:property_categories,id',
+            'category_ids' => 'nullable|array',
+            'category_ids.*' => 'exists:property_categories,id',
             'location_id' => 'required|exists:locations,id',
             'price' => 'nullable|numeric|min:0',
             'ownership_type' => 'required|string',
@@ -214,6 +241,10 @@ class PropertyController extends Controller
 
         DB::transaction(function () use ($property, $validated, $request) {
             $property->update($validated);
+            $catIds = $request->input('category_ids', [$property->category_id]);
+            if (!empty($catIds)) {
+                $property->categories()->sync($catIds);
+            }
 
             if ($request->hasFile('images')) {
                 $hasCover = PropertyImage::where('property_id', $property->id)->where('is_cover', true)->exists();
@@ -225,19 +256,24 @@ class PropertyController extends Controller
                 }
 
                 $maxOrder = PropertyImage::where('property_id', $property->id)->max('sort_order') ?? 0;
+                $existingCount = PropertyImage::where('property_id', $property->id)->count();
 
                 foreach ($request->file('images') as $index => $file) {
                     if ($file->isValid()) {
-                        $path = $file->store('properties', 'public');
-                        $isCover = ($newCoverIndex !== null && $index === $newCoverIndex) || (!$hasCover && $index === 0);
-                        PropertyImage::create([
-                            'property_id' => $property->id,
-                            'image_path' => $path,
-                            'is_cover' => $isCover,
-                            'sort_order' => ++$maxOrder,
-                        ]);
-                        if ($isCover) {
-                            $hasCover = true;
+                        $sequenceNumber = $existingCount + $index + 1;
+                        $processed = $this->imageService->processAndStore($file, $property, $sequenceNumber);
+                        if ($processed) {
+                            $isCover = ($newCoverIndex !== null && $index === $newCoverIndex) || (!$hasCover && $index === 0);
+                            PropertyImage::create([
+                                'property_id' => $property->id,
+                                'image_path' => $processed['path'],
+                                'image_alt' => $processed['alt'],
+                                'is_cover' => $isCover,
+                                'sort_order' => ++$maxOrder,
+                            ]);
+                            if ($isCover) {
+                                $hasCover = true;
+                            }
                         }
                     }
                 }

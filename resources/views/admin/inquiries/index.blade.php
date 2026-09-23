@@ -66,7 +66,6 @@
             <option value="new" {{ request('status') == 'new' ? 'selected' : '' }}>New</option>
             <option value="in_progress" {{ request('status') == 'in_progress' ? 'selected' : '' }}>In Progress</option>
             <option value="responded" {{ request('status') == 'responded' ? 'selected' : '' }}>Responded</option>
-            <option value="closed" {{ request('status') == 'closed' ? 'selected' : '' }}>Closed</option>
         </select>
 
         <button type="submit" class="btn btn-primary" style="padding: 10px 24px; background-color: #1E3A8A !important; border-color: #1E3A8A !important; color: #FFFFFF !important; font-weight: 600;">Filter</button>
@@ -192,7 +191,7 @@
             <button type="button" class="btn btn-cancel" onclick="closeDeleteModal(event)">
                 Cancel
             </button>
-            <button type="button" class="btn btn-delete" onclick="confirmDeleteInquiryLocal(event)">
+            <button type="button" class="btn btn-delete" onclick="confirmDeleteInquiry(event)">
                 Delete
             </button>
         </div>
@@ -200,17 +199,21 @@
     </div>
 </div>
 
+<form id="delete-inquiry-real-form" action="" method="POST" style="display: none;">
+    @csrf
+    @method('DELETE')
+</form>
+
 @endsection
 
 @section('scripts')
 <script>
-// Local delete tracking variables
-let activeDeleteRowEl = null;
-
 // Trigger Delete Modal
 function triggerDeleteInquiry(btn) {
     const data = JSON.parse(btn.getAttribute('data-inquiry'));
-    activeDeleteRowEl = btn.closest('tr');
+    
+    // Set form action for backend HTTP DELETE
+    document.getElementById('delete-inquiry-real-form').action = `/admin/inquiries/${data.id}`;
 
     // Fill preview card dynamically
     document.getElementById('inq-preview-name').textContent = data.customer_name;
@@ -232,26 +235,10 @@ function closeDeleteModal(e) {
     document.body.style.overflow = '';
 }
 
-// Local Delete action (UI State update only as required)
-function confirmDeleteInquiryLocal(e) {
+// Real Delete Form Submission to backend
+function confirmDeleteInquiry(e) {
     if (e) e.preventDefault();
-    
-    if (activeDeleteRowEl) {
-        activeDeleteRowEl.remove();
-    }
-    
-    // Close modal & unlock scroll
-    closeDeleteModal(e);
-    
-    // Show success notification banner
-    const banner = document.getElementById('success-toast-banner');
-    if (banner) {
-        banner.style.display = 'flex';
-        document.getElementById('success-toast-text').textContent = "Inquiry deleted successfully.";
-        
-        // Auto scroll to top to see notification clearly
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    document.getElementById('delete-inquiry-real-form').submit();
 }
 </script>
 @endsection

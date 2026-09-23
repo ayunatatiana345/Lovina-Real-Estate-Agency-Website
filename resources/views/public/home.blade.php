@@ -140,7 +140,7 @@
                         @endif
                     </div>
                     <div class="property-card-body">
-                        <div class="property-category-tag">{{ $prop->category->name ?? 'Villa' }}</div>
+                        <div class="property-category-tag">{{ $prop->category_badge }}</div>
                         <h3 class="property-card-title">{{ $prop->name }}</h3>
                         <div class="property-location-tag">
                             <i data-lucide="map-pin" class="lucide-icon lucide-icon-sm" style="color: var(--text-muted); margin-right: 4px;"></i> {{ $prop->location->name ?? 'Lovina, North Bali' }}
@@ -188,7 +188,7 @@
         <div class="category-grid">
             @foreach($categories as $cat)
                 <a href="{{ route('properties.index', ['type' => $cat->slug]) }}" class="category-card">
-                    <div class="category-card-icon" style="color: var(--primary-navy); margin-bottom: 12px;">
+                    <div class="category-card-icon">
                         <i data-lucide="home" class="lucide-icon lucide-icon-lg"></i>
                     </div>
                     <div class="category-card-title">{{ $cat->name }}</div>
@@ -228,7 +228,7 @@
                         @endif
                     </div>
                     <div class="property-card-body">
-                        <div class="property-category-tag">{{ $prop->category->name ?? 'Villa' }}</div>
+                        <div class="property-category-tag">{{ $prop->category_badge }}</div>
                         <h3 class="property-card-title">{{ $prop->name }}</h3>
                         <div class="property-location-tag">
                             <i data-lucide="map-pin" class="lucide-icon lucide-icon-sm" style="color: var(--text-muted); margin-right: 4px;"></i> {{ $prop->location->name ?? 'North Bali' }}

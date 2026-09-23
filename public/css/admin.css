@@ -628,15 +628,52 @@ body.admin-body {
   border-top-right-radius: 0 !important;
 }
 
+/* Responsive Form Grids for Property Create & Edit */
+.form-grid-2-1 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.form-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
 @media (max-width: 1024px) {
   .settings-row-2col, .settings-row-3col {
     grid-template-columns: 1fr 1fr;
+  }
+  .form-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .form-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
   }
 }
 
 @media (max-width: 768px) {
   .settings-row-2col, .settings-row-3col {
     grid-template-columns: 1fr;
+  }
+  .form-grid-2-1,
+  .form-grid-2,
+  .form-grid-3,
+  .form-grid-4 {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
   }
 }
 

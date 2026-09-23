@@ -17,11 +17,14 @@ class PropertyController extends Controller
     public function index(Request $request, CurrencyService $currencyService)
     {
         $settings = CompanySetting::getSettings();
-        $categories = PropertyCategory::where('status', 'active')->orderBy('name', 'asc')->get();
+        $categories = PropertyCategory::where('status', 'active')->get()->sortBy(function ($c) {
+            $order = ['villa' => 1, 'house' => 2, 'rent' => 3, 'land' => 4, 'restaurant' => 5, 'bar' => 6, 'hotel' => 7];
+            return $order[strtolower($c->slug)] ?? 99;
+        })->values();
         $locations = Location::where('status', 'active')->orderBy('name', 'asc')->get();
         $priceRangeOptions = $currencyService->getPriceRangeOptions();
 
-        $query = Property::with(['category', 'location', 'images'])
+        $query = Property::with(['category', 'categories', 'location', 'images'])
             ->where('status', 'published');
 
         if ($request->filled('keyword')) {
@@ -36,8 +39,17 @@ class PropertyController extends Controller
         }
 
         if ($request->filled('type')) {
-            $query->whereHas('category', function ($q) use ($request) {
-                $q->where('slug', $request->type)->orWhere('id', $request->type);
+            $type = $request->type;
+            $typeMatch = strtolower($type) === 'restaurant-bar-hotel' 
+                ? ['hotel', 'restaurant', 'bar'] 
+                : [$type];
+
+            $query->where(function ($q) use ($typeMatch, $type) {
+                $q->whereHas('categories', function ($cq) use ($typeMatch, $type) {
+                    $cq->whereIn('slug', $typeMatch)->orWhereIn('property_categories.id', (array)$type);
+                })->orWhereHas('category', function ($cq) use ($typeMatch, $type) {
+                    $cq->whereIn('slug', $typeMatch)->orWhereIn('id', (array)$type);
+                });
             });
         }
 
@@ -79,7 +91,7 @@ class PropertyController extends Controller
     public function show($slug)
     {
         $settings = CompanySetting::getSettings();
-        $property = Property::with(['category', 'location', 'images'])
+        $property = Property::with(['category', 'categories', 'location', 'images'])
             ->where('slug', $slug)
             ->where('status', 'published')
             ->firstOrFail();
@@ -87,7 +99,7 @@ class PropertyController extends Controller
         // Increment view counter safely
         $property->increment('views_count');
 
-        $similarProperties = Property::with(['category', 'location', 'images'])
+        $similarProperties = Property::with(['category', 'categories', 'location', 'images'])
             ->where('status', 'published')
             ->where('id', '!=', $property->id)
             ->where('category_id', $property->category_id)

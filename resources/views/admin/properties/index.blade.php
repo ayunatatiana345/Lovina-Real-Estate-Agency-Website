@@ -98,7 +98,7 @@
                             {{ $prop->name }}
                         </a>
                     </td>
-                    <td>{{ $prop->category->name ?? 'N/A' }}</td>
+                    <td>{{ $prop->category_badge }}</td>
                     <td>{{ $prop->location->name ?? 'N/A' }}</td>
                     <td style="font-weight: 600; color: #15803D; white-space: nowrap;">{{ $prop->formatted_price_admin }}</td>
                     <td>

@@ -27,7 +27,7 @@ class HomeController extends Controller
             'background_image' => 'cms/hero-bg.jpg',
         ]);
 
-        $featuredProperties = Property::with(['category', 'location', 'images'])
+        $featuredProperties = Property::with(['category', 'categories', 'location', 'images'])
             ->where('status', 'published')
             ->where('is_featured', true)
             ->take(6)
@@ -41,7 +41,7 @@ class HomeController extends Controller
 
         $latestCount = max(1, min(12, (int)($latestSection['display_count'] ?? 6)));
 
-        $latestProperties = Property::with(['category', 'location', 'images'])
+        $latestProperties = Property::with(['category', 'categories', 'location', 'images'])
             ->where('status', 'published')
             ->latest()
             ->take($latestCount)
@@ -49,7 +49,10 @@ class HomeController extends Controller
 
         $categories = PropertyCategory::where('status', 'active')->withCount(['properties' => function ($q) {
             $q->where('status', 'published');
-        }])->get();
+        }])->get()->sortBy(function ($c) {
+            $order = ['villa' => 1, 'house' => 2, 'rent' => 3, 'land' => 4, 'restaurant' => 5, 'bar' => 6, 'hotel' => 7];
+            return $order[strtolower($c->slug)] ?? 99;
+        })->values();
 
         $popularLocations = Location::where('status', 'active')
             ->where('is_popular', true)

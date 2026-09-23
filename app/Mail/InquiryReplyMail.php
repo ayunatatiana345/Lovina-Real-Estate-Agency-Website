@@ -36,11 +36,16 @@ class InquiryReplyMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        $fromEmail = config('mail.from.address', 'hello@lovinanorthbali.com');
-        $fromName = $this->settings->site_name ?? 'PT Lovina North Bali Real Estate Agency';
+        $fromEmail = config('mail.from.address', 'info@lovinanorthbali.com');
+        $fromName = config('mail.from.name', $this->settings->company_name ?? 'PT Lovina North Bali Real Estate Agency');
+
+        $replyToEmail = !empty($this->settings->email) && filter_var($this->settings->email, FILTER_VALIDATE_EMAIL)
+            ? $this->settings->email
+            : $fromEmail;
 
         return new Envelope(
             from: new Address($fromEmail, $fromName),
+            replyTo: [new Address($replyToEmail, $fromName)],
             subject: $this->emailSubject,
         );
     }

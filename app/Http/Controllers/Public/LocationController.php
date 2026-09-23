@@ -16,7 +16,10 @@ class LocationController extends Controller
     public function index(Request $request, CurrencyService $currencyService)
     {
         $settings = CompanySetting::getSettings();
-        $categories = \App\Models\PropertyCategory::where('status', 'active')->get();
+        $categories = \App\Models\PropertyCategory::where('status', 'active')->get()->sortBy(function ($c) {
+            $order = ['villa' => 1, 'house' => 2, 'rent' => 3, 'land' => 4, 'restaurant' => 5, 'bar' => 6, 'hotel' => 7];
+            return $order[strtolower($c->slug)] ?? 99;
+        })->values();
         $priceRangeOptions = $currencyService->getPriceRangeOptions();
         
         $query = Location::where('status', 'active')->withCount(['properties' => function ($q) {
@@ -73,14 +76,22 @@ class LocationController extends Controller
         $settings = CompanySetting::getSettings();
         $location = Location::where('slug', $slug)->where('status', 'active')->firstOrFail();
 
-        $query = Property::with(['category', 'location', 'images'])
+        $query = Property::with(['category', 'categories', 'location', 'images'])
             ->where('location_id', $location->id)
             ->where('status', 'published');
 
         if ($request->filled('type')) {
-            $query->whereHas('category', function ($qc) use ($request) {
-                $qc->where('slug', $request->type)
-                   ->orWhere('id', $request->type);
+            $type = $request->type;
+            $typeMatch = strtolower($type) === 'restaurant-bar-hotel' 
+                ? ['hotel', 'restaurant', 'bar'] 
+                : [$type];
+
+            $query->where(function ($q) use ($typeMatch, $type) {
+                $q->whereHas('categories', function ($cq) use ($typeMatch, $type) {
+                    $cq->whereIn('slug', $typeMatch)->orWhereIn('property_categories.id', (array)$type);
+                })->orWhereHas('category', function ($cq) use ($typeMatch, $type) {
+                    $cq->whereIn('slug', $typeMatch)->orWhereIn('id', (array)$type);
+                });
             });
         }
 

@@ -124,7 +124,7 @@
                             @endif
                         </div>
                         <div class="property-card-body">
-                            <div class="property-category-tag">{{ $prop->category->name ?? 'Villa' }}</div>
+                            <div class="property-category-tag">{{ $prop->category_badge }}</div>
                             <h3 class="property-card-title">{{ $prop->name }}</h3>
                             <div class="property-location-tag">
                                 <i data-lucide="map-pin" class="lucide-icon lucide-icon-sm" style="color: var(--text-muted); margin-right: 4px;"></i> {{ $prop->location->name ?? 'North Bali' }}

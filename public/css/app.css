@@ -314,6 +314,9 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 6px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .property-card-title {
@@ -359,31 +362,49 @@ a:hover {
 /* Category & Statistics Cards */
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
 }
 .category-card {
   background-color: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 24px 16px;
+  padding: 20px 8px;
   text-align: center;
   box-shadow: var(--shadow-sm);
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all var(--transition-normal);
+  height: 100%;
 }
 .category-card:hover {
   border-color: var(--medium-blue);
   background-color: var(--accent-lavender);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 .category-card-icon {
-  font-size: 32px;
+  font-size: 28px;
   color: var(--primary-navy);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .category-card-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--primary-navy);
+  margin-bottom: 3px;
+  white-space: nowrap;
+}
+.category-card .caption {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .stats-grid {
@@ -593,10 +614,14 @@ textarea.form-control {
 /* Responsive Rules */
 @media (max-width: 1024px) {
   .property-grid { grid-template-columns: repeat(2, 1fr); }
-  .category-grid { grid-template-columns: repeat(3, 1fr); }
+  .category-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .search-bar-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .category-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
 }
 
 @media (max-width: 640px) {
@@ -605,12 +630,19 @@ textarea.form-control {
   h3, .h3 { font-size: 22px; }
   body { font-size: 16px; }
   .property-grid { grid-template-columns: 1fr; }
-  .category-grid { grid-template-columns: repeat(2, 1fr); }
+  .category-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .stats-grid { grid-template-columns: 1fr; }
   .search-bar-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .navbar { height: auto; padding: 16px 0; flex-direction: column; gap: 16px; }
   .nav-menu { flex-direction: column; gap: 12px; }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 
 /* Lucide Icon Utilities */
@@ -783,6 +815,8 @@ textarea.form-control {
   color: var(--primary-navy);
   margin-bottom: 12px;
   line-height: 1.2;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .property-detail-page .pdp-meta-bar {
   display: flex;
@@ -937,6 +971,8 @@ textarea.form-control {
   line-height: 1.8;
   color: var(--text-primary);
   white-space: pre-line;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* Vertical Room Gallery Showcase */

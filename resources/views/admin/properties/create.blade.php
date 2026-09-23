@@ -44,7 +44,7 @@
         <div class="admin-card" style="padding: 28px;">
             <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #F1F5F9; padding-bottom: 10px;">1. General Information</h3>
 
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 20px;">
+            <div class="form-grid-2-1" style="margin-bottom: 20px;">
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" for="name">Property Name *</label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="e.g. Azure Vista Oceanfront Residence" value="{{ old('name') }}" style="width: 100%;" required oninput="updateLivePreview()">
@@ -57,15 +57,30 @@
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 20px;">
+            <div class="form-grid-2" style="margin-bottom: 20px;">
                 <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label" for="category_id">Category / Property Type *</label>
+                    <label class="form-label" for="category_id">Primary Category *</label>
                     <select name="category_id" id="category_id" class="form-select" style="width: 100%;" required onchange="updateLivePreview()">
                         <option value="">Select Category...</option>
                         @foreach($categories as $c)
                             <option value="{{ $c->id }}" data-name="{{ $c->name }}" {{ old('category_id') == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
                         @endforeach
                     </select>
+
+                    <div style="margin-top: 12px;">
+                        <label class="form-label" style="font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 6px;">Assigned Categories (Multi-Category Support):</label>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            @foreach($categories as $c)
+                                @php
+                                    $assigned = (is_array(old('category_ids')) && in_array($c->id, old('category_ids'))) || (old('category_id') == $c->id);
+                                @endphp
+                                <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; background: #F8FAFC; padding: 4px 10px; border-radius: 6px; border: 1px solid #E2E8F0;">
+                                    <input type="checkbox" name="category_ids[]" value="{{ $c->id }}" {{ $assigned ? 'checked' : '' }}>
+                                    <span>{{ $c->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 0;">
@@ -79,7 +94,7 @@
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 20px;">
+            <div class="form-grid-3" style="margin-bottom: 20px;">
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" for="price">Price (IDR)</label>
                     <input type="number" step="1" name="price" id="price" class="form-control" placeholder="Leave blank for Price on Request" value="{{ old('price') }}" style="width: 100%;" oninput="updateLivePreview()">
@@ -134,7 +149,7 @@
         <div class="admin-card" style="padding: 28px; margin-bottom: 24px;">
             <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #F1F5F9; padding-bottom: 10px;">2. Key Information</h3>
 
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 20px;">
+            <div class="form-grid-4" style="margin-bottom: 20px;">
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" for="bedrooms">Bedrooms</label>
                     <input type="number" name="bedrooms" id="bedrooms" class="form-control" value="{{ old('bedrooms', 3) }}" placeholder="e.g. 3" style="width: 100%;" oninput="updateLivePreview()">
@@ -159,7 +174,7 @@
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 24px;">
+            <div class="form-grid-3" style="margin-bottom: 24px;">
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" for="garage">Garage (Cars)</label>
                     <input type="number" name="garage" id="garage" class="form-control" value="{{ old('garage', 2) }}" placeholder="e.g. 2" style="width: 100%;" oninput="updateLivePreview()">
@@ -176,7 +191,7 @@
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+            <div class="form-grid-2">
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label" for="furnishing">Furnishing Status</label>
                     <select name="furnishing" id="furnishing" class="form-select" style="width: 100%;" onchange="updateLivePreview()">
@@ -198,7 +213,7 @@
             <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin-bottom: 12px; border-bottom: 1px solid #F1F5F9; padding-bottom: 10px;">3. Property Features (Displayed on Public Page)</h3>
             <p style="font-size: 13px; color: #64748B; margin-bottom: 20px;">Only selected features will be displayed on the Public Property detail page.</p>
 
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+            <div class="form-grid-3" style="gap: 16px;">
                 <label style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; cursor: pointer;">
                     <input type="checkbox" name="features[]" value="swimming_pool" checked onchange="updateLivePreview()">
                     <span style="font-size: 14px; font-weight: 500; color: #1E293B;">🏊 Swimming Pool</span>

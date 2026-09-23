@@ -144,7 +144,7 @@
                 @if($property->category)
                     <span class="pdp-meta-item">
                         <i data-lucide="home" class="lucide-icon lucide-icon-sm" style="color: var(--primary-navy);"></i>
-                        <span>{{ $property->category->name }}</span>
+                        <span>{{ $property->category_badge }}</span>
                     </span>
                 @endif
                 @if($property->is_featured)
@@ -165,8 +165,12 @@
                 <!-- Main Highlight Photo Hero -->
                 <div class="pdp-hero-container" id="pdpHeroBox" @if($mainImageUrl) style="cursor: pointer;" title="Click to view full screen photo viewer" @endif>
                     @if($mainImageUrl)
+                        @php
+                            $coverImg = $allImages->firstWhere('is_cover', true) ?? $allImages->first();
+                            $heroAlt = $coverImg ? ($coverImg->image_alt ?: $coverImg->alt_text) : ($property->name . ' in ' . ($property->location->name ?? 'North Bali') . ', North Bali');
+                        @endphp
                         <img src="{{ $mainImageUrl }}" 
-                             alt="{{ $property->name }} - {{ $property->category->name ?? 'Property' }} in {{ $property->location->name ?? 'North Bali' }}" 
+                             alt="{{ $heroAlt }}" 
                              id="pdpHeroImg" 
                              class="pdp-hero-img"
                              onerror="this.onerror=null;this.style.display='none';">
@@ -193,12 +197,12 @@
                         <div class="pdp-thumb-strip" id="pdpThumbStrip">
                             @foreach($allImages as $index => $img)
                                 <button type="button" 
-                                        class="pdp-thumb-item {{ $index === 0 ? 'active' : '' }}" 
-                                        data-src="{{ $img->image_url }}" 
-                                        data-index="{{ $index + 1 }}"
-                                        aria-label="View photo {{ $index + 1 }}">
+                                         class="pdp-thumb-item {{ $index === 0 ? 'active' : '' }}" 
+                                         data-src="{{ $img->image_url }}" 
+                                         data-index="{{ $index + 1 }}"
+                                         aria-label="View photo {{ $index + 1 }}">
                                     <img src="{{ $img->image_url }}" 
-                                         alt="{{ $property->name }} photo {{ $index + 1 }} in {{ $property->location->name ?? 'North Bali' }}"
+                                         alt="{{ $img->image_alt ?: $img->alt_text }}"
                                          onerror="this.onerror=null;this.style.display='none';">
                                 </button>
                             @endforeach
@@ -211,19 +215,15 @@
                     <div style="margin-bottom: 32px;"></div>
                 @endif
 
+                @if(!empty(trim($property->description ?? '')))
                 <!-- About This Property -->
                 <section class="pdp-section" id="about-property">
                     <h2 class="pdp-section-title">About This Property</h2>
                     <div class="pdp-description-text">
-                        @if(!empty(trim($property->description ?? '')))
-                            {!! nl2br(e($property->description)) !!}
-                        @else
-                            <p style="color: var(--text-muted); font-style: italic; margin-bottom: 0;">
-                                Detailed description and overview for this listing will be updated soon. Please contact us directly for inquiries, zoning details, and viewing arrangements regarding this property.
-                            </p>
-                        @endif
+                        {!! nl2br(e($property->description)) !!}
                     </div>
                 </section>
+                @endif
 
                 <!-- Detailed Photo Gallery (Vertical room-by-room explore) -->
                 @if($allImages->count() > 0)
@@ -244,7 +244,7 @@
                                      title="Click to view {{ $photoTitle }} in full screen">
                                     <div class="pdp-gallery-img-wrap">
                                         <img src="{{ $galleryImg->image_url }}" 
-                                             alt="{{ $property->name }} - {{ $photoTitle }}" 
+                                             alt="{{ $galleryImg->image_alt ?: $galleryImg->alt_text }}" 
                                              loading="lazy"
                                              onerror="this.onerror=null;this.style.display='none';">
                                     </div>
@@ -498,7 +498,7 @@
                             @if($property->category)
                                 <tr>
                                     <td class="label">Property Type</td>
-                                    <td class="value">{{ $property->category->name }}</td>
+                                    <td class="value">{{ $property->category_badge }}</td>
                                 </tr>
                             @endif
 
@@ -595,7 +595,7 @@
                                     </div>
                                 @endif
                                 @if($similar->category)
-                                    <span class="pdp-related-cat-badge">{{ $similar->category->name }}</span>
+                                    <span class="pdp-related-cat-badge">{{ $similar->category_badge }}</span>
                                 @endif
                             </div>
                             <div class="pdp-related-body">
