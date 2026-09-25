@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>@yield('title', 'Admin Dashboard') - PT Lovina North Bali</title>
+    <link rel="icon" type="image/x-icon" href="{{ $settings->favicon_url ?? asset('favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -15,7 +16,7 @@
     <!-- Admin Sidebar -->
     <aside class="admin-sidebar" id="admin-sidebar">
         <div class="admin-sidebar-header" style="display: flex; justify-content: center; align-items: center; padding: 20px 15px;">
-            <img src="{{ asset('images/white logo lovina.png') }}" alt="PT LOVINA NORTH BALI" style="height: 115px; max-width: 100%; object-fit: contain;">
+            <img src="{{ $settings->logo_alt_url ?? asset('images/white logo lovina.png') }}" alt="PT LOVINA NORTH BALI" style="height: 115px; max-width: 100%; object-fit: contain;" onerror="this.onerror=null;this.src='{{ asset('images/white logo lovina.png') }}';">
         </div>
 
         <div style="padding-top: 16px; flex-grow: 1;">

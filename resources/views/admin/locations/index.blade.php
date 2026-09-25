@@ -69,8 +69,8 @@
                     <tr>
                         <td>
                             <div style="width: 64px; height: 48px; border-radius: 6px; overflow: hidden; border: 1px solid #E2E8F0; background-color: #F1F5F9;">
-                                @if($loc->image)
-                                    <img src="{{ asset('storage/' . $loc->image) }}" 
+                                @if($loc->has_image)
+                                    <img src="{{ $loc->image_url }}" 
                                          alt="{{ $loc->name }}" 
                                          style="width: 100%; height: 100%; object-fit: cover;"
                                          onerror="this.style.display='none'">
@@ -434,7 +434,7 @@ function openLocationDrawer(mode, data = null) {
             const previewWrap = document.getElementById('drawer-img-preview-wrap');
             const previewTag = document.getElementById('drawer-img-preview-tag');
             previewWrap.style.display = 'block';
-            previewTag.src = `/storage/${data.image}`;
+            previewTag.src = data.image.startsWith('http') ? data.image : (data.image.startsWith('images/') ? '/' + data.image : '/storage/' + data.image);
         }
         
         updateDrawerCounter(document.getElementById('locationDescInput'));
@@ -521,7 +521,7 @@ function viewLocationDetails(btn) {
     // Image
     const imgTag = document.getElementById('view-drawer-img');
     if (data.image) {
-        imgTag.src = `/storage/${data.image}`;
+        imgTag.src = data.image.startsWith('http') ? data.image : (data.image.startsWith('images/') ? '/' + data.image : '/storage/' + data.image);
         imgTag.style.display = 'block';
     } else {
         imgTag.src = '';
@@ -559,7 +559,7 @@ function triggerDeleteLocation(btn) {
     const imgTag = document.getElementById('delete-preview-img-tag');
     if (imgTag) {
         if (data.image) {
-            imgTag.src = `/storage/${data.image}`;
+            imgTag.src = data.image.startsWith('http') ? data.image : (data.image.startsWith('images/') ? '/' + data.image : '/storage/' + data.image);
             imgTag.style.display = 'block';
         } else {
             imgTag.src = '';

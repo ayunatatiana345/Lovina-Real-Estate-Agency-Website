@@ -272,6 +272,11 @@
             </div>
 
             <!-- Upload Area with Multi-Batch Queuing -->
+            @php
+                $covers = $property->images->where('is_cover', true);
+                $activeCoverId = $covers->sortByDesc('sort_order')->first()?->id;
+            @endphp
+            <input type="hidden" name="existing_cover_id" id="existing_cover_id" value="{{ $activeCoverId ?: '' }}">
             <input type="hidden" name="new_cover_index" id="new_cover_index" value="">
             <label class="gallery-upload-zone" for="images" style="border: 2px dashed #CBD5E1; border-radius: 8px; padding: 36px 20px; text-align: center; display: block; cursor: pointer; background-color: #F8FAFC; margin-bottom: 28px;">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" style="margin-bottom: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
@@ -290,23 +295,27 @@
             <h4 style="font-size: 14px; font-weight: 700; color: #0F172A; margin-bottom: 14px;">Existing Property Photos ({{ $property->images->count() }}):</h4>
             <div class="gallery-grid" id="gallery-preview-grid">
                 @forelse($property->images as $img)
+                    @php
+                        $isThisCover = ($activeCoverId !== null && $img->id === $activeCoverId);
+                    @endphp
                     <div class="gallery-card" id="gallery-card-{{ $img->id }}" style="position: relative; border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden; background-color: #FFFFFF;">
                         <div class="gallery-card-img-wrap" style="height: 140px; overflow: hidden; position: relative;">
                             <img src="{{ $img->image_url }}" alt="{{ $img->image_alt ?: 'Property Image' }}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null;this.style.display='none';">
                         </div>
                         
-                        @if($img->is_cover)
-                            <span class="cover-badge" style="position: absolute; top: 8px; left: 8px; background-color: #C7A86D; color: white; font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">★ Cover</span>
-                        @endif
+                        <span class="cover-badge" id="cover-badge-{{ $img->id }}" style="display: {{ $isThisCover ? 'inline-block' : 'none' }}; position: absolute; top: 8px; left: 8px; background-color: #C7A86D; color: white; font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">★ Cover</span>
 
                         <button type="button" onclick="deletePropertyImage({{ $img->id }})" style="position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%; border: none; background-color: rgba(220,38,38,0.9); color: white; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; line-height: 1;" title="Delete image">&times;</button>
 
                         <div style="padding: 10px; display: flex; align-items: center; justify-content: space-between; background-color: #F8FAFC; border-top: 1px solid #E2E8F0;">
-                            @if(!$img->is_cover)
-                                <button type="button" onclick="setAsCover({{ $img->id }})" class="btn btn-outline" style="padding: 4px 8px; font-size: 11px; font-weight: 600; color: #2563EB; border: 1px solid #BFDBFE;">Set as Cover</button>
-                            @else
-                                <span style="font-size: 11px; color: #166534; font-weight: 700;">✓ Main Cover</span>
-                            @endif
+                            <div class="cover-action-wrap" id="cover-action-wrap-{{ $img->id }}">
+                                @if($isThisCover)
+                                    <span class="main-cover-label" style="font-size: 11px; color: #166534; font-weight: 700;">✓ Main Cover</span>
+                                    <button type="button" onclick="removeCover({{ $img->id }})" class="btn btn-outline unset-cover-btn" style="padding: 2px 6px; font-size: 10px; color: #DC2626; border: 1px solid #FECACA; margin-left: 6px;" title="Remove cover designation">Unset</button>
+                                @else
+                                    <button type="button" onclick="setAsCover({{ $img->id }})" class="btn btn-outline set-cover-btn" style="padding: 4px 8px; font-size: 11px; font-weight: 600; color: #2563EB; border: 1px solid #BFDBFE;">Set as Cover</button>
+                                @endif
+                            </div>
 
                             <div style="display: flex; gap: 4px;">
                                 <button type="button" class="btn btn-outline" style="padding: 2px 6px; font-size: 10px;" onclick="moveImageLeft('gallery-card-{{ $img->id }}')">&lsaquo;</button>
@@ -493,6 +502,22 @@ function removeEditPendingFile(index) {
 function setNewCoverIndex(index) {
     const coverInput = document.getElementById('new_cover_index');
     if (coverInput) coverInput.value = index;
+
+    // Clear existing images cover in UI and hidden input
+    const existingCoverInput = document.getElementById('existing_cover_id');
+    if (existingCoverInput) existingCoverInput.value = '';
+
+    const cards = document.querySelectorAll('#gallery-preview-grid .gallery-card');
+    cards.forEach(card => {
+        const id = card.id.replace('gallery-card-', '');
+        const badge = card.querySelector('.cover-badge');
+        const actionWrap = card.querySelector('.cover-action-wrap') || card.querySelector('div[id^="cover-action-wrap-"]');
+        if (badge) badge.style.display = 'none';
+        if (actionWrap) {
+            actionWrap.innerHTML = `<button type="button" onclick="setAsCover(${id})" class="btn btn-outline set-cover-btn" style="padding: 4px 8px; font-size: 11px; font-weight: 600; color: #2563EB; border: 1px solid #BFDBFE;">Set as Cover</button>`;
+        }
+    });
+
     renderEditPendingUploads();
 }
 
@@ -537,6 +562,13 @@ function renderEditPendingUploads() {
                     <span style="font-size: 10px; color: #64748B;">${(file.size / 1024).toFixed(0)} KB</span>
                 </div>
             `;
+            if (isCover) {
+                const prevCoverImg = document.getElementById('prev-cover-img');
+                if (prevCoverImg) {
+                    prevCoverImg.src = e.target.result;
+                    prevCoverImg.style.display = 'block';
+                }
+            }
         };
         reader.readAsDataURL(file);
         grid.appendChild(card);
@@ -561,6 +593,28 @@ function deletePropertyImage(imageId) {
             if (card) card.remove();
             const badge = document.getElementById('gallery-count-badge');
             if (badge) badge.innerText = Math.max(0, parseInt(badge.innerText || 1) - 1);
+
+            if (data.new_cover_id) {
+                const nextCoverCard = document.getElementById(`gallery-card-${data.new_cover_id}`);
+                if (nextCoverCard) {
+                    const coverBadge = nextCoverCard.querySelector('.cover-badge');
+                    if (coverBadge) coverBadge.style.display = 'inline-block';
+                    const actionWrap = nextCoverCard.querySelector('.cover-action-wrap') || nextCoverCard.querySelector('div[id^="cover-action-wrap-"]');
+                    if (actionWrap) {
+                        actionWrap.innerHTML = '<span class="main-cover-label" style="font-size: 11px; color: #166534; font-weight: 700;">✓ Main Cover</span>';
+                    }
+                    const existingCoverInput = document.getElementById('existing_cover_id');
+                    if (existingCoverInput) existingCoverInput.value = data.new_cover_id;
+                    const nextImg = nextCoverCard.querySelector('img');
+                    if (nextImg) {
+                        const prevCoverImg = document.getElementById('prev-cover-img');
+                        if (prevCoverImg) {
+                            prevCoverImg.src = nextImg.src;
+                            prevCoverImg.style.display = 'block';
+                        }
+                    }
+                }
+            }
         }
     })
     .catch(err => console.error('Error deleting image:', err));
@@ -568,6 +622,54 @@ function deletePropertyImage(imageId) {
 
 // Set as Main Cover Image
 function setAsCover(imageId) {
+    // 1. Instantly update UI on existing cards
+    const cards = document.querySelectorAll('#gallery-preview-grid .gallery-card');
+    let selectedImgUrl = null;
+
+    cards.forEach(card => {
+        const id = card.id.replace('gallery-card-', '');
+        const badge = card.querySelector('.cover-badge');
+        const actionWrap = card.querySelector('.cover-action-wrap') || card.querySelector('div[id^="cover-action-wrap-"]');
+        
+        if (id === String(imageId)) {
+            if (badge) badge.style.display = 'inline-block';
+            if (actionWrap) {
+                actionWrap.innerHTML = `
+                    <span class="main-cover-label" style="font-size: 11px; color: #166534; font-weight: 700;">✓ Main Cover</span>
+                    <button type="button" onclick="removeCover(${imageId})" class="btn btn-outline unset-cover-btn" style="padding: 2px 6px; font-size: 10px; color: #DC2626; border: 1px solid #FECACA; margin-left: 6px;" title="Remove cover designation">Unset</button>
+                `;
+            }
+            const imgEl = card.querySelector('img');
+            if (imgEl) selectedImgUrl = imgEl.src;
+        } else {
+            if (badge) badge.style.display = 'none';
+            if (actionWrap) {
+                actionWrap.innerHTML = `<button type="button" onclick="setAsCover(${id})" class="btn btn-outline set-cover-btn" style="padding: 4px 8px; font-size: 11px; font-weight: 600; color: #2563EB; border: 1px solid #BFDBFE;">Set as Cover</button>`;
+            }
+        }
+    });
+
+    // 2. Clear any pending new upload cover selection
+    const newCoverInput = document.getElementById('new_cover_index');
+    if (newCoverInput && newCoverInput.value !== '') {
+        newCoverInput.value = '';
+        renderEditPendingUploads();
+    }
+
+    // 3. Set hidden input for form submission
+    const existingCoverInput = document.getElementById('existing_cover_id');
+    if (existingCoverInput) existingCoverInput.value = imageId;
+
+    // 4. Update Live Preview image
+    if (selectedImgUrl) {
+        const prevCoverImg = document.getElementById('prev-cover-img');
+        if (prevCoverImg) {
+            prevCoverImg.src = selectedImgUrl;
+            prevCoverImg.style.display = 'block';
+        }
+    }
+
+    // 5. Send background AJAX to persist in database immediately
     fetch(`/admin/properties/image/${imageId}/set-cover`, {
         method: 'POST',
         headers: {
@@ -576,12 +678,39 @@ function setAsCover(imageId) {
         }
     })
     .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            window.location.reload();
+    .catch(err => console.error('Error setting cover image:', err));
+}
+
+// Remove/Unset Main Cover Image
+function removeCover(imageId) {
+    const cards = document.querySelectorAll('#gallery-preview-grid .gallery-card');
+
+    cards.forEach(card => {
+        const id = card.id.replace('gallery-card-', '');
+        const badge = card.querySelector('.cover-badge');
+        const actionWrap = card.querySelector('.cover-action-wrap') || card.querySelector('div[id^="cover-action-wrap-"]');
+        
+        if (badge) badge.style.display = 'none';
+        if (actionWrap) {
+            actionWrap.innerHTML = `<button type="button" onclick="setAsCover(${id})" class="btn btn-outline set-cover-btn" style="padding: 4px 8px; font-size: 11px; font-weight: 600; color: #2563EB; border: 1px solid #BFDBFE;">Set as Cover</button>`;
+        }
+    });
+
+    const newCoverInput = document.getElementById('new_cover_index');
+    if (newCoverInput) newCoverInput.value = '';
+
+    const existingCoverInput = document.getElementById('existing_cover_id');
+    if (existingCoverInput) existingCoverInput.value = '';
+
+    fetch(`/admin/properties/image/${imageId}/unset-cover`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
         }
     })
-    .catch(err => console.error('Error setting cover image:', err));
+    .then(res => res.json())
+    .catch(err => console.error('Error unsetting cover image:', err));
 }
 
 // Reordering images left/right

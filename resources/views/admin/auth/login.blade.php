@@ -175,6 +175,13 @@
         <h1 class="login-heading">Admin Login</h1>
         <p class="login-subheading">Please sign in to access your admin dashboard</p>
 
+        @if (session('status'))
+            <div style="background-color: #DEF7EC; border: 1px solid #BCF0DA; color: #03543F; padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 24px; text-align: left; display: flex; align-items: center; gap: 8px;" id="login-status-alert">
+                <i data-lucide="check-circle" style="width: 18px; height: 18px; color: #0E9F6E;"></i>
+                <span>{{ session('status') }}</span>
+            </div>
+        @endif
+
         @if($errors->has('login'))
             <div style="background-color: #FEE2E2; border: 1px solid #FCA5A5; color: #991B1B; padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 24px; text-align: left; display: flex; align-items: center; gap: 8px;" id="login-error-alert">
                 <i data-lucide="alert-triangle" style="width: 18px; height: 18px; color: #991B1B;"></i>
@@ -213,6 +220,9 @@
                     <input type="checkbox" name="remember" id="remember" style="width: 16px; height: 16px; accent-color: var(--primary-navy);">
                     <span>Remember Me</span>
                 </label>
+                <a href="{{ route('admin.password.request') }}" id="link-forgot-password" style="color: var(--primary-navy); text-decoration: none; font-weight: 500; font-size: 14px; transition: color 0.2s;" onmouseover="this.style.color='#152C6F'; this.style.textDecoration='underline';" onmouseout="this.style.color='var(--primary-navy)'; this.style.textDecoration='none';">
+                    Forgot Password?
+                </a>
             </div>
 
             <button type="submit" id="btn-admin-login" class="btn-primary">

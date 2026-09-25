@@ -76,6 +76,12 @@ Route::prefix('admin')->group(function () {
     Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
+    // Password Reset Routes
+    Route::get('/forgot-password', [AdminAuthController::class, 'showForgotPasswordForm'])->name('admin.password.request');
+    Route::post('/forgot-password', [AdminAuthController::class, 'sendResetLinkEmail'])->name('admin.password.email');
+    Route::get('/reset-password/{token}', [AdminAuthController::class, 'showResetPasswordForm'])->name('password.reset');
+    Route::post('/reset-password', [AdminAuthController::class, 'resetPassword'])->name('admin.password.update');
+
     // Protected Admin Routes
     Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
@@ -91,6 +97,7 @@ Route::prefix('admin')->group(function () {
 
         // News Articles Management
         Route::get('/articles', [AdminArticleController::class, 'index'])->name('admin.articles.index');
+        Route::get('/articles/views-counts', [AdminArticleController::class, 'getViewsCounts'])->name('admin.articles.views-counts');
         Route::get('/articles/create', [AdminArticleController::class, 'create'])->name('admin.articles.create');
         Route::post('/articles', [AdminArticleController::class, 'store'])->name('admin.articles.store');
         Route::get('/articles/{id}/edit', [AdminArticleController::class, 'edit'])->name('admin.articles.edit');
@@ -107,6 +114,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/properties/{id}/toggle-featured', [AdminPropertyController::class, 'toggleFeatured'])->name('admin.properties.toggle-featured');
         Route::delete('/properties/image/{imageId}', [AdminPropertyController::class, 'deleteImage'])->name('admin.properties.delete-image');
         Route::post('/properties/image/{imageId}/set-cover', [AdminPropertyController::class, 'setCoverImage'])->name('admin.properties.set-cover');
+        Route::post('/properties/image/{imageId}/unset-cover', [AdminPropertyController::class, 'unsetCoverImage'])->name('admin.properties.unset-cover');
         Route::post('/properties/{id}/reorder-images', [AdminPropertyController::class, 'reorderImages'])->name('admin.properties.reorder-images');
 
         Route::post('/properties/categories', [AdminCategoryController::class, 'store'])->name('admin.categories.store');

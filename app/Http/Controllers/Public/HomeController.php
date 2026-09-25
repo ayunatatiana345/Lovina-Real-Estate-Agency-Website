@@ -24,7 +24,7 @@ class HomeController extends Controller
         $hero = CmsContent::getContent('homepage', 'hero', [
             'heading' => 'Welcome to North Bali Real Estate Agency',
             'subheading' => 'If your dream is to live in beautiful North Bali, we can help that dream come true.',
-            'background_image' => 'cms/hero-bg.jpg',
+            'background_image' => null,
         ]);
 
         $featuredProperties = Property::with(['category', 'categories', 'location', 'images'])

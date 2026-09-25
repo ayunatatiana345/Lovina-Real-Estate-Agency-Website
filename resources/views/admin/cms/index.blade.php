@@ -3,6 +3,16 @@
 @section('title', 'Website CMS')
 
 @section('content')
+@php
+    $hasHeroImage = !empty($hero['background_image']) && \Illuminate\Support\Facades\Storage::disk('public')->exists($hero['background_image']);
+    $heroBgAssetUrl = $hasHeroImage ? asset('storage/' . $hero['background_image']) : '';
+
+    $hasBImg = !empty($aboutBanner['image']) && (file_exists(public_path('storage/' . $aboutBanner['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutBanner['image']) || file_exists(public_path($aboutBanner['image'])));
+    $bImgSrc = $hasBImg ? (file_exists(public_path('storage/' . $aboutBanner['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutBanner['image']) ? asset('storage/' . $aboutBanner['image']) : asset($aboutBanner['image'])) : '';
+
+    $hasSImg = !empty($aboutStory['image']) && (file_exists(public_path('storage/' . $aboutStory['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutStory['image']) || file_exists(public_path($aboutStory['image'])));
+    $sImgSrc = $hasSImg ? (file_exists(public_path('storage/' . $aboutStory['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutStory['image']) ? asset('storage/' . $aboutStory['image']) : asset($aboutStory['image'])) : '';
+@endphp
 <!-- Header Area (Matching Reference Images A & B) -->
 <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
     <div>
@@ -219,13 +229,14 @@
 
                 <div class="form-group">
                     <label class="form-label">Hero Background Image</label>
-                    <div style="display: flex; gap: 16px; align-items: flex-start;">
+                    <div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">
                         @php
                             $hasHeroImage = !empty($hero['background_image']) && \Illuminate\Support\Facades\Storage::disk('public')->exists($hero['background_image']);
+                            $heroBgAssetUrl = $hasHeroImage ? asset('storage/' . $hero['background_image']) : '';
                         @endphp
-                        <div id="hero-img-thumb-container" style="width: 140px; height: 90px; border-radius: 8px; overflow: hidden; background-color: #F8FAFC; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center;">
+                        <div id="hero-img-thumb-container" style="width: 140px; height: 90px; border-radius: 8px; overflow: hidden; background-color: #F8FAFC; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; position: relative;">
                             @if($hasHeroImage)
-                                <img src="{{ asset('storage/' . $hero['background_image']) }}" id="prev-hero-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">
+                                <img src="{{ $heroBgAssetUrl }}" id="prev-hero-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">
                             @else
                                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748B; font-family: 'Poppins', sans-serif;" id="hero-img-placeholder">
                                     <i data-lucide="image" style="width: 24px; height: 24px; color: #64748B; margin-bottom: 4px;"></i>
@@ -233,9 +244,17 @@
                                 </div>
                             @endif
                         </div>
-                        <div>
+                        <div style="flex: 1; min-width: 220px;">
                             <input type="file" name="hero_bg" id="hero_bg" class="form-control" accept="image/*" style="margin-bottom: 8px;">
-                            <div style="font-size: 12px; color: #64748B;">Recommended size: 1920 x 800px (JPG, PNG or WebP max 2MB).</div>
+                            <input type="hidden" name="remove_hero_bg" id="remove_hero_bg" value="0">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+                                <button type="button" id="btn-remove-hero-bg" class="btn btn-outline" style="padding: 4px 10px; font-size: 12px; color: #DC2626; border-color: #FECACA; display: {{ $hasHeroImage ? 'inline-flex' : 'none' }}; align-items: center; gap: 4px;" onclick="handleRemoveHeroBg()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span id="btn-remove-hero-bg-text">Remove Image</span>
+                                </button>
+                                <span id="hero-bg-status-hint" style="font-size: 12px; color: #DC2626; font-weight: 600; display: none;">Marked for removal (Click "Save Section" to apply)</span>
+                            </div>
+                            <div style="font-size: 12px; color: #64748B;">Recommended size: 1920 x 800px (JPG, PNG, or WebP max 10MB). Automatically converts to SEO WebP.</div>
                         </div>
                     </div>
                 </div>
@@ -339,17 +358,60 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Select Featured Properties (Check up to 6)</label>
-                    <div style="max-height: 240px; overflow-y: auto; border: 1px solid #CBD5E1; border-radius: 8px; padding: 12px; background-color: #F8FAFC;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <label class="form-label" style="margin-bottom: 0;">Select Featured Properties (Check up to 6)</label>
+                        <span id="featured-selected-counter" style="font-size: 12px; font-weight: 600; color: #0284C7; background-color: #E0F2FE; padding: 2px 8px; border-radius: 12px;">
+                            {{ $allProperties->where('is_featured', true)->count() }} / 6 Selected
+                        </span>
+                    </div>
+
+                    <!-- Search Filter Field -->
+                    <div style="position: relative; margin-bottom: 10px;">
+                        <div style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94A3B8; display: flex; align-items: center; pointer-events: none;">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </div>
+                        <input type="text" id="featured-prop-search" class="form-control" placeholder="Search by property name, location, or category..." style="width: 100%; padding-left: 36px; padding-right: 32px; font-size: 13px; height: 38px; border-radius: 6px; box-sizing: border-box;">
+                        <button type="button" id="featured-prop-search-clear" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94A3B8; cursor: pointer; display: none; padding: 2px; align-items: center; justify-content: center;" title="Clear search">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Property Checkbox List -->
+                    <div id="featured-props-list-container" style="max-height: 260px; overflow-y: auto; border: 1px solid #CBD5E1; border-radius: 8px; padding: 10px 12px; background-color: #F8FAFC;">
                         @foreach($allProperties as $p)
-                            <label style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-bottom: 1px solid #E2E8F0; cursor: pointer;">
+                            @php
+                                $locName = $p->location ? $p->location->name : '';
+                                $catName = $p->category ? $p->category->name : '';
+                            @endphp
+                            <label class="featured-prop-item" data-name="{{ strtolower($p->name) }}" data-location="{{ strtolower($locName) }}" data-category="{{ strtolower($catName) }}" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-bottom: 1px solid #E2E8F0; cursor: pointer;">
                                 <div style="display: flex; align-items: center; gap: 10px;">
                                     <input type="checkbox" name="featured_ids[]" value="{{ $p->id }}" class="featured-prop-checkbox" {{ $p->is_featured ? 'checked' : '' }}>
-                                    <span style="font-weight: 600; font-size: 14px;">{{ $p->name }}</span>
+                                    <div>
+                                        <span style="font-weight: 600; font-size: 14px; color: #0F172A;">{{ $p->name }}</span>
+                                        @if($locName || $catName)
+                                            <span style="font-size: 12px; color: #64748B; margin-left: 6px;">
+                                                ({{ implode(' • ', array_filter([$locName, $catName])) }})
+                                            </span>
+                                        @endif
+                                    </div>
                                 </div>
-                                <span style="font-size: 13px; color: #16A34A; font-weight: 600;">{{ $p->formatted_price_admin }}</span>
+                                <span style="font-size: 13px; color: #16A34A; font-weight: 600; white-space: nowrap; margin-left: 10px;">{{ $p->formatted_price_admin }}</span>
                             </label>
                         @endforeach
+
+                        <div id="featured-prop-no-results" style="display: none; padding: 20px 10px; text-align: center; color: #64748B; font-size: 13px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 6px; display: block;">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            No properties found matching your search.
+                        </div>
                     </div>
                 </div>
 
@@ -602,10 +664,10 @@
                 </div>
                 <div class="cms-preview-body">
                     <!-- Preview 1: Hero -->
-                    <div id="prev-hero-box" style="background-color: #F1F5F9; border: 1px solid #E2E8F0; color: #0F172A; padding: 20px 16px; border-radius: 8px; margin-bottom: 16px; position: relative;">
-                        <div style="font-size: 11px; color: #1E3A8A; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;" id="prev-hero-small-title">{{ $hero['small_title'] ?? 'Find Your Dream' }}</div>
-                        <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin-bottom: 6px; line-height: 1.3;" id="prev-hero-heading">{{ $hero['heading'] ?? '' }}</h3>
-                        <p style="font-size: 12px; color: #475569; line-height: 1.5; margin-bottom: 14px;" id="prev-hero-subheading">{{ $hero['subheading'] ?? '' }}</p>
+                    <div id="prev-hero-box" style="border: 1px solid #E2E8F0; padding: 20px 16px; border-radius: 8px; margin-bottom: 16px; position: relative; {{ $hasHeroImage ? "background: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url('" . $heroBgAssetUrl . "') center/cover no-repeat; color: #FFFFFF;" : "background-color: #F1F5F9; color: #0F172A;" }}">
+                        <div style="font-size: 11px; color: {{ $hasHeroImage ? '#93C5FD' : '#1E3A8A' }}; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;" id="prev-hero-small-title">{{ $hero['small_title'] ?? 'Find Your Dream' }}</div>
+                        <h3 style="font-size: 16px; font-weight: 700; color: {{ $hasHeroImage ? '#FFFFFF' : '#0F172A' }}; margin-bottom: 6px; line-height: 1.3;" id="prev-hero-heading">{{ $hero['heading'] ?? '' }}</h3>
+                        <p style="font-size: 12px; color: {{ $hasHeroImage ? '#F1F5F9' : '#475569' }}; line-height: 1.5; margin-bottom: 14px;" id="prev-hero-subheading">{{ $hero['subheading'] ?? '' }}</p>
                         
                         <!-- Hero Search Box Inside Hero Container (Matching Public Homepage) -->
                         <div id="prev-search-box" style="background-color: #FFFFFF; border: 1px solid #CBD5E1; padding: 10px; border-radius: 6px; font-size: 11px;">
@@ -852,16 +914,31 @@
 
                 <div class="form-group">
                     <label class="form-label" for="banner_image">Banner Image</label>
-                    @php
-                        $hasBImg = !empty($aboutBanner['image']) && (file_exists(public_path('storage/' . $aboutBanner['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutBanner['image']) || file_exists(public_path($aboutBanner['image'])));
-                        $bImgSrc = $hasBImg ? (file_exists(public_path('storage/' . $aboutBanner['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutBanner['image']) ? asset('storage/' . $aboutBanner['image']) : asset($aboutBanner['image'])) : '';
-                    @endphp
-                    <div id="banner-img-thumb-container" style="margin-bottom: 10px; width: 160px; height: 80px; border-radius: 6px; overflow: hidden; border: 1px solid #CBD5E1; {{ $hasBImg ? '' : 'display: none;' }}">
-                        <img src="{{ $bImgSrc }}" id="prev-banner-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">
+                        <div id="banner-img-thumb-container" style="width: 140px; height: 90px; border-radius: 8px; overflow: hidden; background-color: #F8FAFC; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; position: relative;">
+                            @if($hasBImg)
+                                <img src="{{ $bImgSrc }}" id="prev-banner-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">
+                            @else
+                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748B; font-family: 'Poppins', sans-serif;" id="banner-img-placeholder">
+                                    <i data-lucide="image" style="width: 24px; height: 24px; color: #64748B; margin-bottom: 4px;"></i>
+                                    <span style="font-size: 11px; font-weight: 500;">No image uploaded</span>
+                                </div>
+                            @endif
+                        </div>
+                        <div style="flex: 1; min-width: 220px;">
+                            <input type="file" name="banner_image" id="banner_image" class="form-control" accept="image/*" style="margin-bottom: 8px;">
+                            <input type="hidden" name="remove_banner_image" id="remove_banner_image" value="0">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+                                <button type="button" id="btn-remove-banner-image" class="btn btn-outline" style="padding: 4px 10px; font-size: 12px; color: #DC2626; border-color: #FECACA; display: {{ $hasBImg ? 'inline-flex' : 'none' }}; align-items: center; gap: 4px;" onclick="handleRemoveBannerImage()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span id="btn-remove-banner-image-text">Remove Image</span>
+                                </button>
+                                <span id="banner-image-status-hint" style="font-size: 12px; color: #DC2626; font-weight: 600; display: none;">Marked for removal (Click "Save Section" to apply)</span>
+                            </div>
+                            <div style="font-size: 12px; color: #64748B;">Recommended size: 1920 x 400px (JPG, PNG, or WebP max 10MB).</div>
+                        </div>
                     </div>
-                    <input type="file" name="banner_image" id="banner_image" class="form-control" accept="image/*">
                 </div>
-
 
                 <div style="display: flex; justify-content: flex-end;">
                     <button type="button" class="btn btn-primary btn-save-section" data-section="sec-ab-banner" style="padding: 10px 24px;">Save Section</button>
@@ -872,7 +949,6 @@
             <div class="admin-card cms-ab-section" id="sec-ab-story" style="display: none;">
                 <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 14px;">B. Our Story</h3>
 
-
                 <div class="form-group">
                     <label class="form-label" for="story_heading">Heading *</label>
                     <input type="text" name="story_heading" id="story_heading" class="form-control" value="{{ $aboutStory['heading'] ?? 'Our Story' }}" required oninput="updateAboutPreview()">
@@ -880,14 +956,30 @@
 
                 <div class="form-group">
                     <label class="form-label" for="story_image">Story Image</label>
-                    @php
-                        $hasSImg = !empty($aboutStory['image']) && (file_exists(public_path('storage/' . $aboutStory['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutStory['image']) || file_exists(public_path($aboutStory['image'])));
-                        $sImgSrc = $hasSImg ? (file_exists(public_path('storage/' . $aboutStory['image'])) || \Illuminate\Support\Facades\Storage::disk('public')->exists($aboutStory['image']) ? asset('storage/' . $aboutStory['image']) : asset($aboutStory['image'])) : '';
-                    @endphp
-                    <div id="story-img-thumb-container" style="margin-bottom: 10px; width: 160px; height: 80px; border-radius: 6px; overflow: hidden; border: 1px solid #CBD5E1; {{ $hasSImg ? '' : 'display: none;' }}">
-                        <img src="{{ $sImgSrc }}" id="prev-story-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">
+                        <div id="story-img-thumb-container" style="width: 140px; height: 90px; border-radius: 8px; overflow: hidden; background-color: #F8FAFC; border: 1px solid #CBD5E1; display: flex; align-items: center; justify-content: center; position: relative;">
+                            @if($hasSImg)
+                                <img src="{{ $sImgSrc }}" id="prev-story-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">
+                            @else
+                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748B; font-family: 'Poppins', sans-serif;" id="story-img-placeholder">
+                                    <i data-lucide="image" style="width: 24px; height: 24px; color: #64748B; margin-bottom: 4px;"></i>
+                                    <span style="font-size: 11px; font-weight: 500;">No image uploaded</span>
+                                </div>
+                            @endif
+                        </div>
+                        <div style="flex: 1; min-width: 220px;">
+                            <input type="file" name="story_image" id="story_image" class="form-control" accept="image/*" style="margin-bottom: 8px;">
+                            <input type="hidden" name="remove_story_image" id="remove_story_image" value="0">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;">
+                                <button type="button" id="btn-remove-story-image" class="btn btn-outline" style="padding: 4px 10px; font-size: 12px; color: #DC2626; border-color: #FECACA; display: {{ $hasSImg ? 'inline-flex' : 'none' }}; align-items: center; gap: 4px;" onclick="handleRemoveStoryImage()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span id="btn-remove-story-image-text">Remove Image</span>
+                                </button>
+                                <span id="story-image-status-hint" style="font-size: 12px; color: #DC2626; font-weight: 600; display: none;">Marked for removal (Click "Save Section" to apply)</span>
+                            </div>
+                            <div style="font-size: 12px; color: #64748B;">Recommended size: 800 x 600px (JPG, PNG, or WebP max 10MB).</div>
+                        </div>
                     </div>
-                    <input type="file" name="story_image" id="story_image" class="form-control" accept="image/*">
                 </div>
 
                 <div class="form-group">
@@ -1515,22 +1607,195 @@ function updateAboutPreview() {
     }
 }
 
+// Hero Background Image state management
+let savedHeroBgUrl = "{{ (!empty($hasHeroImage) && !empty($heroBgAssetUrl)) ? $heroBgAssetUrl : '' }}";
+let isHeroBgSaved = {{ !empty($hasHeroImage) ? 'true' : 'false' }};
+
+function renderHeroBgPreview(url) {
+    const thumbContainer = document.getElementById('hero-img-thumb-container');
+    const heroPrevBox = document.getElementById('prev-hero-box');
+    const prevSmallTitle = document.getElementById('prev-hero-small-title');
+    const prevHeading = document.getElementById('prev-hero-heading');
+    const prevSubheading = document.getElementById('prev-hero-subheading');
+
+    if (url) {
+        if (thumbContainer) {
+            thumbContainer.innerHTML = `<img src="${url}" id="prev-hero-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
+        }
+        if (heroPrevBox) {
+            heroPrevBox.style.background = `linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), url('${url}') center/cover no-repeat`;
+            heroPrevBox.style.color = '#FFFFFF';
+        }
+        if (prevSmallTitle) prevSmallTitle.style.color = '#93C5FD';
+        if (prevHeading) prevHeading.style.color = '#FFFFFF';
+        if (prevSubheading) prevSubheading.style.color = '#F1F5F9';
+    } else {
+        if (thumbContainer) {
+            thumbContainer.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748B; font-family: 'Poppins', sans-serif;" id="hero-img-placeholder">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 4px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    <span style="font-size: 11px; font-weight: 500;">No image uploaded</span>
+                </div>
+            `;
+        }
+        if (heroPrevBox) {
+            heroPrevBox.style.background = '#F1F5F9';
+            heroPrevBox.style.color = '#0F172A';
+        }
+        if (prevSmallTitle) prevSmallTitle.style.color = '#1E3A8A';
+        if (prevHeading) prevHeading.style.color = '#0F172A';
+        if (prevSubheading) prevSubheading.style.color = '#475569';
+    }
+}
+
+function handleRemoveHeroBg() {
+    const heroBgInput = document.getElementById('hero_bg');
+    const removeInput = document.getElementById('remove_hero_bg');
+    const removeBtn = document.getElementById('btn-remove-hero-bg');
+    const removeBtnText = document.getElementById('btn-remove-hero-bg-text');
+    const statusHint = document.getElementById('hero-bg-status-hint');
+
+    // Case 1: A new file was selected in the file input (cancel new selection)
+    if (heroBgInput && heroBgInput.files && heroBgInput.files.length > 0) {
+        heroBgInput.value = '';
+        if (isHeroBgSaved && savedHeroBgUrl) {
+            renderHeroBgPreview(savedHeroBgUrl);
+            if (removeInput) removeInput.value = '0';
+            if (removeBtn) removeBtn.style.display = 'inline-flex';
+            if (removeBtnText) removeBtnText.textContent = 'Remove Image';
+            if (statusHint) statusHint.style.display = 'none';
+        } else {
+            renderHeroBgPreview(null);
+            if (removeInput) removeInput.value = '0';
+            if (removeBtn) removeBtn.style.display = 'none';
+            if (statusHint) statusHint.style.display = 'none';
+        }
+        return;
+    }
+
+    // Case 2: Toggling removal of saved image
+    if (removeInput) {
+        if (removeInput.value === '0') {
+            // Mark for removal
+            removeInput.value = '1';
+            renderHeroBgPreview(null);
+            if (removeBtnText) removeBtnText.textContent = 'Undo Remove';
+            if (statusHint) statusHint.style.display = 'inline';
+        } else {
+            // Undo removal
+            removeInput.value = '0';
+            renderHeroBgPreview(savedHeroBgUrl);
+            if (removeBtnText) removeBtnText.textContent = 'Remove Image';
+            if (statusHint) statusHint.style.display = 'none';
+        }
+    }
+}
+
 // Live local file preview for Hero BG image upload
 const heroBgInput = document.getElementById('hero_bg');
 if (heroBgInput) {
     heroBgInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
+        const removeInput = document.getElementById('remove_hero_bg');
+        const removeBtn = document.getElementById('btn-remove-hero-bg');
+        const removeBtnText = document.getElementById('btn-remove-hero-bg-text');
+        const statusHint = document.getElementById('hero-bg-status-hint');
+
         if (file) {
+            if (removeInput) removeInput.value = '0';
+            if (removeBtn) removeBtn.style.display = 'inline-flex';
+            if (removeBtnText) removeBtnText.textContent = 'Cancel Selection';
+            if (statusHint) statusHint.style.display = 'none';
+
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const container = document.getElementById('hero-img-thumb-container');
-                if (container) {
-                    container.innerHTML = `<img src="${evt.target.result}" id="prev-hero-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
-                }
+                renderHeroBgPreview(evt.target.result);
             };
             reader.readAsDataURL(file);
         }
     });
+}
+
+// About Us Banner Image state management
+let savedBannerImgUrl = "{{ (!empty($hasBImg) && !empty($bImgSrc)) ? $bImgSrc : '' }}";
+let isBannerImgSaved = {{ !empty($hasBImg) ? 'true' : 'false' }};
+
+function renderBannerImgPreview(url) {
+    const thumbContainer = document.getElementById('banner-img-thumb-container');
+    const bannerBox = document.getElementById('prev-ab-banner-box');
+    const titleEl = document.getElementById('prev-ab-title');
+    const subEl = document.getElementById('prev-ab-sub');
+
+    if (url) {
+        if (thumbContainer) {
+            thumbContainer.innerHTML = `<img src="${url}" id="prev-banner-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
+        }
+        if (bannerBox) {
+            bannerBox.style.background = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('${url}') center/cover no-repeat`;
+            bannerBox.style.color = '#FFFFFF';
+        }
+        if (titleEl) titleEl.style.color = '#FFFFFF';
+        if (subEl) subEl.style.color = '#DBEAFE';
+    } else {
+        if (thumbContainer) {
+            thumbContainer.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748B; font-family: 'Poppins', sans-serif;" id="banner-img-placeholder">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 4px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    <span style="font-size: 11px; font-weight: 500;">No image uploaded</span>
+                </div>
+            `;
+        }
+        if (bannerBox) {
+            bannerBox.style.background = '#F0F7FF';
+            bannerBox.style.border = '1px solid #DBEAFE';
+            bannerBox.style.color = '#0F172A';
+        }
+        if (titleEl) titleEl.style.color = '#0F172A';
+        if (subEl) subEl.style.color = '#475569';
+    }
+}
+
+function handleRemoveBannerImage() {
+    const bannerImgInput = document.getElementById('banner_image');
+    const removeInput = document.getElementById('remove_banner_image');
+    const removeBtn = document.getElementById('btn-remove-banner-image');
+    const removeBtnText = document.getElementById('btn-remove-banner-image-text');
+    const statusHint = document.getElementById('banner-image-status-hint');
+
+    // Case 1: A new file was selected in the file input (cancel new selection)
+    if (bannerImgInput && bannerImgInput.files && bannerImgInput.files.length > 0) {
+        bannerImgInput.value = '';
+        if (isBannerImgSaved && savedBannerImgUrl) {
+            renderBannerImgPreview(savedBannerImgUrl);
+            if (removeInput) removeInput.value = '0';
+            if (removeBtn) removeBtn.style.display = 'inline-flex';
+            if (removeBtnText) removeBtnText.textContent = 'Remove Image';
+            if (statusHint) statusHint.style.display = 'none';
+        } else {
+            renderBannerImgPreview(null);
+            if (removeInput) removeInput.value = '0';
+            if (removeBtn) removeBtn.style.display = 'none';
+            if (statusHint) statusHint.style.display = 'none';
+        }
+        return;
+    }
+
+    // Case 2: Toggling removal of saved image
+    if (removeInput) {
+        if (removeInput.value === '0') {
+            // Mark for removal
+            removeInput.value = '1';
+            renderBannerImgPreview(null);
+            if (removeBtnText) removeBtnText.textContent = 'Undo Remove';
+            if (statusHint) statusHint.style.display = 'inline';
+        } else {
+            // Undo removal
+            removeInput.value = '0';
+            renderBannerImgPreview(savedBannerImgUrl);
+            if (removeBtnText) removeBtnText.textContent = 'Remove Image';
+            if (statusHint) statusHint.style.display = 'none';
+        }
+    }
 }
 
 // Live local file preview for Banner image upload
@@ -1538,29 +1803,96 @@ const bannerImgInput = document.getElementById('banner_image');
 if (bannerImgInput) {
     bannerImgInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
+        const removeInput = document.getElementById('remove_banner_image');
+        const removeBtn = document.getElementById('btn-remove-banner-image');
+        const removeBtnText = document.getElementById('btn-remove-banner-image-text');
+        const statusHint = document.getElementById('banner-image-status-hint');
+
         if (file) {
+            if (removeInput) removeInput.value = '0';
+            if (removeBtn) removeBtn.style.display = 'inline-flex';
+            if (removeBtnText) removeBtnText.textContent = 'Cancel Selection';
+            if (statusHint) statusHint.style.display = 'none';
+
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const container = document.getElementById('banner-img-thumb-container');
-                if (container) {
-                    container.style.display = 'block';
-                    container.innerHTML = `<img src="${evt.target.result}" id="prev-banner-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
-                }
-                const bannerBox = document.getElementById('prev-ab-banner-box');
-                if (bannerBox) {
-                    bannerBox.style.background = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('${evt.target.result}') center/cover no-repeat`;
-                    bannerBox.style.color = '#FFFFFF';
-                    const titleEl = document.getElementById('prev-ab-title');
-                    if (titleEl) titleEl.style.color = '#FFFFFF';
-                    const subEl = document.getElementById('prev-ab-sub');
-                    if (subEl) subEl.style.color = '#DBEAFE';
-                    const bcEl = document.getElementById('prev-ab-bc');
-                    if (bcEl) bcEl.style.color = '#93C5FD';
-                }
+                renderBannerImgPreview(evt.target.result);
             };
             reader.readAsDataURL(file);
         }
     });
+}
+
+// About Us Story Image state management
+let savedStoryImgUrl = "{{ (!empty($hasSImg) && !empty($sImgSrc)) ? $sImgSrc : '' }}";
+let isStoryImgSaved = {{ !empty($hasSImg) ? 'true' : 'false' }};
+
+function renderStoryImgPreview(url) {
+    const thumbContainer = document.getElementById('story-img-thumb-container');
+    const prevStoryCont = document.getElementById('prev-ab-story-img-container');
+    const prevStoryImg = document.getElementById('prev-ab-story-img');
+
+    if (url) {
+        if (thumbContainer) {
+            thumbContainer.innerHTML = `<img src="${url}" id="prev-story-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
+        }
+        if (prevStoryCont) prevStoryCont.style.display = 'block';
+        if (prevStoryImg) prevStoryImg.src = url;
+    } else {
+        if (thumbContainer) {
+            thumbContainer.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748B; font-family: 'Poppins', sans-serif;" id="story-img-placeholder">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 4px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    <span style="font-size: 11px; font-weight: 500;">No image uploaded</span>
+                </div>
+            `;
+        }
+        if (prevStoryCont) prevStoryCont.style.display = 'none';
+        if (prevStoryImg) prevStoryImg.src = '';
+    }
+}
+
+function handleRemoveStoryImage() {
+    const storyImgInput = document.getElementById('story_image');
+    const removeInput = document.getElementById('remove_story_image');
+    const removeBtn = document.getElementById('btn-remove-story-image');
+    const removeBtnText = document.getElementById('btn-remove-story-image-text');
+    const statusHint = document.getElementById('story-image-status-hint');
+
+    // Case 1: A new file was selected in the file input (cancel new selection)
+    if (storyImgInput && storyImgInput.files && storyImgInput.files.length > 0) {
+        storyImgInput.value = '';
+        if (isStoryImgSaved && savedStoryImgUrl) {
+            renderStoryImgPreview(savedStoryImgUrl);
+            if (removeInput) removeInput.value = '0';
+            if (removeBtn) removeBtn.style.display = 'inline-flex';
+            if (removeBtnText) removeBtnText.textContent = 'Remove Image';
+            if (statusHint) statusHint.style.display = 'none';
+        } else {
+            renderStoryImgPreview(null);
+            if (removeInput) removeInput.value = '0';
+            if (removeBtn) removeBtn.style.display = 'none';
+            if (statusHint) statusHint.style.display = 'none';
+        }
+        return;
+    }
+
+    // Case 2: Toggling removal of saved image
+    if (removeInput) {
+        if (removeInput.value === '0') {
+            // Mark for removal
+            removeInput.value = '1';
+            renderStoryImgPreview(null);
+            if (removeBtnText) removeBtnText.textContent = 'Undo Remove';
+            if (statusHint) statusHint.style.display = 'inline';
+        } else {
+            // Undo removal
+            removeInput.value = '0';
+            renderStoryImgPreview(savedStoryImgUrl);
+            if (removeBtnText) removeBtnText.textContent = 'Remove Image';
+            if (statusHint) statusHint.style.display = 'none';
+        }
+    }
 }
 
 // Live local file preview for Story image upload
@@ -1568,20 +1900,20 @@ const storyImgInput = document.getElementById('story_image');
 if (storyImgInput) {
     storyImgInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
+        const removeInput = document.getElementById('remove_story_image');
+        const removeBtn = document.getElementById('btn-remove-story-image');
+        const removeBtnText = document.getElementById('btn-remove-story-image-text');
+        const statusHint = document.getElementById('story-image-status-hint');
+
         if (file) {
+            if (removeInput) removeInput.value = '0';
+            if (removeBtn) removeBtn.style.display = 'inline-flex';
+            if (removeBtnText) removeBtnText.textContent = 'Cancel Selection';
+            if (statusHint) statusHint.style.display = 'none';
+
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const container = document.getElementById('story-img-thumb-container');
-                if (container) {
-                    container.style.display = 'block';
-                    container.innerHTML = `<img src="${evt.target.result}" id="prev-story-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
-                }
-                const prevStoryCont = document.getElementById('prev-ab-story-img-container');
-                const prevStoryImg = document.getElementById('prev-ab-story-img');
-                if (prevStoryCont && prevStoryImg) {
-                    prevStoryCont.style.display = 'block';
-                    prevStoryImg.src = evt.target.result;
-                }
+                renderStoryImgPreview(evt.target.result);
             };
             reader.readAsDataURL(file);
         }
@@ -1627,6 +1959,62 @@ const sectionMap = {
     'sec-ab-stats': 'stats'
 };
 
+function updateAboutImagesFromResponse(images) {
+    if (!images) return;
+
+    if (images.hasOwnProperty('banner_image')) {
+        const removeBInput = document.getElementById('remove_banner_image');
+        const removeBBtn = document.getElementById('btn-remove-banner-image');
+        const removeBBtnText = document.getElementById('btn-remove-banner-image-text');
+        const statusBHint = document.getElementById('banner-image-status-hint');
+        const bannerInput = document.getElementById('banner_image');
+
+        if (bannerInput) bannerInput.value = '';
+        if (removeBInput) removeBInput.value = '0';
+        if (statusBHint) statusBHint.style.display = 'none';
+
+        if (images.banner_image) {
+            savedBannerImgUrl = images.banner_image;
+            isBannerImgSaved = true;
+            renderBannerImgPreview(savedBannerImgUrl);
+            if (removeBBtn) removeBBtn.style.display = 'inline-flex';
+            if (removeBBtnText) removeBBtnText.textContent = 'Remove Image';
+        } else {
+            savedBannerImgUrl = '';
+            isBannerImgSaved = false;
+            renderBannerImgPreview(null);
+            if (removeBBtn) removeBBtn.style.display = 'none';
+            if (removeBBtnText) removeBBtnText.textContent = 'Remove Image';
+        }
+    }
+
+    if (images.hasOwnProperty('story_image')) {
+        const removeSInput = document.getElementById('remove_story_image');
+        const removeSBtn = document.getElementById('btn-remove-story-image');
+        const removeSBtnText = document.getElementById('btn-remove-story-image-text');
+        const statusSHint = document.getElementById('story-image-status-hint');
+        const storyInput = document.getElementById('story_image');
+
+        if (storyInput) storyInput.value = '';
+        if (removeSInput) removeSInput.value = '0';
+        if (statusSHint) statusSHint.style.display = 'none';
+
+        if (images.story_image) {
+            savedStoryImgUrl = images.story_image;
+            isStoryImgSaved = true;
+            renderStoryImgPreview(savedStoryImgUrl);
+            if (removeSBtn) removeSBtn.style.display = 'inline-flex';
+            if (removeSBtnText) removeSBtnText.textContent = 'Remove Image';
+        } else {
+            savedStoryImgUrl = '';
+            isStoryImgSaved = false;
+            renderStoryImgPreview(null);
+            if (removeSBtn) removeSBtn.style.display = 'none';
+            if (removeSBtnText) removeSBtnText.textContent = 'Remove Image';
+        }
+    }
+}
+
 // Section save button handler (Save Section)
 document.querySelectorAll('.btn-save-section').forEach(btn => {
     btn.addEventListener('click', function(e) {
@@ -1660,31 +2048,9 @@ document.querySelectorAll('.btn-save-section').forEach(btn => {
         })
         .then(data => {
             showCmsToast('success', data.message || 'Section updated successfully!');
-            if (data.images) {
-                if (data.images.banner_image) {
-                    const bThumbCont = document.getElementById('banner-img-thumb-container');
-                    if (bThumbCont) {
-                        bThumbCont.style.display = 'block';
-                        bThumbCont.innerHTML = `<img src="${data.images.banner_image}" id="prev-banner-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
-                    }
-                    const bPrevBox = document.getElementById('prev-ab-banner-box');
-                    if (bPrevBox) {
-                        bPrevBox.style.background = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('${data.images.banner_image}') center/cover no-repeat`;
-                    }
-                }
-                if (data.images.story_image) {
-                    const sThumbCont = document.getElementById('story-img-thumb-container');
-                    if (sThumbCont) {
-                        sThumbCont.style.display = 'block';
-                        sThumbCont.innerHTML = `<img src="${data.images.story_image}" id="prev-story-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
-                    }
-                    const sPrevCont = document.getElementById('prev-ab-story-img-container');
-                    const sPrevImg = document.getElementById('prev-ab-story-img');
-                    if (sPrevCont && sPrevImg) {
-                        sPrevCont.style.display = 'block';
-                        sPrevImg.src = data.images.story_image;
-                    }
-                }
+            const imgData = data.images || data.image_urls;
+            if (imgData) {
+                updateAboutImagesFromResponse(imgData);
             }
             updateAboutPreview();
         })
@@ -1739,31 +2105,9 @@ if (btnSaveAllHeader) {
             })
             .then(data => {
                 showCmsToast('success', data.message || 'All About Us sections updated successfully!');
-                if (data.images) {
-                    if (data.images.banner_image) {
-                        const bThumbCont = document.getElementById('banner-img-thumb-container');
-                        if (bThumbCont) {
-                            bThumbCont.style.display = 'block';
-                            bThumbCont.innerHTML = `<img src="${data.images.banner_image}" id="prev-banner-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
-                        }
-                        const bPrevBox = document.getElementById('prev-ab-banner-box');
-                        if (bPrevBox) {
-                            bPrevBox.style.background = `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('${data.images.banner_image}') center/cover no-repeat`;
-                        }
-                    }
-                    if (data.images.story_image) {
-                        const sThumbCont = document.getElementById('story-img-thumb-container');
-                        if (sThumbCont) {
-                            sThumbCont.style.display = 'block';
-                            sThumbCont.innerHTML = `<img src="${data.images.story_image}" id="prev-story-img-thumb" style="width: 100%; height: 100%; object-fit: cover;">`;
-                        }
-                        const sPrevCont = document.getElementById('prev-ab-story-img-container');
-                        const sPrevImg = document.getElementById('prev-ab-story-img');
-                        if (sPrevCont && sPrevImg) {
-                            sPrevCont.style.display = 'block';
-                            sPrevImg.src = data.images.story_image;
-                        }
-                    }
+                const imgData = data.images || data.image_urls;
+                if (imgData) {
+                    updateAboutImagesFromResponse(imgData);
                 }
                 updateAboutPreview();
             })
@@ -1805,6 +2149,62 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Featured Properties Search & Checkbox Limiter (Max 6)
+    const featuredSearchInput = document.getElementById('featured-prop-search');
+    const featuredClearBtn = document.getElementById('featured-prop-search-clear');
+    const featuredPropItems = document.querySelectorAll('.featured-prop-item');
+    const featuredNoResults = document.getElementById('featured-prop-no-results');
+    const featuredCounterBadge = document.getElementById('featured-selected-counter');
+
+    function updateFeaturedCounter() {
+        const checkedCount = document.querySelectorAll('.featured-prop-checkbox:checked').length;
+        if (featuredCounterBadge) {
+            featuredCounterBadge.textContent = `${checkedCount} / 6 Selected`;
+            if (checkedCount >= 6) {
+                featuredCounterBadge.style.backgroundColor = '#FEF3C7';
+                featuredCounterBadge.style.color = '#B45309';
+            } else {
+                featuredCounterBadge.style.backgroundColor = '#E0F2FE';
+                featuredCounterBadge.style.color = '#0284C7';
+            }
+        }
+    }
+
+    if (featuredSearchInput) {
+        featuredSearchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            if (featuredClearBtn) {
+                featuredClearBtn.style.display = query.length > 0 ? 'inline-flex' : 'none';
+            }
+
+            let visibleCount = 0;
+            featuredPropItems.forEach(item => {
+                const name = item.getAttribute('data-name') || '';
+                const location = item.getAttribute('data-location') || '';
+                const category = item.getAttribute('data-category') || '';
+
+                if (!query || name.includes(query) || location.includes(query) || category.includes(query)) {
+                    item.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            if (featuredNoResults) {
+                featuredNoResults.style.display = visibleCount === 0 ? 'block' : 'none';
+            }
+        });
+
+        if (featuredClearBtn) {
+            featuredClearBtn.addEventListener('click', function() {
+                featuredSearchInput.value = '';
+                featuredSearchInput.dispatchEvent(new Event('input'));
+                featuredSearchInput.focus();
+            });
+        }
+    }
+
     // Real-time limiter for Homepage Featured Properties checkboxes (Max 6)
     const featuredCheckboxes = document.querySelectorAll('.featured-prop-checkbox');
     featuredCheckboxes.forEach(cb => {
@@ -1814,6 +2214,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.checked = false;
                 alert('Maximum of 6 featured properties reached. Please unfeature an existing property before selecting another.');
             }
+            updateFeaturedCounter();
         });
     });
 

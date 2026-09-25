@@ -34,6 +34,7 @@ class PropertyImage extends Model
             if (file_exists(public_path($this->image_path))) {
                 return asset($this->image_path);
             }
+            return asset('storage/' . $this->image_path);
         }
         return null;
     }

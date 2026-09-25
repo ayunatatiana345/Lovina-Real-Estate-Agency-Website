@@ -12,11 +12,19 @@ use App\Models\Property;
 use App\Models\PropertyCategory;
 use App\Models\Location;
 use App\Models\CompanySetting;
+use App\Services\HeroImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class WebsiteCmsController extends Controller
 {
+    protected HeroImageService $heroImageService;
+
+    public function __construct(HeroImageService $heroImageService)
+    {
+        $this->heroImageService = $heroImageService;
+    }
+
     public function index(Request $request)
     {
         $tab = $request->query('tab', 'homepage');
@@ -25,7 +33,7 @@ class WebsiteCmsController extends Controller
         // 1. Homepage Sections
         $hero = CmsContent::getContent('homepage', 'hero', [
             'enabled' => true,
-            'background_image' => 'cms/hero-bg.jpg',
+            'background_image' => null,
             'small_title' => 'Find Your Dream',
             'heading' => 'Welcome to North Bali Real Estate Agency',
             'subheading' => 'If your dream is to live in beautiful North Bali, we can help that dream come true.',
@@ -223,7 +231,8 @@ class WebsiteCmsController extends Controller
             $rules['hero_heading'] = 'required|string|max:255';
             $rules['hero_subheading'] = 'required|string';
             $rules['hero_small_title'] = 'nullable|string|max:255';
-            $rules['hero_bg'] = 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:5120';
+            $rules['hero_bg'] = 'nullable|image|mimes:jpeg,png,jpg,webp,svg,gif|max:10240';
+            $rules['remove_hero_bg'] = 'nullable|in:0,1';
         }
         if ($targetSection === 'search' || $targetSection === 'all') {
             $rules['search_placeholder'] = 'nullable|string|max:255';
@@ -280,7 +289,7 @@ class WebsiteCmsController extends Controller
 
         // 1. Hero Section
         if ($targetSection === 'hero' || $targetSection === 'all') {
-            $heroData = CmsContent::getContent('homepage', 'hero');
+            $heroData = CmsContent::getContent('homepage', 'hero', []);
             $heroData['enabled'] = $request->has('hero_enabled');
             $heroData['small_title'] = $request->input('hero_small_title', '');
             $heroData['heading'] = $request->input('hero_heading', $heroData['heading'] ?? '');
@@ -290,7 +299,14 @@ class WebsiteCmsController extends Controller
             $heroData['text_alignment'] = $request->input('hero_text_alignment', 'left');
 
             if ($request->hasFile('hero_bg')) {
-                $heroData['background_image'] = $request->file('hero_bg')->store('cms', 'public');
+                $newPath = $this->heroImageService->processAndStore($request->file('hero_bg'));
+                if ($newPath) {
+                    $this->heroImageService->deleteOldHeroImage($heroData['background_image'] ?? null);
+                    $heroData['background_image'] = $newPath;
+                }
+            } elseif ($request->input('remove_hero_bg') == '1') {
+                $this->heroImageService->deleteOldHeroImage($heroData['background_image'] ?? null);
+                $heroData['background_image'] = null;
             }
 
             if ($request->has('buttons_text')) {
@@ -532,13 +548,15 @@ class WebsiteCmsController extends Controller
             $rules['banner_title'] = 'nullable|string|max:255';
             $rules['banner_subtitle'] = 'nullable|string|max:500';
             $rules['banner_breadcrumb'] = 'nullable|string|max:255';
-            $rules['banner_image'] = 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:5120';
+            $rules['banner_image'] = 'nullable|image|mimes:jpeg,png,jpg,webp,svg,gif|max:10240';
+            $rules['remove_banner_image'] = 'nullable|in:0,1';
         }
         if ($targetSection === 'story' || $targetSection === 'all') {
             $rules['story_label'] = 'nullable|string|max:100';
             $rules['story_heading'] = 'nullable|string|max:255';
             $rules['story_description'] = 'nullable|string';
-            $rules['story_image'] = 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:5120';
+            $rules['story_image'] = 'nullable|image|mimes:jpeg,png,jpg,webp,svg,gif|max:10240';
+            $rules['remove_story_image'] = 'nullable|in:0,1';
         }
         if ($targetSection === 'real_estate' || $targetSection === 'all') {
             $rules['real_estate_title'] = 'nullable|string|max:255';
@@ -595,13 +613,20 @@ class WebsiteCmsController extends Controller
                 $bannerData['breadcrumb'] = $request->input('banner_breadcrumb', 'Home / About Us');
             }
             if ($request->hasFile('banner_image')) {
-                $bannerData['image'] = $request->file('banner_image')->store('cms', 'public');
+                $newPath = $request->file('banner_image')->store('cms', 'public');
+                if (!empty($bannerData['image']) && $bannerData['image'] !== $newPath) {
+                    $this->heroImageService->deleteOldHeroImage($bannerData['image']);
+                }
+                $bannerData['image'] = $newPath;
+            } elseif ($request->input('remove_banner_image') == '1') {
+                if (!empty($bannerData['image'])) {
+                    $this->heroImageService->deleteOldHeroImage($bannerData['image']);
+                }
+                $bannerData['image'] = null;
             }
             CmsContent::updateOrCreate(['page' => 'about_us', 'section_key' => 'banner'], ['content' => $bannerData]);
             $savedData['banner'] = $bannerData;
-            if (!empty($bannerData['image'])) {
-                $savedImageUrls['banner_image'] = asset('storage/' . $bannerData['image']);
-            }
+            $savedImageUrls['banner_image'] = !empty($bannerData['image']) ? asset('storage/' . $bannerData['image']) : null;
         }
 
         // B. Company Story
@@ -617,13 +642,20 @@ class WebsiteCmsController extends Controller
                 $storyData['description'] = $request->input('story_description', '');
             }
             if ($request->hasFile('story_image')) {
-                $storyData['image'] = $request->file('story_image')->store('cms', 'public');
+                $newPath = $request->file('story_image')->store('cms', 'public');
+                if (!empty($storyData['image']) && $storyData['image'] !== $newPath) {
+                    $this->heroImageService->deleteOldHeroImage($storyData['image']);
+                }
+                $storyData['image'] = $newPath;
+            } elseif ($request->input('remove_story_image') == '1') {
+                if (!empty($storyData['image'])) {
+                    $this->heroImageService->deleteOldHeroImage($storyData['image']);
+                }
+                $storyData['image'] = null;
             }
             CmsContent::updateOrCreate(['page' => 'about_us', 'section_key' => 'story'], ['content' => $storyData]);
             $savedData['story'] = $storyData;
-            if (!empty($storyData['image'])) {
-                $savedImageUrls['story_image'] = asset('storage/' . $storyData['image']);
-            }
+            $savedImageUrls['story_image'] = !empty($storyData['image']) ? asset('storage/' . $storyData['image']) : null;
         }
 
         // C. Real Estate Section
@@ -722,6 +754,7 @@ class WebsiteCmsController extends Controller
                 'target_section' => $targetSection,
                 'active_section' => $activeSection,
                 'image_urls' => $savedImageUrls,
+                'images' => $savedImageUrls,
                 'data' => $savedData,
             ]);
         }

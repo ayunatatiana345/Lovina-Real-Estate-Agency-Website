@@ -6,6 +6,9 @@
     <title>@yield('title', $settings->site_title ?? 'PT Lovina North Bali Real Estate Agency')</title>
     <meta name="description" content="@yield('meta_description', $settings->site_description ?? 'Your trusted luxury real estate partner in Lovina, Temukus, Singaraja, and North Bali.')">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ $settings->favicon_url ?? asset('favicon.ico') }}">
+
     <!-- Canonical URL -->
     <link rel="canonical" href="@yield('canonical', url()->current())">
 
@@ -15,13 +18,13 @@
     <meta property="og:description" content="@yield('meta_description', $settings->site_description ?? 'Your trusted luxury real estate partner in North Bali.')">
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:url" content="@yield('canonical', url()->current())">
-    <meta property="og:image" content="@yield('og_image', asset('images/black logo lovina.png'))">
+    <meta property="og:image" content="@yield('og_image', $settings->logo_primary_url ?? asset('images/black logo lovina.png'))">
 
     <!-- Twitter Card SEO -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('title', $settings->site_title ?? 'PT Lovina North Bali Real Estate Agency')">
     <meta name="twitter:description" content="@yield('meta_description', $settings->site_description ?? 'Your trusted luxury real estate partner in North Bali.')">
-    <meta name="twitter:image" content="@yield('og_image', asset('images/black logo lovina.png'))">
+    <meta name="twitter:image" content="@yield('og_image', $settings->logo_primary_url ?? asset('images/black logo lovina.png'))">
 
     <!-- Global Organization / RealEstateAgent Structured Data -->
     <script type="application/ld+json">
@@ -30,8 +33,8 @@
       "@@type": "RealEstateAgent",
       "name": "{{ $settings->company_name ?? 'PT Lovina North Bali Real Estate Agency' }}",
       "url": "{{ url('/') }}",
-      "logo": "{{ asset('images/black logo lovina.png') }}",
-      "image": "{{ asset('images/black logo lovina.png') }}",
+      "logo": "{{ $settings->logo_primary_url ?? asset('images/black logo lovina.png') }}",
+      "image": "{{ $settings->logo_primary_url ?? asset('images/black logo lovina.png') }}",
       "description": "{{ $settings->site_description ?? 'The premier luxury real estate agency in North Bali, specializing in beachfront villas, ocean-view land, and investment properties.' }}",
       "telephone": "{{ $settings->clean_phone ?? '085936666384' }}",
       "email": "{{ $settings->email ?? 'lovinanorthbaliagency2023@gmail.com' }}",
@@ -69,7 +72,7 @@
         <div class="container">
             <nav class="navbar" id="main-navbar">
                 <a href="{{ route('home') }}" class="brand-logo" id="nav-brand-logo" style="text-decoration: none;">
-                    <img src="{{ asset('images/black logo lovina.png') }}" alt="PT LOVINA NORTH BALI" style="height: 54px; width: auto;">
+                    <img src="{{ $settings->logo_primary_url ?? asset('images/black logo lovina.png') }}" alt="PT LOVINA NORTH BALI" style="height: 54px; width: auto;" onerror="this.onerror=null;this.src='{{ asset('images/black logo lovina.png') }}';">
                     <div style="display: flex; flex-direction: column; line-height: 1.15; text-align: left;">
                         <span style="font-size: 15px; font-weight: 800; color: var(--primary-navy, #1E3A8A); letter-spacing: 0.5px; font-family: sans-serif;">LOVINA NORTH BALI</span>
                         <span style="font-size: 10px; font-weight: 600; color: var(--primary-navy, #1E3A8A); opacity: 0.85; letter-spacing: 0.5px; font-family: sans-serif;">REAL ESTATE AGENCY</span>
@@ -138,7 +141,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <img src="{{ asset('images/white logo lovina.png') }}" alt="PT LOVINA NORTH BALI" style="height: 45px; margin-bottom: 20px;">
+                    <img src="{{ $settings->logo_alt_url ?? asset('images/white logo lovina.png') }}" alt="PT LOVINA NORTH BALI" style="height: 45px; margin-bottom: 20px;" onerror="this.onerror=null;this.src='{{ asset('images/white logo lovina.png') }}';">
                     <p style="color: var(--light-blue); margin-bottom: 20px; font-size: 16px;">
                         The premier luxury real estate agency in North Bali. Specializing in oceanfront villas, beachfront land plots, and prime property investments.
                     </p>
@@ -391,7 +394,7 @@
                 <div class="success-modal-visual-content">
                     <!-- Top: Official White Logo -->
                     <div>
-                        <img src="{{ asset('images/white logo lovina.png') }}" alt="PT LOVINA NORTH BALI" style="height: 38px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
+                        <img src="{{ $settings->logo_alt_url ?? asset('images/white logo lovina.png') }}" alt="PT LOVINA NORTH BALI" style="height: 38px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));" onerror="this.onerror=null;this.src='{{ asset('images/white logo lovina.png') }}';">
                     </div>
 
                     <!-- Middle: Brand Tagline Quote -->

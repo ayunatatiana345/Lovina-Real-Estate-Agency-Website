@@ -266,7 +266,7 @@
             </div>
 
             <!-- Upload Area with Multi-Batch Queuing -->
-            <input type="hidden" name="cover_index" id="cover_index" value="0">
+            <input type="hidden" name="cover_index" id="cover_index" value="">
             <label class="gallery-upload-zone" for="images" style="border: 2px dashed #CBD5E1; border-radius: 8px; padding: 36px 20px; text-align: center; display: block; cursor: pointer; background-color: #F8FAFC; margin-bottom: 28px;">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" style="margin-bottom: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                 <div style="font-size: 15px; font-weight: 600; color: #0F172A; margin-bottom: 4px;">Click to select photos or drag and drop</div>
@@ -455,7 +455,9 @@ function renderGalleryPreview() {
     const grid = document.getElementById('gallery-preview-grid');
     if (!grid) return;
     grid.innerHTML = '';
-    const currentCover = parseInt(document.getElementById('cover_index')?.value || 0);
+    const coverVal = document.getElementById('cover_index')?.value;
+    const hasExplicitCover = (coverVal !== '' && coverVal !== undefined && coverVal !== null && !isNaN(parseInt(coverVal)));
+    const currentCover = hasExplicitCover ? parseInt(coverVal) : null;
 
     const countBadge = document.getElementById('gallery-count-badge');
     if (countBadge) countBadge.innerText = galleryDT.files.length;
@@ -464,7 +466,7 @@ function renderGalleryPreview() {
 
     for (let i = 0; i < galleryDT.files.length; i++) {
         const file = galleryDT.files[i];
-        const isCover = (i === currentCover);
+        const isCover = (currentCover !== null && i === currentCover);
         const cardId = 'new-gallery-card-' + i;
         const card = document.createElement('div');
         card.className = 'gallery-card';

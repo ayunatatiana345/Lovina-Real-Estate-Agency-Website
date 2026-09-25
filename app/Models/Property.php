@@ -110,6 +110,7 @@ class Property extends Model
             if (file_exists(public_path($cover->image_path))) {
                 return asset($cover->image_path);
             }
+            return asset('storage/' . $cover->image_path);
         }
         return null;
     }

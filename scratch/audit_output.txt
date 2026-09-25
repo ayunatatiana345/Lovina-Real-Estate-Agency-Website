@@ -1,0 +1,1104 @@
+=== ALL PROPERTIES AUDIT ===
+Property #1: 3 bedrooms House in Tukadmungga (Slug: 3-bedrooms-house-in-tukadmungga)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #2: 10 are Land in Kayuputih Good Access (Slug: 10-are-land-in-kayuputih-good-access)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #3: Beautiful Property in Kaliasem (Slug: beautiful-property-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #4: 35 are Flat land Kaliasem with Beautiful Ricefield & Mountain View (Slug: 35-are-flat-land-kaliasem-with-beautiful-ricefield-mountain-view)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #5: 40 are beautiful Oceanview Land Kaliasem (Slug: 40-are-beautiful-oceanview-land-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #6: 25 and 5 are Land Kayu Putih (Slug: 25-and-5-are-land-kayu-putih)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #7: 18 Are Land with Beautiful View in Tanguwisia (Slug: 18-are-land-with-beautiful-view-in-tanguwisia)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #8: 18.2 Are Land Kaliasem Close to Central (Slug: 182-are-land-kaliasem-close-to-central)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #9: Great Location Resort in Lovina (Slug: great-location-resort-in-lovina)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #10: Good Investment Opportunity with Great View (Slug: good-investment-opportunity-with-great-view)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #11: 2 Bedroom House in Banyualit Close to Toko Rejeki (Slug: 2-bedroom-house-in-banyualit-close-to-toko-rejeki)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #12: 35 Are Land Close to The Beach in Dencarik (Slug: 35-are-land-close-to-the-beach-in-dencarik)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #13: 10 Are Land Close to The Beach In Dencarik (Slug: 10-are-land-close-to-the-beach-in-dencarik)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #14: Premium Land Close to The Beach (Slug: premium-land-close-to-the-beach)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #15: Nice Villa in Lovina (Slug: nice-villa-in-lovina)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #16: 1.5 Are & 3.5 Are Land Kaliasem (Slug: 15-are-35-are-land-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #17: 4 Are Land Kaliasem (Slug: 4-are-land-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #18: 3 Are House Banyualit (Slug: 3-are-house-banyualit)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #19: Brand-New Villa for Sale in Lovina (Slug: brand-new-villa-for-sale-in-lovina)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #20: Unique Villa with Rice Field Views Central Lovina (Slug: unique-villa-with-rice-field-views-central-lovina)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #21: 3 Bedroom Villa with Superb View Kaliasem (Slug: 3-bedroom-villa-with-superb-view-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #22: 2 Bedroom Brand-new House in Kaliasem with Good Access (Slug: 2-bedroom-brand-new-house-in-kaliasem-with-good-access)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #23: 15 Are Land in Kayuputih (Slug: 15-are-land-in-kayuputih)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #24: Superb Villa on The Beach (Slug: superb-villa-on-the-beach)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #25: Villa with Pool in Kayuputih (Slug: villa-with-pool-in-kayuputih)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #26: 2 Bedroom Villa with Pool Close to The Central (Slug: 2-bedroom-villa-with-pool-close-to-the-central)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #27: 20 Are Flat Land in Kaliasem (Slug: 20-are-flat-land-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #28: 25 Are Land with View in Kaliasem (Slug: 25-are-land-with-view-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #29: 2 Bedroom House for Rent Kalibukbuk (Slug: 2-bedroom-house-for-rent-kalibukbuk)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #30: New Villa in Celuk Buluh (Slug: new-villa-in-celuk-buluh)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #31: Villa with Ocean and Sunset View (Slug: villa-with-ocean-and-sunset-view)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #32: Villa with Pool in Kalibukbuk (Slug: villa-with-pool-in-kalibukbuk)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #33: House in Sanggalangit (Slug: house-in-sanggalangit)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #34: Villa Right on The Beach (Slug: villa-right-on-the-beach)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #35: Beachfront Villa in Dencarik (Slug: beachfront-villa-in-dencarik)
+  Total Images in DB: 11
+  Cover Image in DB: ID #35 (properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-10-8153.webp)
+  real_cover_image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-10-8153.webp
+  primary_image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-10-8153.webp
+    - Image #26: is_cover=0 | sort_order=1
+      Path: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-01-1fc8.webp
+      image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-01-1fc8.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #27: is_cover=0 | sort_order=2
+      Path: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-02-fa30.webp
+      image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-02-fa30.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #28: is_cover=0 | sort_order=3
+      Path: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-03-49aa.webp
+      image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-03-49aa.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #29: is_cover=0 | sort_order=4
+      Path: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-04-0d5e.webp
+      image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-04-0d5e.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #30: is_cover=0 | sort_order=5
+      Path: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-05-a751.webp
+      image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-05-a751.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #31: is_cover=0 | sort_order=6
+      Path: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-06-4bde.webp
+      image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-06-4bde.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #32: is_cover=0 | sort_order=7
+      Path: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-07-29f6.webp
+      image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-07-29f6.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #33: is_cover=0 | sort_order=8
+      Path: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-08-51a7.webp
+      image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-08-51a7.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #34: is_cover=0 | sort_order=9
+      Path: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-09-742d.webp
+      image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-09-742d.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #35: is_cover=1 | sort_order=10
+      Path: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-10-8153.webp
+      image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-10-8153.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #36: is_cover=0 | sort_order=11
+      Path: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-11-dc42.webp
+      image_url: http://localhost/storage/properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-11-dc42.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+----------------------------------------
+Property #36: Business Opportunity in Sambangan (Slug: business-opportunity-in-sambangan)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #37: Big Villa, Fantastic Views, A Must See (Slug: big-villa-fantastic-views-a-must-see)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #38: Cozy Place in Kalibukbuk (Slug: cozy-place-in-kalibukbuk)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #39: 2.3 Hectare Land in Cempaga Hills (Slug: 23-hectare-land-in-cempaga-hills)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #40: Newly Renovated Villa 50 Meters from The Beach Central Lovina (Slug: newly-renovated-villa-50-meters-from-the-beach-central-lovina)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #41: High Quality Build House in Kaliasem (Slug: high-quality-build-house-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #42: 98 Are Dividable Land with Superb Ocean View in Kayu Putih (Slug: 98-are-dividable-land-with-superb-ocean-view-in-kayu-putih)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #43: 7.5 Are Land In Anturan (Slug: 75-are-land-in-anturan)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #44: Brand New 2 Storey Villa in Kaliasem (Slug: brand-new-2-storey-villa-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #45: Newly Built Villa Celukbuluh (Slug: newly-built-villa-celukbuluh)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #46: Well Maintained Villa in Kalibukbuk (Slug: well-maintained-villa-in-kalibukbuk)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #47: 89 are land in Tukad Mungga (Slug: 89-are-land-in-tukad-mungga)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #48: 30 are Land with Mountain and Ocean View in Sambangan Near Aling Aling (Slug: 30-are-land-with-mountain-and-ocean-view-in-sambangan-near-aling-aling)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #49: Absolute beachfront Villa in Temukus (Slug: absolute-beachfront-villa-in-temukus)
+  Total Images in DB: 8
+  Cover Image in DB: ID #18 (properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-01-7b96.webp)
+  real_cover_image_url: http://localhost/storage/properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-01-7b96.webp
+  primary_image_url: http://localhost/storage/properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-01-7b96.webp
+    - Image #18: is_cover=1 | sort_order=1
+      Path: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-01-7b96.webp
+      image_url: http://localhost/storage/properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-01-7b96.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #19: is_cover=0 | sort_order=2
+      Path: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-02-e657.webp
+      image_url: http://localhost/storage/properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-02-e657.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #20: is_cover=0 | sort_order=3
+      Path: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-03-10fe.webp
+      image_url: http://localhost/storage/properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-03-10fe.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #21: is_cover=0 | sort_order=4
+      Path: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-04-506a.webp
+      image_url: http://localhost/storage/properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-04-506a.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #22: is_cover=0 | sort_order=5
+      Path: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-05-5cdb.webp
+      image_url: http://localhost/storage/properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-05-5cdb.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #23: is_cover=0 | sort_order=6
+      Path: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-06-071b.webp
+      image_url: http://localhost/storage/properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-06-071b.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #24: is_cover=0 | sort_order=7
+      Path: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-07-c60f.webp
+      image_url: http://localhost/storage/properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-07-c60f.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #25: is_cover=0 | sort_order=8
+      Path: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-08-6abb.webp
+      image_url: http://localhost/storage/properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-08-6abb.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+----------------------------------------
+Property #50: 25 Are Land with Nice View in Kaliasem (Slug: 25-are-land-with-nice-view-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #51: 25 Are Great Ocean View Land in Kaliasem (Slug: 25-are-great-ocean-view-land-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #52: 50 Are Land in Kaliasem (Slug: 50-are-land-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #53: Traditional House in The Village (Slug: traditional-house-in-the-village)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #54: Teak Joglo House with Stunning View (Slug: teak-joglo-house-with-stunning-view)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #58: REDUCED IN PRICE: 2.3 are Beautiful Villa in Celukbuluh (Slug: reduced-in-price-23-are-beautiful-villa-in-celukbuluh)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #59: 6.8 are Local House in Kaliasem (Slug: 68-are-local-house-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #60: 40 Are Land with Beton Road and Ocean View in Kaliasem (Slug: 40-are-land-with-beton-road-and-ocean-view-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #61: Unique Shaped Villa in Banjar (Slug: unique-shaped-villa-in-banjar)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #62: 24 are Land in Kaliasem (Slug: 24-are-land-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #63: 50 are Land with Beautiful Ocean View in Kaliasem (Slug: 50-are-land-with-beautiful-ocean-view-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #64: 42 Are Land in Kaliasem (Slug: 42-are-land-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #65: 9.5 are Land in Kaliasem (Slug: 95-are-land-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #66: 20 Are flat land in Anturan (Slug: 20-are-flat-land-in-anturan)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #67: 8 Are Land in Anturan (Slug: 8-are-land-in-anturan)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #68: 10 Are Land in Anturan (Slug: 10-are-land-in-anturan)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #69: 6.7 Are land in Banyualit with optional 3 are land (Slug: 67-are-land-in-banyualit-with-optional-3-are-land)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #70: 5 Are Land in Kaliasem with Good Access (Slug: 5-are-land-in-kaliasem-with-good-access)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #71: 6 Are Land in Kaliasem with good access (Slug: 6-are-land-in-kaliasem-with-good-access)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #72: 7 Are land in Kaliasem with good access (Slug: 7-are-land-in-kaliasem-with-good-access)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #73: 6 Are Land in Kaliasem with Good Access (Slug: 6-are-land-in-kaliasem-with-good-access-2)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #74: Beautiful Land in Gambuh with Nice View (Slug: beautiful-land-in-gambuh-with-nice-view)
+  Total Images in DB: 3
+  Cover Image in DB: ID #44 (properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-01-c7ed.webp)
+  real_cover_image_url: http://localhost/storage/properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-01-c7ed.webp
+  primary_image_url: http://localhost/storage/properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-01-c7ed.webp
+    - Image #44: is_cover=1 | sort_order=1
+      Path: properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-01-c7ed.webp
+      image_url: http://localhost/storage/properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-01-c7ed.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #45: is_cover=1 | sort_order=2
+      Path: properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-02-c4db.webp
+      image_url: http://localhost/storage/properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-02-c4db.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #46: is_cover=0 | sort_order=3
+      Path: properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-03-a053.webp
+      image_url: http://localhost/storage/properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-03-a053.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+----------------------------------------
+Property #75: 7.5, 12 are Land with Houses and 37.5 are Land in Selat (Slug: 75-12-are-land-with-houses-and-375-are-land-in-selat)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #76: 4 Bedroom Villa in Central Lovina (Slug: 4-bedroom-villa-in-central-lovina)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #77: REDUCED IN PRICE 3 bedroom House Tegal linggah (Slug: 3-bedroom-house-tegal-linggah)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #78: Beachfront Land in Kubutambahan (Slug: beachfront-land-in-kubutambahan)
+  Total Images in DB: 7
+  Cover Image in DB: ID #37 (properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-01-163a.webp)
+  real_cover_image_url: http://localhost/storage/properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-01-163a.webp
+  primary_image_url: http://localhost/storage/properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-01-163a.webp
+    - Image #37: is_cover=1 | sort_order=1
+      Path: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-01-163a.webp
+      image_url: http://localhost/storage/properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-01-163a.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #38: is_cover=0 | sort_order=2
+      Path: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-02-2ed0.webp
+      image_url: http://localhost/storage/properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-02-2ed0.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #39: is_cover=0 | sort_order=3
+      Path: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-03-2103.webp
+      image_url: http://localhost/storage/properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-03-2103.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #40: is_cover=0 | sort_order=4
+      Path: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-04-bf71.webp
+      image_url: http://localhost/storage/properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-04-bf71.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #41: is_cover=0 | sort_order=5
+      Path: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-05-951f.webp
+      image_url: http://localhost/storage/properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-05-951f.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #42: is_cover=0 | sort_order=6
+      Path: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-06-5a40.webp
+      image_url: http://localhost/storage/properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-06-5a40.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #43: is_cover=0 | sort_order=7
+      Path: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-07-6907.webp
+      image_url: http://localhost/storage/properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-07-6907.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+----------------------------------------
+Property #80: Prime Beachfront Land in Sulanyah (Slug: prime-beachfront-land-in-sulanyah)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #82: Land In Gerokgak 1 (Slug: coastal-land-in-gerokgak)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #97: 10 Are land Kaliasem IDR 45 million/are (Slug: 10-are-land-kaliasem-idr-45-millionare)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #98: 15 Are Land in Kaliasem (Slug: 15-are-land-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #99: REDUCED IN PRICE: 3.9 Are Land Close to The Beach In Kalibukbuk (Slug: reduced-in-price-39-are-land-close-to-the-beach-in-kalibukbuk)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #100: Oceanview Land Cempaga (Slug: oceanview-land-cempaga)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #101: 16 are Land on the beach in Banjar (Slug: 16-are-land-on-the-beach-in-banjar)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #102: 3 are Land in Banjar 150 meter from the beach (Slug: 3-are-land-in-banjar-150-meter-from-the-beach)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #103: 10 are Land in Banjar 150 meter from the beach (Slug: 10-are-land-in-banjar-150-meter-from-the-beach)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #104: 42 are Land in Banjar 150 meter from the beach (Slug: 42-are-land-in-banjar-150-meter-from-the-beach)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #105: 17.3 are Land on the beach in Banjar (Slug: 173-are-land-on-the-beach-in-banjar)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #106: 60 are land in Kayu Putih (Slug: 60-are-land-in-kayu-putih)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #107: 43 are Land in Kayu Putih with Ocean and Mountain View (Slug: 43-are-land-in-kayu-putih-with-ocean-and-mountain-view)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #108: 10 are land in Anturan with opportunity (Slug: 10-are-land-in-anturan-with-opportunity)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #109: 3.8 are land in Celukbuluh (Slug: 38-are-land-in-celukbuluh)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #110: 11.4 are land in Kaliasem with beautiful ricefield mountain view (Slug: 114-are-land-in-kaliasem-with-beautiful-ricefield-mountain-view)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #111: 7 are land in Kaliasem with ricefield view (Slug: 7-are-land-in-kaliasem-with-ricefield-view)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #112: 61 are land in Kayu Putih (Slug: 61-are-land-in-kayu-putih)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #113: 15 are land in Kaliasem (Slug: 15-are-land-in-kaliasem-2)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #114: 11.7 are Land in Cempaga (Slug: 117-are-land-in-cempaga)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #115: 6.5 are land Sambangan (Slug: 65-are-land-sambangan)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #116: 5.8 are land Sambangan (Slug: 58-are-land-sambangan)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #117: Land in Kaliasem with bonus house (Slug: land-in-kaliasem-with-bonus-house)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #118: 21 Are flatland Kaliasem (Slug: 21-are-flatland-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #119: 52.5 Are Land Anturan Hills (Slug: 525-are-land-anturan-hills)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #120: 13 Are Land Anturan (Slug: 13-are-land-anturan)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #121: Great Ocean View Land Kaliasem (Slug: great-ocean-view-land-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #122: 7 are Land in Celukbuluh (Slug: 7-are-land-in-celukbuluh)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #123: 12 are Land in Celukbuluh (Slug: 12-are-land-in-celukbuluh)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #124: Beautiful flat land in Kaliasem (Slug: beautiful-flat-land-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #125: Land in Kayuputih 10 are (Slug: land-in-kayuputih-10-are)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #126: Land in Kalibukbuk 2 (Slug: land-in-kalibukbuk-2)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #127: Land in Kalibukbuk (Slug: land-in-kalibukbuk)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #128: Land In Kaliasem 10 (Slug: land-in-kaliasem-10)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #129: Land in Kaliasem 9 (Slug: land-in-kaliasem-9)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #130: 114 are Land in Selat – Gambuh 1 (Slug: 114-are-land-in-selat-gambuh-1)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #131: Land in Kaliasem 1 (Slug: land-in-kaliasem-1)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #132: One and a Half Year Old Cozy Villa in Kaliasem Lovina (Slug: one-and-a-half-year-old-cozy-villa-in-kaliasem-lovina)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #133: Big Villa with 16 Apartments (Slug: big-villa-with-16-apartments)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #134: Breathtaking Villa in Kayu Putih (Slug: breathtaking-villa-in-kayu-putih)
+  Total Images in DB: 8
+  Cover Image in DB: ID #47 (properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-01-fb64.webp)
+  real_cover_image_url: http://localhost/storage/properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-01-fb64.webp
+  primary_image_url: http://localhost/storage/properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-01-fb64.webp
+    - Image #47: is_cover=1 | sort_order=1
+      Path: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-01-fb64.webp
+      image_url: http://localhost/storage/properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-01-fb64.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #48: is_cover=0 | sort_order=2
+      Path: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-02-0b52.webp
+      image_url: http://localhost/storage/properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-02-0b52.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #49: is_cover=0 | sort_order=3
+      Path: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-03-1ad8.webp
+      image_url: http://localhost/storage/properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-03-1ad8.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #50: is_cover=0 | sort_order=4
+      Path: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-04-2e04.webp
+      image_url: http://localhost/storage/properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-04-2e04.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #51: is_cover=0 | sort_order=5
+      Path: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-05-52e5.webp
+      image_url: http://localhost/storage/properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-05-52e5.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #52: is_cover=0 | sort_order=6
+      Path: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-06-e28c.webp
+      image_url: http://localhost/storage/properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-06-e28c.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #53: is_cover=0 | sort_order=7
+      Path: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-07-902e.webp
+      image_url: http://localhost/storage/properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-07-902e.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #54: is_cover=1 | sort_order=8
+      Path: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-08-e192.webp
+      image_url: http://localhost/storage/properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-08-e192.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+----------------------------------------
+Property #135: 2 Newly Build Villas Plus Guesthouse in Kaliasem (Slug: 2-newly-build-villas-plus-guesthouse-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #136: 2 plots of land 50 meter from the beach Banjar (Slug: 2-plots-of-land-50-meter-from-the-beach-banjar)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #137: Central Lovina Absolute Beachfront Teak Wooden Houses (Slug: central-lovina-absolute-beachfront-teak-wooden-houses)
+  Total Images in DB: 10
+  Cover Image in DB: ID #55 (properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-01-af0b.webp)
+  real_cover_image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-01-af0b.webp
+  primary_image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-01-af0b.webp
+    - Image #55: is_cover=1 | sort_order=1
+      Path: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-01-af0b.webp
+      image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-01-af0b.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #56: is_cover=0 | sort_order=2
+      Path: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-02-89d5.webp
+      image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-02-89d5.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #57: is_cover=0 | sort_order=3
+      Path: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-03-3d45.webp
+      image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-03-3d45.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #58: is_cover=0 | sort_order=4
+      Path: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-04-7e7f.webp
+      image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-04-7e7f.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #59: is_cover=0 | sort_order=5
+      Path: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-05-74d7.webp
+      image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-05-74d7.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #60: is_cover=0 | sort_order=6
+      Path: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-06-0277.webp
+      image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-06-0277.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #61: is_cover=0 | sort_order=7
+      Path: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-07-5b89.webp
+      image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-07-5b89.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #62: is_cover=0 | sort_order=8
+      Path: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-08-7318.webp
+      image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-08-7318.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #63: is_cover=0 | sort_order=9
+      Path: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-09-ba3f.webp
+      image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-09-ba3f.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #64: is_cover=1 | sort_order=10
+      Path: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-10-5086.webp
+      image_url: http://localhost/storage/properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-10-5086.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+----------------------------------------
+Property #138: Villa Selina Oceanfront Resort and Yoga Retreat Bondalem (Slug: villa-selina-oceanfront-resort-and-yoga-retreat-bondalem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #139: REDUCED in Price: Spacious Villa in Kaliasem (Slug: reduced-in-price-spacious-villa-in-kaliasem)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #140: Stunning Villa in Lovina (Slug: stunning-villa-in-lovina)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #141: “Love in a Paradise” (Slug: love-in-a-paradise)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #142: House/Homestay in Kalibukbuk (Slug: househomestay-in-kalibukbuk)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #143: Apartment complex in Kalibukbuk (Slug: apartment-complex-in-kalibukbuk)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #144: 3 bedroom house Sambangan (Slug: 3-bedroom-house-sambangan)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #145: Local Modern House in Kalibukbuk (Slug: local-modern-house-in-kalibukbuk)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #146: House In Tukadmungga (Slug: house-in-tukadmungga)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #147: Beautiful Sumatra House (Slug: beautiful-sumatra-house)
+  Total Images in DB: 0
+  Cover Image in DB: NONE
+  real_cover_image_url: NULL
+  primary_image_url: NULL
+----------------------------------------
+Property #148: Four Bedroom Villa in Sing-Sing (Slug: four-bedroom-villa-in-sing-sing)
+  Total Images in DB: 10
+  Cover Image in DB: ID #9 (properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-02-ad8b.webp)
+  real_cover_image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-02-ad8b.webp
+  primary_image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-02-ad8b.webp
+    - Image #8: is_cover=0 | sort_order=1
+      Path: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-01-eaab.webp
+      image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-01-eaab.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #9: is_cover=1 | sort_order=2
+      Path: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-02-ad8b.webp
+      image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-02-ad8b.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #10: is_cover=0 | sort_order=3
+      Path: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-03-b873.webp
+      image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-03-b873.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #11: is_cover=0 | sort_order=4
+      Path: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-04-066d.webp
+      image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-04-066d.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #12: is_cover=0 | sort_order=5
+      Path: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-05-583d.webp
+      image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-05-583d.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #13: is_cover=0 | sort_order=6
+      Path: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-06-2bf5.webp
+      image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-06-2bf5.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #14: is_cover=0 | sort_order=7
+      Path: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-07-e64e.webp
+      image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-07-e64e.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #15: is_cover=0 | sort_order=8
+      Path: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-08-e44b.webp
+      image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-08-e44b.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #16: is_cover=0 | sort_order=9
+      Path: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-09-4c06.webp
+      image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-09-4c06.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+    - Image #17: is_cover=0 | sort_order=10
+      Path: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-10-2b0f.webp
+      image_url: http://localhost/storage/properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-10-2b0f.webp
+      Physical file: Storage=YES, public/storage=YES, public/images=NO, public/path=NO
+----------------------------------------
+
+=== ORPHAN PROPERTY IMAGES (images in DB with non-existent property_id) ===
+Total Orphan Images in DB: 0
+
+=== STORAGE DIRECTORY SCAN ===
+Total files in public storage: 95
+  - Storage file: .gitignore
+  - Storage file: locations/anturan-location-01.webp
+  - Storage file: locations/banjar-location-01.webp
+  - Storage file: locations/banyualit-location-01.webp
+  - Storage file: locations/bondalem-location-01.webp
+  - Storage file: locations/celuk-buluh-location-01.webp
+  - Storage file: locations/cempaga-location-01.webp
+  - Storage file: locations/dencarik-location-01.webp
+  - Storage file: locations/gambuh-location-01.webp
+  - Storage file: locations/gerokgak-location-01.webp
+  - Storage file: locations/kaliasem-location-01.webp
+  - Storage file: locations/kalibukbuk-location-01.webp
+  - Storage file: locations/kayu-putih-location-01.webp
+  - Storage file: locations/kubutambahan-location-01.webp
+  - Storage file: locations/lovina-location-01.webp
+  - Storage file: locations/sambangan-location-01.webp
+  - Storage file: locations/sanggalangit-location-01.webp
+  - Storage file: locations/selat-location-01.webp
+  - Storage file: locations/sing-sing-location-01.webp
+  - Storage file: locations/sulanyah-location-01.webp
+  - Storage file: locations/tangguwisia-location-01.webp
+  - Storage file: locations/tegal-linggah-location-01.webp
+  - Storage file: locations/temukus-location-01.webp
+  - Storage file: locations/tukad-mungga-location-01.webp
+  - Storage file: locations/ucDE7iEV99mgESRGqfJZqiDiS0flLpxpytN0pnpg.png
+  - Storage file: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-01-7b96.webp
+  - Storage file: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-02-e657.webp
+  - Storage file: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-03-10fe.webp
+  - Storage file: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-04-506a.webp
+  - Storage file: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-05-5cdb.webp
+  - Storage file: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-06-071b.webp
+  - Storage file: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-07-c60f.webp
+  - Storage file: properties/absolute-beachfront-villa-in-temukus/absolute-beachfront-villa-in-temukus-08-6abb.webp
+  - Storage file: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-01-163a.webp
+  - Storage file: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-02-2ed0.webp
+  - Storage file: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-03-2103.webp
+  - Storage file: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-04-bf71.webp
+  - Storage file: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-05-951f.webp
+  - Storage file: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-06-5a40.webp
+  - Storage file: properties/beachfront-land-in-kubutambahan/beachfront-land-in-kubutambahan-07-6907.webp
+  - Storage file: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-01-1fc8.webp
+  - Storage file: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-02-fa30.webp
+  - Storage file: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-03-49aa.webp
+  - Storage file: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-04-0d5e.webp
+  - Storage file: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-05-a751.webp
+  - Storage file: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-06-4bde.webp
+  - Storage file: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-07-29f6.webp
+  - Storage file: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-08-51a7.webp
+  - Storage file: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-09-742d.webp
+  - Storage file: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-10-8153.webp
+  - Storage file: properties/beachfront-villa-in-dencarik/beachfront-villa-in-dencarik-11-dc42.webp
+  - Storage file: properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-01-c7ed.webp
+  - Storage file: properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-02-c4db.webp
+  - Storage file: properties/beautiful-land-in-gambuh-with-nice-view/beautiful-land-in-gambuh-with-nice-view-03-a053.webp
+  - Storage file: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-01-fb64.webp
+  - Storage file: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-02-0b52.webp
+  - Storage file: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-03-1ad8.webp
+  - Storage file: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-04-2e04.webp
+  - Storage file: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-05-52e5.webp
+  - Storage file: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-06-e28c.webp
+  - Storage file: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-07-902e.webp
+  - Storage file: properties/breathtaking-villa-in-kayu-putih/breathtaking-villa-in-kayu-putih-08-e192.webp
+  - Storage file: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-01-af0b.webp
+  - Storage file: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-02-89d5.webp
+  - Storage file: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-03-3d45.webp
+  - Storage file: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-04-7e7f.webp
+  - Storage file: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-05-74d7.webp
+  - Storage file: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-06-0277.webp
+  - Storage file: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-07-5b89.webp
+  - Storage file: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-08-7318.webp
+  - Storage file: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-09-ba3f.webp
+  - Storage file: properties/central-lovina-absolute-beachfront-teak-wooden-houses/central-lovina-absolute-beachfront-teak-wooden-houses-10-5086.webp
+  - Storage file: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-01-eaab.webp
+  - Storage file: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-02-ad8b.webp
+  - Storage file: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-03-b873.webp
+  - Storage file: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-04-066d.webp
+  - Storage file: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-05-583d.webp
+  - Storage file: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-06-2bf5.webp
+  - Storage file: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-07-e64e.webp
+  - Storage file: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-08-e44b.webp
+  - Storage file: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-09-4c06.webp
+  - Storage file: properties/four-bedroom-villa-in-sing-sing/four-bedroom-villa-in-sing-sing-10-2b0f.webp
+  - Storage file: properties/location-placeholder.jpg
+  - Storage file: properties/office-building.jpg
+  - Storage file: properties/property-placeholder.jpg
+  - Storage file: properties/sample-article.jpg
+  - Storage file: properties/sample-house-1.jpg
+  - Storage file: properties/sample-house-2.jpg
+  - Storage file: properties/sample-land-1.jpg
+  - Storage file: properties/sample-land-2.jpg
+  - Storage file: properties/sample-rent-1.jpg
+  - Storage file: properties/sample-rent-2.jpg
+  - Storage file: properties/sample-villa-1.jpg
+  - Storage file: properties/sample-villa-2.jpg
+  - Storage file: properties/sample-villa-3.jpg

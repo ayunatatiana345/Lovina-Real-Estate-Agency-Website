@@ -149,8 +149,8 @@
                     
                     <!-- Genuine Image or Neutral Gray Placeholder Box -->
                     <div style="height: 200px; background-color: #E5E7EB; position: relative; flex-shrink: 0; overflow: hidden;">
-                        @if($loc->image && (file_exists(public_path('storage/' . $loc->image)) || file_exists(public_path($loc->image))))
-                            <img src="{{ str_starts_with($loc->image, 'http') ? $loc->image : (file_exists(public_path('storage/' . $loc->image)) ? asset('storage/' . $loc->image) : asset($loc->image)) }}" 
+                        @if($loc->has_image)
+                            <img src="{{ $loc->image_url }}" 
                                  alt="{{ $loc->name }}" 
                                  style="width: 100%; height: 100%; object-fit: cover;"
                                  onerror="this.style.display='none'">

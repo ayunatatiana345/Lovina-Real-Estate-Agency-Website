@@ -54,10 +54,66 @@
         }
     }
 </style>
-@endsection
-
 @section('content')
+@php
+    $hasHeroBg = !empty($hero['background_image']) && \Illuminate\Support\Facades\Storage::disk('public')->exists($hero['background_image']);
+    $heroBgUrl = $hasHeroBg ? asset('storage/' . $hero['background_image']) : null;
+    $overlayOpacity = intval($hero['overlay_opacity'] ?? 60) / 100;
+@endphp
+
 <!-- 1. Hero Section -->
+@if($hasHeroBg)
+<section class="section-spacing" style="position: relative; padding-top: 80px; padding-bottom: 80px; background-image: linear-gradient(rgba(15, 23, 42, {{ $overlayOpacity }}), rgba(15, 23, 42, {{ $overlayOpacity }})), url('{{ $heroBgUrl }}'); background-position: center; background-size: cover; background-repeat: no-repeat;">
+    <div class="container" style="position: relative; z-index: 2;">
+        <div style="max-width: 800px; margin-bottom: 40px;">
+            @if(!empty($hero['small_title']))
+                <div style="font-size: 14px; font-weight: 700; color: #93C5FD; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">{{ $hero['small_title'] }}</div>
+            @endif
+            <h1 style="margin-bottom: 20px; color: #FFFFFF;">{{ $hero['heading'] ?? 'Discover Premier Luxury Real Estate in Beautiful North Bali' }}</h1>
+            <p class="body-text" style="font-size: 20px; color: #F1F5F9;">
+                {{ $hero['subheading'] ?? 'Explore beachfront luxury villas, ocean view land plots, and prime investments in Lovina, Temukus, and Singaraja.' }}
+            </p>
+        </div>
+
+        @if($searchSection['enabled'] ?? true)
+        <!-- Search Bar -->
+        <div class="search-bar-box" id="home-search-bar">
+            <form action="{{ route('properties.index') }}" method="GET" class="search-bar-grid">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" for="keyword">Search Location / Property Name</label>
+                    <input type="text" name="keyword" id="keyword" class="form-control" placeholder="{{ $searchSection['placeholder'] ?? 'e.g. Lovina Villa, Beachfront Land...' }}">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" for="type">Property Type</label>
+                    <select name="type" id="type" class="form-select">
+                        <option value="">All Types</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->slug }}">{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" for="price_range">Price Range</label>
+                    <select name="price_range" id="price_range" class="form-select">
+                        @foreach($priceRangeOptions as $val => $label)
+                            <option value="{{ $val }}" {{ request('price_range') == (string)$val ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary" id="btn-search-home" style="width: 100%; height: 50px;">
+                        <i data-lucide="search" class="lucide-icon lucide-icon-sm" style="margin-right: 6px;"></i> Search
+                    </button>
+                </div>
+            </form>
+        </div>
+        @endif
+    </div>
+</section>
+@else
 <section class="section-spacing bg-light-blue" style="padding-top: 80px; padding-bottom: 80px;">
     <div class="container">
         <div style="max-width: 800px; margin-bottom: 40px;">
@@ -108,6 +164,7 @@
         @endif
     </div>
 </section>
+@endif
 
 <!-- 2. Featured Properties Section (Max 6) -->
 @if($featuredProperties->count() > 0)

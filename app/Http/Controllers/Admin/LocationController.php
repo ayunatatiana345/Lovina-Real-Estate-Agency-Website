@@ -29,12 +29,12 @@ class LocationController extends Controller
         return view('admin.locations.index', compact('locations', 'settings'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, \App\Services\LocationImageService $imageService)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:locations,name',
             'description' => 'required|string|max:2000',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
             'is_popular' => 'nullable|boolean',
             'status' => 'required|in:active,inactive',
         ]);
@@ -49,7 +49,14 @@ class LocationController extends Controller
         $validated['is_popular'] = $request->has('is_popular');
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('locations', 'public');
+            $storedPath = $imageService->processAndStore($request->file('image'), $validated['name']);
+            if ($storedPath) {
+                $validated['image'] = $storedPath;
+            } else {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Failed to process and optimize the uploaded location image.');
+            }
         }
 
         Location::create($validated);
@@ -66,14 +73,14 @@ class LocationController extends Controller
         return redirect()->route('admin.locations.index')->with('success', 'Location created successfully.');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, \App\Services\LocationImageService $imageService)
     {
         $location = Location::findOrFail($id);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:locations,name,' . $id,
             'description' => 'required|string|max:2000',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
             'is_popular' => 'nullable|boolean',
             'status' => 'required|in:active,inactive',
         ]);
@@ -88,10 +95,17 @@ class LocationController extends Controller
         $validated['is_popular'] = $request->has('is_popular');
 
         if ($request->hasFile('image')) {
-            if ($location->image) {
-                Storage::disk('public')->delete($location->image);
+            $storedPath = $imageService->processAndStore($request->file('image'), $validated['name']);
+            if ($storedPath) {
+                if ($location->image && $location->image !== $storedPath) {
+                    $imageService->deleteImage($location->image);
+                }
+                $validated['image'] = $storedPath;
+            } else {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Failed to process and optimize the uploaded location image.');
             }
-            $validated['image'] = $request->file('image')->store('locations', 'public');
         }
 
         $location->update($validated);
@@ -108,7 +122,7 @@ class LocationController extends Controller
         return redirect()->route('admin.locations.index')->with('success', 'Location updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy($id, \App\Services\LocationImageService $imageService)
     {
         $location = Location::findOrFail($id);
 
@@ -119,7 +133,7 @@ class LocationController extends Controller
         }
 
         if ($location->image) {
-            Storage::disk('public')->delete($location->image);
+            $imageService->deleteImage($location->image);
         }
         $location->delete();
 

@@ -90,7 +90,7 @@
                         <td style="font-size: 13px; color: #64748B; white-space: nowrap;">
                             {{ $article->published_at ? $article->published_at->format('d M Y, h:i A \W\I\T\A') : $article->created_at->format('d M Y, h:i A \W\I\T\A') }}
                         </td>
-                        <td style="font-size: 14px; font-weight: 600; color: #0F172A;">
+                        <td class="article-views-cell" data-article-id="{{ $article->id }}" style="font-size: 14px; font-weight: 600; color: #0F172A;">
                             {{ number_format($article->views_count) }}
                         </td>
                         <td>
@@ -139,4 +139,44 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var viewsCells = document.querySelectorAll('.article-views-cell');
+    if (!viewsCells.length) return;
+
+    function fetchArticleViews() {
+        fetch("{{ route('admin.articles.views-counts') }}", {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(function(response) {
+            if (!response.ok) return null;
+            return response.json();
+        })
+        .then(function(data) {
+            if (!data) return;
+            viewsCells.forEach(function(cell) {
+                var articleId = cell.getAttribute('data-article-id');
+                if (data[articleId] !== undefined) {
+                    var formatted = Number(data[articleId]).toLocaleString();
+                    if (cell.textContent.trim() !== formatted) {
+                        cell.textContent = formatted;
+                    }
+                }
+            });
+        })
+        .catch(function(err) {
+            // Silently catch polling errors
+        });
+    }
+
+    // Lightweight polling every 5 seconds for views numbers without full page reload
+    setInterval(fetchArticleViews, 5000);
+});
+</script>
 @endsection

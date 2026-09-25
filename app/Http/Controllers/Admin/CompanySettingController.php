@@ -59,28 +59,28 @@ class CompanySettingController extends Controller
         }
 
         if ($request->hasFile('logo_primary')) {
-            if ($settings->logo_primary) {
+            if ($settings->logo_primary && !str_starts_with($settings->logo_primary, 'images/')) {
                 Storage::disk('public')->delete($settings->logo_primary);
             }
             $data['logo_primary'] = $request->file('logo_primary')->store('branding', 'public');
         }
 
         if ($request->hasFile('logo_alt')) {
-            if ($settings->logo_alt) {
+            if ($settings->logo_alt && !str_starts_with($settings->logo_alt, 'images/')) {
                 Storage::disk('public')->delete($settings->logo_alt);
             }
             $data['logo_alt'] = $request->file('logo_alt')->store('branding', 'public');
         }
 
         if ($request->hasFile('favicon')) {
-            if ($settings->favicon) {
+            if ($settings->favicon && !str_starts_with($settings->favicon, 'images/') && $settings->favicon !== 'favicon.ico') {
                 Storage::disk('public')->delete($settings->favicon);
             }
             $data['favicon'] = $request->file('favicon')->store('branding', 'public');
         }
 
         if ($request->hasFile('seo_social_image')) {
-            if ($settings->seo_social_image) {
+            if ($settings->seo_social_image && !str_starts_with($settings->seo_social_image, 'images/')) {
                 Storage::disk('public')->delete($settings->seo_social_image);
             }
             $data['seo_social_image'] = $request->file('seo_social_image')->store('branding', 'public');

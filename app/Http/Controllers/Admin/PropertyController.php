@@ -131,7 +131,7 @@ class PropertyController extends Controller
             }
 
             if ($request->hasFile('images')) {
-                $chosenCoverIndex = (int)$request->input('cover_index', 0);
+                $chosenCoverIndex = ($request->filled('cover_index') && $request->cover_index !== '') ? (int)$request->input('cover_index') : null;
                 $seq = 0;
                 foreach ($request->file('images') as $index => $file) {
                     if ($file->isValid()) {
@@ -142,18 +142,10 @@ class PropertyController extends Controller
                                 'property_id' => $property->id,
                                 'image_path' => $processed['path'],
                                 'image_alt' => $processed['alt'],
-                                'is_cover' => ($index === $chosenCoverIndex),
+                                'is_cover' => ($chosenCoverIndex !== null && $index === $chosenCoverIndex),
                                 'sort_order' => $seq,
                             ]);
                         }
-                    }
-                }
-
-                // If none was marked as cover, make the first image cover
-                if (!PropertyImage::where('property_id', $property->id)->where('is_cover', true)->exists()) {
-                    $first = PropertyImage::where('property_id', $property->id)->first();
-                    if ($first) {
-                        $first->update(['is_cover' => true]);
                     }
                 }
             }
@@ -246,15 +238,22 @@ class PropertyController extends Controller
                 $property->categories()->sync($catIds);
             }
 
-            if ($request->hasFile('images')) {
-                $hasCover = PropertyImage::where('property_id', $property->id)->where('is_cover', true)->exists();
-                $newCoverIndex = ($request->filled('new_cover_index') && $request->new_cover_index !== '') ? (int)$request->new_cover_index : null;
+            $hasExistingCoverInput = $request->has('existing_cover_id');
+            $existingCoverId = $request->filled('existing_cover_id') ? (int)$request->input('existing_cover_id') : null;
+            $newCoverIndex = ($request->filled('new_cover_index') && $request->new_cover_index !== '') ? (int)$request->new_cover_index : null;
 
-                if ($newCoverIndex !== null) {
-                    PropertyImage::where('property_id', $property->id)->update(['is_cover' => false]);
-                    $hasCover = false;
+            if ($newCoverIndex !== null) {
+                // If a newly uploaded image is explicitly designated as cover, unmark existing covers
+                PropertyImage::where('property_id', $property->id)->update(['is_cover' => false]);
+            } elseif ($hasExistingCoverInput) {
+                // If existing_cover_id is submitted with the form, reset all covers first
+                PropertyImage::where('property_id', $property->id)->update(['is_cover' => false]);
+                if ($existingCoverId !== null) {
+                    PropertyImage::where('property_id', $property->id)->where('id', $existingCoverId)->update(['is_cover' => true]);
                 }
+            }
 
+            if ($request->hasFile('images')) {
                 $maxOrder = PropertyImage::where('property_id', $property->id)->max('sort_order') ?? 0;
                 $existingCount = PropertyImage::where('property_id', $property->id)->count();
 
@@ -263,7 +262,7 @@ class PropertyController extends Controller
                         $sequenceNumber = $existingCount + $index + 1;
                         $processed = $this->imageService->processAndStore($file, $property, $sequenceNumber);
                         if ($processed) {
-                            $isCover = ($newCoverIndex !== null && $index === $newCoverIndex) || (!$hasCover && $index === 0);
+                            $isCover = ($newCoverIndex !== null && $index === $newCoverIndex);
                             PropertyImage::create([
                                 'property_id' => $property->id,
                                 'image_path' => $processed['path'],
@@ -271,18 +270,7 @@ class PropertyController extends Controller
                                 'is_cover' => $isCover,
                                 'sort_order' => ++$maxOrder,
                             ]);
-                            if ($isCover) {
-                                $hasCover = true;
-                            }
                         }
-                    }
-                }
-
-                // Ensure at least one image is cover if images exist
-                if (!PropertyImage::where('property_id', $property->id)->where('is_cover', true)->exists()) {
-                    $firstImg = PropertyImage::where('property_id', $property->id)->orderBy('sort_order', 'asc')->first();
-                    if ($firstImg) {
-                        $firstImg->update(['is_cover' => true]);
                     }
                 }
             }
@@ -371,14 +359,16 @@ class PropertyController extends Controller
             Storage::disk('public')->delete($img->image_path);
             $img->delete();
 
+            $newCoverId = null;
             if ($wasCover) {
                 $nextCover = PropertyImage::where('property_id', $propertyId)->orderBy('sort_order', 'asc')->first();
                 if ($nextCover) {
                     $nextCover->update(['is_cover' => true]);
+                    $newCoverId = $nextCover->id;
                 }
             }
 
-            return response()->json(['success' => true]);
+            return response()->json(['success' => true, 'new_cover_id' => $newCoverId]);
         });
     }
 
@@ -389,7 +379,23 @@ class PropertyController extends Controller
             PropertyImage::where('property_id', $img->property_id)->update(['is_cover' => false]);
             $img->update(['is_cover' => true]);
 
-            return response()->json(['success' => true]);
+            return response()->json([
+                'success' => true,
+                'image_id' => $img->id,
+                'image_url' => $img->image_url,
+            ]);
+        });
+    }
+
+    public function unsetCoverImage($imageId)
+    {
+        return DB::transaction(function () use ($imageId) {
+            $img = PropertyImage::findOrFail($imageId);
+            PropertyImage::where('property_id', $img->property_id)->update(['is_cover' => false]);
+
+            return response()->json([
+                'success' => true,
+            ]);
         });
     }
 

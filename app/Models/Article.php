@@ -31,7 +31,7 @@ class Article extends Model
 
     public function views()
     {
-        return $table = $this->hasMany(ArticleView::class);
+        return $this->hasMany(ArticleView::class);
     }
 
     public function scopePublished($query)
@@ -86,6 +86,9 @@ class Article extends Model
 
     public function getViewsCountAttribute()
     {
+        if (array_key_exists('views_count', $this->attributes)) {
+            return (int) $this->attributes['views_count'];
+        }
         return $this->views()->count();
     }
 }

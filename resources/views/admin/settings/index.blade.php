@@ -73,7 +73,7 @@
                 <label class="form-label">Primary Logo</label>
                 <div class="branding-thumb-box" style="margin-bottom: 0;">
                     <div class="branding-thumb-preview" id="prev-primary-logo-wrap">
-                        <img src="{{ $settings->logo_primary ? asset('storage/' . $settings->logo_primary) : asset('images/logo-placeholder.png') }}" id="prev-primary-logo-img" alt="Primary Logo" onerror="this.onerror=null;this.src='https://via.placeholder.com/120x40?text=LOVINA+NAVY'">
+                        <img src="{{ $settings->logo_primary_url }}" id="prev-primary-logo-img" alt="Primary Logo" style="max-height: 50px; width: auto;" onerror="this.onerror=null;this.src='{{ asset('images/black logo lovina.png') }}';">
                     </div>
                     <div>
                         <div style="display: flex; gap: 8px; margin-bottom: 6px;">
@@ -81,7 +81,7 @@
                                 Change
                                 <input type="file" name="logo_primary" accept="image/*" style="display: none;" onchange="previewBrandingImage(this, 'prev-primary-logo-img')">
                             </label>
-                            <button type="button" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; color: #DC2626; border-color: #FCA5A5;" onclick="clearBrandingImage('prev-primary-logo-img')">Remove</button>
+                            <button type="button" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; color: #DC2626; border-color: #FCA5A5;" onclick="clearBrandingImage('prev-primary-logo-img', '{{ asset('images/black logo lovina.png') }}')">Reset</button>
                         </div>
                         <div style="font-size: 11px; color: #64748B;">Recommended: 300 x 100px PNG or SVG</div>
                     </div>
@@ -92,8 +92,8 @@
             <div class="form-group" style="margin-bottom: 20px;">
                 <label class="form-label">Alternative Logo</label>
                 <div class="branding-thumb-box" style="margin-bottom: 0;">
-                    <div class="branding-thumb-preview" id="prev-alt-logo-wrap">
-                        <img src="{{ $settings->logo_alt ? asset('storage/' . $settings->logo_alt) : asset('images/logo-alt-placeholder.png') }}" id="prev-alt-logo-img" alt="Alternative Logo" onerror="this.onerror=null;this.src='https://via.placeholder.com/120x40?text=LOVINA+ALT'">
+                    <div class="branding-thumb-preview" id="prev-alt-logo-wrap" style="background-color: #0F172A;">
+                        <img src="{{ $settings->logo_alt_url }}" id="prev-alt-logo-img" alt="Alternative Logo" style="max-height: 50px; width: auto;" onerror="this.onerror=null;this.src='{{ asset('images/white logo lovina.png') }}';">
                     </div>
                     <div>
                         <div style="display: flex; gap: 8px; margin-bottom: 6px;">
@@ -101,9 +101,9 @@
                                 Change
                                 <input type="file" name="logo_alt" accept="image/*" style="display: none;" onchange="previewBrandingImage(this, 'prev-alt-logo-img')">
                             </label>
-                            <button type="button" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; color: #DC2626; border-color: #FCA5A5;" onclick="clearBrandingImage('prev-alt-logo-img')">Remove</button>
+                            <button type="button" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; color: #DC2626; border-color: #FCA5A5;" onclick="clearBrandingImage('prev-alt-logo-img', '{{ asset('images/white logo lovina.png') }}')">Reset</button>
                         </div>
-                        <div style="font-size: 11px; color: #64748B;">Recommended: 300 x 80px PNG or SVG</div>
+                        <div style="font-size: 11px; color: #64748B;">Recommended: 300 x 80px PNG or SVG (for dark backgrounds)</div>
                     </div>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                 <label class="form-label">Site Icon / Favicon</label>
                 <div class="branding-thumb-box" style="margin-bottom: 0; padding: 12px 16px;">
                     <div class="branding-thumb-preview" style="width: 50px; height: 50px;">
-                        <img src="{{ $settings->favicon ? asset('storage/' . $settings->favicon) : asset('images/favicon-placeholder.png') }}" id="prev-favicon-img" alt="Favicon" onerror="this.onerror=null;this.src='https://via.placeholder.com/40x40?text=BALI'">
+                        <img src="{{ $settings->favicon_url }}" id="prev-favicon-img" alt="Favicon" style="max-height: 36px; width: auto;" onerror="this.onerror=null;this.src='{{ asset('favicon.ico') }}';">
                     </div>
                     <div>
                         <div style="display: flex; gap: 8px; margin-bottom: 6px;">
@@ -121,9 +121,9 @@
                                 Change
                                 <input type="file" name="favicon" accept="image/*" style="display: none;" onchange="previewBrandingImage(this, 'prev-favicon-img')">
                             </label>
-                            <button type="button" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; color: #DC2626; border-color: #FCA5A5;" onclick="clearBrandingImage('prev-favicon-img')">Remove</button>
+                            <button type="button" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; color: #DC2626; border-color: #FCA5A5;" onclick="clearBrandingImage('prev-favicon-img', '{{ asset('favicon.ico') }}')">Reset</button>
                         </div>
-                        <div style="font-size: 11px; color: #64748B;">Recommended: 512 x 512px PNG</div>
+                        <div style="font-size: 11px; color: #64748B;">Recommended: 512 x 512px PNG / ICO</div>
                     </div>
                 </div>
             </div>
@@ -374,11 +374,11 @@ function previewBrandingImage(input, targetImgId) {
     }
 }
 
-// Branding Image Clear / Remove
-function clearBrandingImage(targetImgId) {
+// Branding Image Clear / Reset
+function clearBrandingImage(targetImgId, fallbackUrl) {
     const img = document.getElementById(targetImgId);
     if (img) {
-        img.src = 'https://via.placeholder.com/120x40?text=REMOVED';
+        img.src = fallbackUrl || '';
     }
 }
 

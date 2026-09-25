@@ -41,6 +41,9 @@ class CompanySetting extends Model
             'company_name' => 'PT Lovina North Bali Real Estate Agency',
             'site_title' => 'PT Lovina North Bali Real Estate Agency',
             'tagline' => 'Your Trusted Property Partner in North Bali',
+            'logo_primary' => 'images/black logo lovina.png',
+            'logo_alt' => 'images/white logo lovina.png',
+            'favicon' => 'favicon.ico',
             'phone' => '0859 3666 6384',
             'whatsapp' => '0859 3666 6384',
             'email' => 'lovinanorthbaliagency2023@gmail.com',
@@ -53,6 +56,57 @@ class CompanySetting extends Model
                 ['day' => 'Monday – Friday', 'hours' => '09.00 – 12.00, 13.00 – 17.00'],
             ]),
         ]);
+    }
+
+    public function getLogoPrimaryUrlAttribute(): string
+    {
+        if (!empty($this->logo_primary)) {
+            if (\Illuminate\Support\Str::startsWith($this->logo_primary, ['http://', 'https://'])) {
+                return $this->logo_primary;
+            }
+            if (\Illuminate\Support\Str::startsWith($this->logo_primary, 'images/')) {
+                return asset($this->logo_primary);
+            }
+            if (file_exists(public_path('storage/' . $this->logo_primary))) {
+                return asset('storage/' . $this->logo_primary);
+            }
+            return asset($this->logo_primary);
+        }
+        return asset('images/black logo lovina.png');
+    }
+
+    public function getLogoAltUrlAttribute(): string
+    {
+        if (!empty($this->logo_alt)) {
+            if (\Illuminate\Support\Str::startsWith($this->logo_alt, ['http://', 'https://'])) {
+                return $this->logo_alt;
+            }
+            if (\Illuminate\Support\Str::startsWith($this->logo_alt, 'images/')) {
+                return asset($this->logo_alt);
+            }
+            if (file_exists(public_path('storage/' . $this->logo_alt))) {
+                return asset('storage/' . $this->logo_alt);
+            }
+            return asset($this->logo_alt);
+        }
+        return asset('images/white logo lovina.png');
+    }
+
+    public function getFaviconUrlAttribute(): string
+    {
+        if (!empty($this->favicon)) {
+            if (\Illuminate\Support\Str::startsWith($this->favicon, ['http://', 'https://'])) {
+                return $this->favicon;
+            }
+            if (\Illuminate\Support\Str::startsWith($this->favicon, 'images/')) {
+                return asset($this->favicon);
+            }
+            if (file_exists(public_path('storage/' . $this->favicon))) {
+                return asset('storage/' . $this->favicon);
+            }
+            return asset($this->favicon);
+        }
+        return asset('favicon.ico');
     }
 
     public function getCleanWhatsappAttribute(): string

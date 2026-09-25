@@ -41,6 +41,12 @@ class ArticleController extends Controller
         return view('admin.articles.index', compact('articles', 'categories', 'settings'));
     }
 
+    public function getViewsCounts()
+    {
+        $counts = Article::withCount('views')->pluck('views_count', 'id');
+        return response()->json($counts);
+    }
+
     public function create()
     {
         $settings = CompanySetting::getSettings();
