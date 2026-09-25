@@ -81,6 +81,14 @@ class Article extends Model
             return asset('storage/' . $this->featured_image);
         }
 
+        if (file_exists(public_path($this->featured_image))) {
+            return asset($this->featured_image);
+        }
+
+        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($this->featured_image)) {
+            return asset('storage/' . $this->featured_image);
+        }
+
         return asset('images/sample-article.jpg');
     }
 

@@ -126,6 +126,12 @@
             padding-right: 42px;
         }
 
+        /* Prevent browser native reveal button (Edge/IE) */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none;
+        }
+
         .toggle-password-btn {
             position: absolute;
             right: 14px;
@@ -137,10 +143,11 @@
             display: flex;
             align-items: center;
             padding: 0;
+            transition: color 0.2s;
         }
 
         .toggle-password-btn:hover {
-            color: var(--text-secondary);
+            color: var(--primary-navy);
         }
 
         .btn-primary {
@@ -232,7 +239,7 @@
                     </span>
                     <input type="password" name="password" id="password" class="form-input form-input-password" placeholder="Minimum 8 characters" required>
                     <button type="button" id="togglePasswordBtn" class="toggle-password-btn" aria-label="Toggle password visibility">
-                        <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+                        <i data-lucide="eye-off" style="width: 18px; height: 18px;"></i>
                     </button>
                 </div>
             </div>
@@ -245,7 +252,7 @@
                     </span>
                     <input type="password" name="password_confirmation" id="password_confirmation" class="form-input form-input-password" placeholder="Confirm your new password" required>
                     <button type="button" id="toggleConfirmPasswordBtn" class="toggle-password-btn" aria-label="Toggle password confirmation visibility">
-                        <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+                        <i data-lucide="eye-off" style="width: 18px; height: 18px;"></i>
                     </button>
                 </div>
             </div>
@@ -275,8 +282,15 @@
         const passwordInput = document.getElementById('password');
         if (togglePasswordBtn && passwordInput) {
             togglePasswordBtn.addEventListener('click', function () {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                const iconName = isPassword ? 'eye' : 'eye-off';
+                togglePasswordBtn.innerHTML = `<i data-lucide="${iconName}" style="width: 18px; height: 18px;"></i>`;
+                if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons({
+                        root: togglePasswordBtn
+                    });
+                }
             });
         }
 
@@ -284,8 +298,15 @@
         const confirmPasswordInput = document.getElementById('password_confirmation');
         if (toggleConfirmPasswordBtn && confirmPasswordInput) {
             toggleConfirmPasswordBtn.addEventListener('click', function () {
-                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                confirmPasswordInput.setAttribute('type', type);
+                const isPassword = confirmPasswordInput.getAttribute('type') === 'password';
+                confirmPasswordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                const iconName = isPassword ? 'eye' : 'eye-off';
+                toggleConfirmPasswordBtn.innerHTML = `<i data-lucide="${iconName}" style="width: 18px; height: 18px;"></i>`;
+                if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons({
+                        root: toggleConfirmPasswordBtn
+                    });
+                }
             });
         }
     </script>

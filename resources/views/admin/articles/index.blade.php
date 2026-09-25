@@ -10,10 +10,34 @@
         <h2 style="font-size: 24px; font-weight: 700; color: #0F172A; margin-bottom: 4px;">News Articles</h2>
         <p style="color: #64748B; font-size: 14px;">Manage news, articles, and property insights for your website.</p>
     </div>
-    <a href="{{ route('admin.articles.create') }}" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; background-color: #1E40AF; border-color: #1E40AF; text-decoration: none;">
-        <i data-lucide="plus" style="width: 18px; height: 18px;"></i> Add New Article
-    </a>
+    <div style="display: flex; gap: 12px;">
+        <a href="{{ route('admin.articles.create') }}" class="btn btn-primary" id="btn-add-article" style="padding: 10px 24px; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add New Article
+        </a>
+    </div>
 </div>
+
+<!-- Success Notification Banner -->
+@if(session('success'))
+<div class="settings-success-alert" id="articles-success-toast" style="margin-bottom: 24px; background-color: #DCFCE7; border: 1px solid #86EFAC; color: #166534; padding: 14px 18px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #16A34A; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">✓</div>
+        <span id="articles-success-toast-text">{{ session('success') }}</span>
+    </div>
+    <button type="button" onclick="document.getElementById('articles-success-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #15803D;">&times;</button>
+</div>
+@endif
+
+@if(session('error'))
+<div class="settings-error-alert" id="articles-error-toast" style="margin-bottom: 24px; background-color: #FEF2F2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 18px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #DC2626; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">!</div>
+        <span>{{ session('error') }}</span>
+    </div>
+    <button type="button" onclick="document.getElementById('articles-error-toast').style.display='none'" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #991B1B;">&times;</button>
+</div>
+@endif
 
 <!-- Filter Section -->
 <div class="admin-card" style="margin-bottom: 24px; padding: 20px;">
@@ -61,7 +85,7 @@
                     <th style="width: 40px;"><input type="checkbox"></th>
                     <th style="width: 80px;">Image</th>
                     <th>Title</th>
-                    <th>Category</th>
+                    <th style="white-space: nowrap; width: 140px;">Category</th>
                     <th>Author</th>
                     <th>Published Date</th>
                     <th>Views</th>
@@ -81,8 +105,8 @@
                                 {{ $article->title }}
                             </a>
                         </td>
-                        <td>
-                            <span class="category-badge" style="background-color: #EFF6FF; color: #1D4ED8; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 12px;">
+                        <td style="white-space: nowrap;">
+                            <span class="category-badge" style="background-color: #EFF6FF; color: #1D4ED8; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; line-height: 1.4;">
                                 {{ $article->category }}
                             </span>
                         </td>
@@ -144,6 +168,13 @@
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const successToast = document.getElementById('articles-success-toast');
+    if (successToast) {
+        setTimeout(function() {
+            successToast.style.display = 'none';
+        }, 5000);
+    }
+
     var viewsCells = document.querySelectorAll('.article-views-cell');
     if (!viewsCells.length) return;
 

@@ -125,6 +125,12 @@
             padding-right: 42px;
         }
 
+        /* Prevent browser native reveal button (Edge/IE) */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none;
+        }
+
         .toggle-password-btn {
             position: absolute;
             right: 14px;
@@ -136,6 +142,11 @@
             display: flex;
             align-items: center;
             padding: 0;
+            transition: color 0.2s;
+        }
+
+        .toggle-password-btn:hover {
+            color: var(--primary-navy);
         }
 
         .btn-primary {
@@ -210,7 +221,7 @@
                     </span>
                     <input type="password" name="password" id="password" class="form-input form-input-password" placeholder="••••••••" required>
                     <button type="button" id="togglePasswordBtn" class="toggle-password-btn" aria-label="Toggle password visibility">
-                        <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+                        <i data-lucide="eye-off" id="togglePasswordIcon" style="width: 18px; height: 18px;"></i>
                     </button>
                 </div>
             </div>

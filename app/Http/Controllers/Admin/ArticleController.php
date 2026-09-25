@@ -55,6 +55,40 @@ class ArticleController extends Controller
         return view('admin.articles.create', compact('settings', 'categories'));
     }
 
+    public function uploadContentImage(Request $request, \App\Services\ArticleImageService $imageService)
+    {
+        $request->validate([
+            'image' => 'required|image|max:10240',
+            'title' => 'nullable|string|max:255',
+            'slug' => 'nullable|string|max:255',
+            'alt' => 'nullable|string|max:255',
+        ]);
+
+        $titleOrSlug = $request->input('slug') ?: $request->input('title') ?: 'article';
+
+        $processedPath = $imageService->processAndStoreContentImage(
+            $request->file('image'),
+            $titleOrSlug
+        );
+
+        if (!$processedPath) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to process and convert image to WebP.',
+            ], 500);
+        }
+
+        $webPath = '/storage/' . $processedPath;
+
+        return response()->json([
+            'success' => true,
+            'url' => $webPath,
+            'path' => $processedPath,
+            'filename' => basename($processedPath),
+            'alt' => $request->input('alt') ?: Str::title(str_replace('-', ' ', Str::slug($titleOrSlug))),
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -86,7 +120,16 @@ class ArticleController extends Controller
             }
 
             if ($request->hasFile('featured_image')) {
-                $validated['featured_image'] = $request->file('featured_image')->store('articles', 'public');
+                $imageService = app(\App\Services\ArticleImageService::class);
+                $processedPath = $imageService->processAndStore(
+                    $request->file('featured_image'),
+                    $validated['slug'] ?? $validated['title']
+                );
+                if ($processedPath) {
+                    $validated['featured_image'] = $processedPath;
+                } else {
+                    $validated['featured_image'] = $request->file('featured_image')->store('articles', 'public');
+                }
             }
 
             if ($validated['status'] === 'published' && empty($validated['published_at'])) {
@@ -134,10 +177,22 @@ class ArticleController extends Controller
             $validated['slug'] = Str::slug($validated['slug']);
 
             if ($request->hasFile('featured_image')) {
-                if ($article->featured_image && Storage::disk('public')->exists($article->featured_image)) {
-                    Storage::disk('public')->delete($article->featured_image);
+                $imageService = app(\App\Services\ArticleImageService::class);
+                $processedPath = $imageService->processAndStore(
+                    $request->file('featured_image'),
+                    $validated['slug'] ?? $validated['title']
+                );
+                if ($processedPath) {
+                    if ($article->featured_image) {
+                        $imageService->deleteOldImage($article->featured_image);
+                    }
+                    $validated['featured_image'] = $processedPath;
+                } else {
+                    if ($article->featured_image && Storage::disk('public')->exists($article->featured_image)) {
+                        Storage::disk('public')->delete($article->featured_image);
+                    }
+                    $validated['featured_image'] = $request->file('featured_image')->store('articles', 'public');
                 }
-                $validated['featured_image'] = $request->file('featured_image')->store('articles', 'public');
             }
 
             if ($validated['status'] === 'published' && empty($validated['published_at'])) {

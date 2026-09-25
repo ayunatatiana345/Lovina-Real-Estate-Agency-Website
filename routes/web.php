@@ -100,6 +100,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/articles/views-counts', [AdminArticleController::class, 'getViewsCounts'])->name('admin.articles.views-counts');
         Route::get('/articles/create', [AdminArticleController::class, 'create'])->name('admin.articles.create');
         Route::post('/articles', [AdminArticleController::class, 'store'])->name('admin.articles.store');
+        Route::post('/articles/upload-content-image', [AdminArticleController::class, 'uploadContentImage'])->name('admin.articles.upload-content-image');
         Route::get('/articles/{id}/edit', [AdminArticleController::class, 'edit'])->name('admin.articles.edit');
         Route::put('/articles/{id}', [AdminArticleController::class, 'update'])->name('admin.articles.update');
         Route::delete('/articles/{id}', [AdminArticleController::class, 'destroy'])->name('admin.articles.destroy');

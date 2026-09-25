@@ -7,8 +7,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (togglePasswordBtn && passwordInput) {
     togglePasswordBtn.addEventListener('click', function () {
-      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-      passwordInput.setAttribute('type', type);
+      const isPassword = passwordInput.getAttribute('type') === 'password';
+      passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+      const iconName = isPassword ? 'eye' : 'eye-off';
+      togglePasswordBtn.innerHTML = `<i data-lucide="${iconName}" style="width: 18px; height: 18px;"></i>`;
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons({
+          root: togglePasswordBtn
+        });
+      }
     });
   }
 

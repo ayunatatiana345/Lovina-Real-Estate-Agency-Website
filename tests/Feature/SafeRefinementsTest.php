@@ -55,7 +55,7 @@ class SafeRefinementsTest extends TestCase
     {
         $this->actingAs($this->admin);
 
-        Property::create([
+        $prop = Property::create([
             'name' => 'Test Villa',
             'slug' => 'test-villa',
             'category_id' => $this->category->id,
@@ -64,6 +64,7 @@ class SafeRefinementsTest extends TestCase
             'status' => 'published',
             'is_featured' => false,
         ]);
+        $prop->categories()->attach($this->category->id);
 
         $this->assertEquals(1, $this->category->properties()->count());
 

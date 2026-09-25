@@ -345,7 +345,7 @@
                         <button type="button" class="editor-btn" onclick="execFormat('ol')" title="Numbered List">1. List</button>
                         <button type="button" class="editor-btn" onclick="execFormat('link')" title="Insert Link">Link</button>
                         <button type="button" class="editor-btn" onclick="execFormat('table')" title="Insert Table">Table</button>
-                        <button type="button" class="editor-btn" onclick="execFormat('img')" title="Insert Image">Image</button>
+                        <button type="button" class="editor-btn" onclick="openArticleImageModal()" title="Insert or Replace Image" id="btnEditorImage">Image</button>
                     </div>
                     <div id="visualEditor" class="editor-visual-box" contenteditable="true" spellcheck="true" data-placeholder="Write main article body content here..." oninput="syncEditorContent()"></div>
                     <textarea name="content" id="articleContent" required style="display: none;">{{ old('content', $article->content) }}</textarea>
@@ -429,6 +429,68 @@
         </div>
     </div>
 </form>
+
+<!-- Article Body Image Modal (Upload Image + Use Image URL) -->
+<div id="articleImageModal" class="danger-modal-overlay" style="display: none;" onclick="closeArticleImageModal(event)">
+    <div class="danger-modal-box" style="text-align: left; max-width: 500px; padding: 24px;" onclick="event.stopPropagation()">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 id="imageModalTitle" style="font-size: 18px; font-weight: 700; color: #0F172A; margin: 0;">Insert Article Image</h3>
+            <button type="button" class="danger-modal-close" onclick="closeArticleImageModal(event)">&times;</button>
+        </div>
+
+        <!-- Mode Switcher Tabs -->
+        <div style="display: flex; border-bottom: 2px solid #E2E8F0; margin-bottom: 20px;">
+            <button type="button" id="tabUploadBtn" class="editor-tab-btn active" onclick="switchImageModalTab('upload')" style="padding: 8px 16px; font-size: 14px; font-weight: 600; cursor: pointer; color: #1E40AF; border-bottom: 2px solid #1E40AF;">
+                Upload Image
+            </button>
+            <button type="button" id="tabUrlBtn" class="editor-tab-btn" onclick="switchImageModalTab('url')" style="padding: 8px 16px; font-size: 14px; font-weight: 600; cursor: pointer; color: #64748B; border-bottom: 2px solid transparent;">
+                Use Image URL
+            </button>
+        </div>
+
+        <!-- TAB 1: UPLOAD IMAGE -->
+        <div id="imageTabUpload">
+            <div style="border: 2px dashed #CBD5E1; border-radius: 8px; padding: 22px; text-align: center; background-color: #F8FAFC; margin-bottom: 16px; cursor: pointer;" onclick="document.getElementById('bodyImageFileInput').click()">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" style="margin-bottom: 8px; display: inline-block;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <p id="bodyImageFileName" style="font-size: 13px; color: #475569; margin: 0; font-weight: 500;">Click to select an image from your computer</p>
+                <span style="font-size: 11px; color: #94A3B8;">JPG, PNG, GIF, WebP (auto-converted to WebP with SEO filename)</span>
+                <input type="file" id="bodyImageFileInput" accept="image/*" style="display: none;" onchange="handleBodyImageFileSelect(this)">
+            </div>
+            <div id="bodyImagePreviewBox" style="display: none; margin-bottom: 16px; text-align: center;">
+                <img id="bodyImagePreviewImg" src="" style="max-height: 140px; max-width: 100%; border-radius: 6px; border: 1px solid #E2E8F0; object-fit: contain;">
+            </div>
+            <div style="margin-bottom: 16px;">
+                <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Image Caption / Alt Text (optional)</label>
+                <input type="text" id="bodyImageAltText" class="form-control" placeholder="e.g. Luxury villa swimming pool in Lovina" style="width: 100%; font-size: 13px;">
+            </div>
+            <div id="bodyImageUploadError" style="display: none; color: #DC2626; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 6px; padding: 8px 12px; font-size: 12px; margin-bottom: 12px;"></div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-outline" onclick="closeArticleImageModal(event)" style="padding: 8px 16px; font-size: 13px;">Cancel</button>
+                <button type="button" id="btnDoUploadImage" class="btn btn-primary" onclick="submitBodyImageUpload()" style="padding: 8px 18px; font-size: 13px; font-weight: 600;" disabled>
+                    Upload & Insert
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 2: USE IMAGE URL -->
+        <div id="imageTabUrl" style="display: none;">
+            <div style="margin-bottom: 16px;">
+                <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">External Image URL *</label>
+                <input type="url" id="bodyImageUrlInput" class="form-control" placeholder="https://example.com/property-bali.jpg" style="width: 100%; font-size: 13px;">
+            </div>
+            <div style="margin-bottom: 16px;">
+                <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Image Caption / Alt Text (optional)</label>
+                <input type="text" id="bodyImageUrlAlt" class="form-control" placeholder="e.g. Modern villa architecture" style="width: 100%; font-size: 13px;">
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-outline" onclick="closeArticleImageModal(event)" style="padding: 8px 16px; font-size: 13px;">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitBodyImageUrl()" style="padding: 8px 18px; font-size: 13px; font-weight: 600;">
+                    Insert Image
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -476,19 +538,233 @@ function execFormat(command) {
         const tableHtml = `<table class="article-table"><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Data cell 1</td><td>Data cell 2</td></tr><tr><td>Data cell 3</td><td>Data cell 4</td></tr></tbody></table><p><br></p>`;
         document.execCommand('insertHTML', false, tableHtml);
     } else if (command === 'img') {
-        const imgUrl = prompt('Enter Image URL:', 'https://via.placeholder.com/800x400');
-        if (imgUrl && imgUrl.trim()) {
-            const caption = prompt('Enter Image Caption (optional):', '');
-            let imgHtml = `<img src="${imgUrl.trim()}" alt="Article image" class="article-content-img" style="max-width: 100%; border-radius: 8px; margin: 16px 0;">`;
-            if (caption && caption.trim()) {
-                imgHtml += `<p class="article-img-caption" style="font-size: 13px; color: #64748B; font-style: italic; margin-top: -8px; margin-bottom: 16px;">${caption.trim()}</p>`;
-            }
-            imgHtml += `<p><br></p>`;
-            document.execCommand('insertHTML', false, imgHtml);
-        }
+        openArticleImageModal();
+        return;
     }
 
     syncEditorContent();
+}
+
+let savedSelectionRange = null;
+let activeEditorImage = null;
+
+function saveEditorSelection() {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+        savedSelectionRange = sel.getRangeAt(0).cloneRange();
+    }
+}
+
+function restoreEditorSelection() {
+    if (savedSelectionRange) {
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(savedSelectionRange);
+    }
+}
+
+function openArticleImageModal() {
+    saveEditorSelection();
+    const modal = document.getElementById('articleImageModal');
+    const titleEl = document.getElementById('imageModalTitle');
+    const altInput = document.getElementById('bodyImageAltText');
+    const urlAltInput = document.getElementById('bodyImageUrlAlt');
+    const urlInput = document.getElementById('bodyImageUrlInput');
+    const articleTitle = document.querySelector('input[name="title"]')?.value || '';
+
+    // Reset upload fields
+    document.getElementById('bodyImageFileInput').value = '';
+    document.getElementById('bodyImageFileName').innerText = 'Click to select an image from your computer';
+    document.getElementById('bodyImagePreviewBox').style.display = 'none';
+    document.getElementById('bodyImagePreviewImg').src = '';
+    document.getElementById('btnDoUploadImage').disabled = true;
+    document.getElementById('bodyImageUploadError').style.display = 'none';
+    document.getElementById('bodyImageUploadError').innerText = '';
+
+    if (activeEditorImage) {
+        titleEl.innerText = 'Replace Selected Image';
+        const currentAlt = activeEditorImage.alt || '';
+        altInput.value = currentAlt;
+        urlAltInput.value = currentAlt;
+        urlInput.value = activeEditorImage.src || '';
+    } else {
+        titleEl.innerText = 'Insert Article Image';
+        altInput.value = articleTitle ? `${articleTitle} illustration` : '';
+        urlAltInput.value = articleTitle ? `${articleTitle} illustration` : '';
+        urlInput.value = '';
+    }
+
+    switchImageModalTab('upload');
+    modal.style.display = 'flex';
+}
+
+function closeArticleImageModal(e) {
+    if (e) e.stopPropagation();
+    const modal = document.getElementById('articleImageModal');
+    if (modal) modal.style.display = 'none';
+    if (activeEditorImage) {
+        activeEditorImage.style.outline = 'none';
+        activeEditorImage = null;
+    }
+}
+
+function switchImageModalTab(tab) {
+    const uploadTab = document.getElementById('imageTabUpload');
+    const urlTab = document.getElementById('imageTabUrl');
+    const uploadBtn = document.getElementById('tabUploadBtn');
+    const urlBtn = document.getElementById('tabUrlBtn');
+
+    if (tab === 'upload') {
+        uploadTab.style.display = 'block';
+        urlTab.style.display = 'none';
+        uploadBtn.classList.add('active');
+        urlBtn.classList.remove('active');
+        uploadBtn.style.borderBottom = '2px solid #1E40AF';
+        uploadBtn.style.color = '#1E40AF';
+        urlBtn.style.borderBottom = '2px solid transparent';
+        urlBtn.style.color = '#64748B';
+    } else {
+        uploadTab.style.display = 'none';
+        urlTab.style.display = 'block';
+        uploadBtn.classList.remove('active');
+        urlBtn.classList.add('active');
+        urlBtn.style.borderBottom = '2px solid #1E40AF';
+        urlBtn.style.color = '#1E40AF';
+        uploadBtn.style.borderBottom = '2px solid transparent';
+        uploadBtn.style.color = '#64748B';
+    }
+}
+
+function handleBodyImageFileSelect(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        document.getElementById('bodyImageFileName').innerText = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('bodyImagePreviewImg').src = e.target.result;
+            document.getElementById('bodyImagePreviewBox').style.display = 'block';
+            document.getElementById('btnDoUploadImage').disabled = false;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function submitBodyImageUpload() {
+    const fileInput = document.getElementById('bodyImageFileInput');
+    if (!fileInput.files || !fileInput.files[0]) return;
+
+    const btn = document.getElementById('btnDoUploadImage');
+    const errBox = document.getElementById('bodyImageUploadError');
+    errBox.style.display = 'none';
+    errBox.innerText = '';
+    btn.disabled = true;
+    btn.innerText = 'Converting to WebP & Uploading...';
+
+    const formData = new FormData();
+    formData.append('image', fileInput.files[0]);
+    formData.append('title', document.querySelector('input[name="title"]')?.value || 'article');
+    formData.append('slug', document.querySelector('input[name="slug"]')?.value || '');
+    formData.append('alt', document.getElementById('bodyImageAltText').value.trim());
+
+    fetch("{{ route('admin.articles.upload-content-image') }}", {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json'
+        },
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => { throw new Error(data.message || 'Upload failed'); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        btn.disabled = false;
+        btn.innerText = 'Upload & Insert';
+
+        const finalAlt = document.getElementById('bodyImageAltText').value.trim() || data.alt || 'Article image';
+
+        if (activeEditorImage) {
+            activeEditorImage.src = data.url;
+            activeEditorImage.alt = finalAlt;
+            if (activeEditorImage.nextElementSibling && activeEditorImage.nextElementSibling.classList.contains('article-img-caption')) {
+                activeEditorImage.nextElementSibling.innerText = finalAlt;
+            }
+            activeEditorImage.style.outline = 'none';
+            activeEditorImage = null;
+        } else {
+            insertImageIntoEditor(data.url, finalAlt);
+        }
+
+        closeArticleImageModal();
+        syncEditorContent();
+    })
+    .catch(err => {
+        btn.disabled = false;
+        btn.innerText = 'Upload & Insert';
+        errBox.style.display = 'block';
+        errBox.innerText = 'Error: ' + err.message;
+    });
+}
+
+function submitBodyImageUrl() {
+    const urlInput = document.getElementById('bodyImageUrlInput');
+    const url = urlInput.value.trim();
+    if (!url) {
+        alert('Please enter a valid image URL');
+        return;
+    }
+
+    const finalAlt = document.getElementById('bodyImageUrlAlt').value.trim() || 'Article image';
+
+    if (activeEditorImage) {
+        activeEditorImage.src = url;
+        activeEditorImage.alt = finalAlt;
+        if (activeEditorImage.nextElementSibling && activeEditorImage.nextElementSibling.classList.contains('article-img-caption')) {
+            activeEditorImage.nextElementSibling.innerText = finalAlt;
+        }
+        activeEditorImage.style.outline = 'none';
+        activeEditorImage = null;
+    } else {
+        insertImageIntoEditor(url, finalAlt);
+    }
+
+    closeArticleImageModal();
+    syncEditorContent();
+}
+
+function insertImageIntoEditor(src, alt) {
+    const editor = document.getElementById('visualEditor');
+    editor.focus();
+    restoreEditorSelection();
+
+    const captionHtml = alt ? `<p class="article-img-caption" style="font-size: 13px; color: #64748B; font-style: italic; margin-top: -8px; margin-bottom: 16px;">${alt}</p>` : '';
+    const imgHtml = `<img src="${src}" alt="${alt}" class="article-content-img" style="max-width: 100%; border-radius: 8px; margin: 16px 0;">${captionHtml}<p><br></p>`;
+
+    let inserted = false;
+    try {
+        inserted = document.execCommand('insertHTML', false, imgHtml);
+    } catch (e) {
+        inserted = false;
+    }
+
+    if (!inserted) {
+        if (savedSelectionRange) {
+            savedSelectionRange.deleteContents();
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = imgHtml;
+            const frag = document.createDocumentFragment();
+            let node;
+            while ((node = tempDiv.firstChild)) {
+                frag.appendChild(node);
+            }
+            savedSelectionRange.insertNode(frag);
+        } else {
+            editor.insertAdjacentHTML('beforeend', imgHtml);
+        }
+    }
 }
 
 function sanitizeHtml(html) {
@@ -563,6 +839,24 @@ document.addEventListener('DOMContentLoaded', function() {
     if (articleForm) {
         articleForm.addEventListener('submit', function() {
             syncEditorContent();
+        });
+    }
+
+    if (editor) {
+        editor.addEventListener('click', function(e) {
+            if (e.target && e.target.tagName === 'IMG' && e.target.classList.contains('article-content-img')) {
+                if (activeEditorImage && activeEditorImage !== e.target) {
+                    activeEditorImage.style.outline = 'none';
+                }
+                activeEditorImage = e.target;
+                activeEditorImage.style.outline = '3px solid #2563EB';
+                activeEditorImage.style.outlineOffset = '2px';
+            } else if (e.target && e.target.tagName !== 'IMG') {
+                if (activeEditorImage) {
+                    activeEditorImage.style.outline = 'none';
+                    activeEditorImage = null;
+                }
+            }
         });
     }
 });

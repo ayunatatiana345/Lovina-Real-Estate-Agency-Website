@@ -64,13 +64,22 @@ class CompanySetting extends Model
             if (\Illuminate\Support\Str::startsWith($this->logo_primary, ['http://', 'https://'])) {
                 return $this->logo_primary;
             }
-            if (\Illuminate\Support\Str::startsWith($this->logo_primary, 'images/')) {
+            if (\Illuminate\Support\Str::startsWith($this->logo_primary, ['images/', 'img/'])) {
                 return asset($this->logo_primary);
+            }
+            if (\Illuminate\Support\Str::startsWith($this->logo_primary, 'storage/')) {
+                return asset($this->logo_primary);
+            }
+            if (\Illuminate\Support\Str::startsWith($this->logo_primary, 'branding/') || \Illuminate\Support\Facades\Storage::disk('public')->exists($this->logo_primary)) {
+                return asset('storage/' . $this->logo_primary);
             }
             if (file_exists(public_path('storage/' . $this->logo_primary))) {
                 return asset('storage/' . $this->logo_primary);
             }
-            return asset($this->logo_primary);
+            if (file_exists(public_path($this->logo_primary))) {
+                return asset($this->logo_primary);
+            }
+            return asset('storage/' . $this->logo_primary);
         }
         return asset('images/black logo lovina.png');
     }
@@ -81,13 +90,22 @@ class CompanySetting extends Model
             if (\Illuminate\Support\Str::startsWith($this->logo_alt, ['http://', 'https://'])) {
                 return $this->logo_alt;
             }
-            if (\Illuminate\Support\Str::startsWith($this->logo_alt, 'images/')) {
+            if (\Illuminate\Support\Str::startsWith($this->logo_alt, ['images/', 'img/'])) {
                 return asset($this->logo_alt);
+            }
+            if (\Illuminate\Support\Str::startsWith($this->logo_alt, 'storage/')) {
+                return asset($this->logo_alt);
+            }
+            if (\Illuminate\Support\Str::startsWith($this->logo_alt, 'branding/') || \Illuminate\Support\Facades\Storage::disk('public')->exists($this->logo_alt)) {
+                return asset('storage/' . $this->logo_alt);
             }
             if (file_exists(public_path('storage/' . $this->logo_alt))) {
                 return asset('storage/' . $this->logo_alt);
             }
-            return asset($this->logo_alt);
+            if (file_exists(public_path($this->logo_alt))) {
+                return asset($this->logo_alt);
+            }
+            return asset('storage/' . $this->logo_alt);
         }
         return asset('images/white logo lovina.png');
     }
@@ -98,13 +116,25 @@ class CompanySetting extends Model
             if (\Illuminate\Support\Str::startsWith($this->favicon, ['http://', 'https://'])) {
                 return $this->favicon;
             }
-            if (\Illuminate\Support\Str::startsWith($this->favicon, 'images/')) {
+            if ($this->favicon === 'favicon.ico') {
+                return asset('favicon.ico');
+            }
+            if (\Illuminate\Support\Str::startsWith($this->favicon, ['images/', 'img/'])) {
                 return asset($this->favicon);
+            }
+            if (\Illuminate\Support\Str::startsWith($this->favicon, 'storage/')) {
+                return asset($this->favicon);
+            }
+            if (\Illuminate\Support\Str::startsWith($this->favicon, 'branding/') || \Illuminate\Support\Facades\Storage::disk('public')->exists($this->favicon)) {
+                return asset('storage/' . $this->favicon);
             }
             if (file_exists(public_path('storage/' . $this->favicon))) {
                 return asset('storage/' . $this->favicon);
             }
-            return asset($this->favicon);
+            if (file_exists(public_path($this->favicon))) {
+                return asset($this->favicon);
+            }
+            return asset('storage/' . $this->favicon);
         }
         return asset('favicon.ico');
     }

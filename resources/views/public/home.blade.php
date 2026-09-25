@@ -3,7 +3,7 @@
 @extends('layouts.public')
 
 @section('title', 'North Bali Property for Sale & Investment | ' . ($settings->company_name ?? 'PT Lovina North Bali Real Estate Agency'))
-@section('meta_description', $settings->site_description ?? 'Explore beachfront luxury villas, ocean view land plots, and prime property investments for sale across Lovina, Temukus, Singaraja, and North Bali.')
+@section('meta_description', $settings->site_description ?: ($settings->seo_meta_description ?: 'Explore beachfront luxury villas, ocean view land plots, and prime property investments for sale across Lovina, Temukus, Singaraja, and North Bali.'))
 @section('canonical', route('home'))
 
 @section('structured_data')

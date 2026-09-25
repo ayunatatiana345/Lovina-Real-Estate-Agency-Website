@@ -18,7 +18,7 @@ class CompanySettingController extends Controller
         return view('admin.settings.index', compact('settings', 'currencyMeta'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, \App\Services\BrandingImageService $brandingService)
     {
         $settings = CompanySetting::getSettings();
 
@@ -59,31 +59,35 @@ class CompanySettingController extends Controller
         }
 
         if ($request->hasFile('logo_primary')) {
-            if ($settings->logo_primary && !str_starts_with($settings->logo_primary, 'images/')) {
-                Storage::disk('public')->delete($settings->logo_primary);
+            $processedPath = $brandingService->processAndStorePrimaryLogo($request->file('logo_primary'));
+            if ($processedPath) {
+                $brandingService->deleteOldBrandingImage($settings->logo_primary);
+                $data['logo_primary'] = $processedPath;
             }
-            $data['logo_primary'] = $request->file('logo_primary')->store('branding', 'public');
         }
 
         if ($request->hasFile('logo_alt')) {
-            if ($settings->logo_alt && !str_starts_with($settings->logo_alt, 'images/')) {
-                Storage::disk('public')->delete($settings->logo_alt);
+            $processedPath = $brandingService->processAndStoreAltLogo($request->file('logo_alt'));
+            if ($processedPath) {
+                $brandingService->deleteOldBrandingImage($settings->logo_alt);
+                $data['logo_alt'] = $processedPath;
             }
-            $data['logo_alt'] = $request->file('logo_alt')->store('branding', 'public');
         }
 
         if ($request->hasFile('favicon')) {
-            if ($settings->favicon && !str_starts_with($settings->favicon, 'images/') && $settings->favicon !== 'favicon.ico') {
-                Storage::disk('public')->delete($settings->favicon);
+            $processedPath = $brandingService->processAndStoreFavicon($request->file('favicon'));
+            if ($processedPath) {
+                $brandingService->deleteOldBrandingImage($settings->favicon);
+                $data['favicon'] = $processedPath;
             }
-            $data['favicon'] = $request->file('favicon')->store('branding', 'public');
         }
 
         if ($request->hasFile('seo_social_image')) {
-            if ($settings->seo_social_image && !str_starts_with($settings->seo_social_image, 'images/')) {
-                Storage::disk('public')->delete($settings->seo_social_image);
+            $processedPath = $brandingService->processAndStoreSocialImage($request->file('seo_social_image'));
+            if ($processedPath) {
+                $brandingService->deleteOldBrandingImage($settings->seo_social_image);
+                $data['seo_social_image'] = $processedPath;
             }
-            $data['seo_social_image'] = $request->file('seo_social_image')->store('branding', 'public');
         }
 
         $settings->update($data);

@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', $settings->site_title ?? 'PT Lovina North Bali Real Estate Agency')</title>
-    <meta name="description" content="@yield('meta_description', $settings->site_description ?? 'Your trusted luxury real estate partner in Lovina, Temukus, Singaraja, and North Bali.')">
+    <meta name="description" content="@yield('meta_description', !empty($settings->site_description) ? $settings->site_description : (!empty($settings->seo_meta_description) ? $settings->seo_meta_description : 'Your trusted luxury real estate partner in Lovina, Temukus, Singaraja, and North Bali.'))">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ $settings->favicon_url ?? asset('favicon.ico') }}">
+    <link rel="icon" href="{{ $settings->favicon_url ?? asset('favicon.ico') }}">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="@yield('canonical', url()->current())">
@@ -15,16 +15,16 @@
     <!-- OpenGraph Social SEO -->
     <meta property="og:site_name" content="{{ $settings->company_name ?? 'PT Lovina North Bali Real Estate Agency' }}">
     <meta property="og:title" content="@yield('title', $settings->site_title ?? 'PT Lovina North Bali Real Estate Agency')">
-    <meta property="og:description" content="@yield('meta_description', $settings->site_description ?? 'Your trusted luxury real estate partner in North Bali.')">
+    <meta property="og:description" content="@yield('meta_description', !empty($settings->site_description) ? $settings->site_description : (!empty($settings->seo_meta_description) ? $settings->seo_meta_description : 'Your trusted luxury real estate partner in North Bali.'))">
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:url" content="@yield('canonical', url()->current())">
-    <meta property="og:image" content="@yield('og_image', $settings->logo_primary_url ?? asset('images/black logo lovina.png'))">
+    <meta property="og:image" content="@yield('og_image', !empty($settings->seo_social_image) ? asset('storage/' . $settings->seo_social_image) : ($settings->logo_primary_url ?? asset('images/black logo lovina.png')))">
 
     <!-- Twitter Card SEO -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('title', $settings->site_title ?? 'PT Lovina North Bali Real Estate Agency')">
-    <meta name="twitter:description" content="@yield('meta_description', $settings->site_description ?? 'Your trusted luxury real estate partner in North Bali.')">
-    <meta name="twitter:image" content="@yield('og_image', $settings->logo_primary_url ?? asset('images/black logo lovina.png'))">
+    <meta name="twitter:description" content="@yield('meta_description', !empty($settings->site_description) ? $settings->site_description : (!empty($settings->seo_meta_description) ? $settings->seo_meta_description : 'Your trusted luxury real estate partner in North Bali.'))">
+    <meta name="twitter:image" content="@yield('og_image', !empty($settings->seo_social_image) ? asset('storage/' . $settings->seo_social_image) : ($settings->logo_primary_url ?? asset('images/black logo lovina.png')))">
 
     <!-- Global Organization / RealEstateAgent Structured Data -->
     <script type="application/ld+json">
@@ -35,7 +35,7 @@
       "url": "{{ url('/') }}",
       "logo": "{{ $settings->logo_primary_url ?? asset('images/black logo lovina.png') }}",
       "image": "{{ $settings->logo_primary_url ?? asset('images/black logo lovina.png') }}",
-      "description": "{{ $settings->site_description ?? 'The premier luxury real estate agency in North Bali, specializing in beachfront villas, ocean-view land, and investment properties.' }}",
+      "description": "{{ !empty($settings->site_description) ? $settings->site_description : (!empty($settings->seo_meta_description) ? $settings->seo_meta_description : 'The premier luxury real estate agency in North Bali, specializing in beachfront villas, ocean-view land, and investment properties.') }}",
       "telephone": "{{ $settings->clean_phone ?? '085936666384' }}",
       "email": "{{ $settings->email ?? 'lovinanorthbaliagency2023@gmail.com' }}",
       "address": {

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>@yield('title', 'Admin Dashboard') - PT Lovina North Bali</title>
-    <link rel="icon" type="image/x-icon" href="{{ $settings->favicon_url ?? asset('favicon.ico') }}">
+    <link rel="icon" href="{{ $settings->favicon_url ?? asset('favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -112,13 +112,13 @@
 
         <!-- Dynamic Content -->
         <main class="admin-content">
-            @if(session('success') && !request()->routeIs('admin.cms.*', 'admin.properties.*', 'admin.locations.*', 'admin.settings.*'))
+            @if(session('success') && !request()->routeIs('admin.cms.*', 'admin.properties.*', 'admin.locations.*', 'admin.settings.*', 'admin.articles.*', 'admin.inquiries.*'))
                 <div style="background-color: #DCFCE7; border: 1px solid #86EFAC; color: #166534; padding: 14px 20px; border-radius: 8px; margin-bottom: 24px; font-weight: 500; display: flex; align-items: center; gap: 8px;">
                     <i data-lucide="check" style="width: 16px; height: 16px;"></i> {{ session('success') }}
                 </div>
             @endif
 
-            @if($errors->any() && !request()->routeIs('admin.cms.*', 'admin.properties.*', 'admin.locations.*', 'admin.settings.*'))
+            @if($errors->any() && !request()->routeIs('admin.cms.*', 'admin.properties.*', 'admin.locations.*', 'admin.settings.*', 'admin.articles.*', 'admin.inquiries.*'))
                 <div style="background-color: #FEE2E2; border: 1px solid #FCA5A5; color: #991B1B; padding: 14px 20px; border-radius: 8px; margin-bottom: 24px;">
                     <ul style="margin-left: 20px;">
                         @foreach($errors->all() as $err)
