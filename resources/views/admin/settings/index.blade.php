@@ -30,6 +30,23 @@
 </div>
 @endif
 
+<!-- Error Notification Banner -->
+@if($errors->any())
+<div class="settings-success-alert" style="margin-bottom: 24px; background-color: #FEF2F2; border-color: #FECACA; color: #991B1B;">
+    <div style="display: flex; align-items: flex-start; gap: 10px;">
+        <div style="width: 20px; height: 20px; border-radius: 50%; background-color: #DC2626; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; flex-shrink: 0; margin-top: 2px;">!</div>
+        <div>
+            <strong style="display: block; margin-bottom: 4px;">Please check the following errors:</strong>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px;">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+</div>
+@endif
+
 <!-- Settings Form Wrapper -->
 <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data" id="company-settings-form">
     @csrf
@@ -109,7 +126,7 @@
             </div>
 
             <!-- Site Icon / Favicon -->
-            <div class="form-group" style="margin-bottom: 0;">
+            <div class="form-group" style="margin-bottom: 20px;">
                 <label class="form-label">Site Icon / Favicon</label>
                 <div class="branding-thumb-box" style="margin-bottom: 0; padding: 12px 16px;">
                     <div class="branding-thumb-preview" style="width: 50px; height: 50px;">
@@ -126,6 +143,31 @@
                         <div style="font-size: 11px; color: #64748B;">Recommended: 512 x 512px PNG / ICO</div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Office Photo -->
+            <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Office Photo</label>
+                <div class="branding-thumb-box" style="margin-bottom: 0; padding: 12px 16px;">
+                    <div class="branding-thumb-preview" style="width: 80px; height: 55px; border-radius: 6px; overflow: hidden; background-color: #F1F5F9; flex-shrink: 0;">
+                        @if($settings->has_office_photo)
+                            <img src="{{ $settings->office_photo_url }}" id="prev-office-photo-img" alt="Office Photo" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null;this.style.display='none';">
+                        @else
+                            <img src="" id="prev-office-photo-img" alt="Office Photo" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                        @endif
+                    </div>
+                    <div>
+                        <div style="display: flex; gap: 8px; margin-bottom: 6px;">
+                            <label class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; cursor: pointer; color: #2563EB; border-color: #2563EB;">
+                                Change
+                                <input type="file" name="office_photo" id="office_photo_input" accept="image/*" style="display: none;" onchange="previewOfficePhoto(this)">
+                            </label>
+                            <button type="button" class="btn btn-outline" style="padding: 6px 14px; font-size: 12px; color: #DC2626; border-color: #FCA5A5;" onclick="clearOfficePhoto()">Remove</button>
+                        </div>
+                        <div style="font-size: 11px; color: #64748B;">Recommended: 1200 x 800px JPG, PNG or WebP (used in Contact Us &gt; Our Office)</div>
+                    </div>
+                </div>
+                <input type="hidden" name="remove_office_photo" id="remove_office_photo" value="0">
             </div>
         </div>
     </div>
@@ -379,6 +421,39 @@ function clearBrandingImage(targetImgId, fallbackUrl) {
     const img = document.getElementById(targetImgId);
     if (img) {
         img.src = fallbackUrl || '';
+    }
+}
+
+// Office Photo Thumbnail Previewer
+function previewOfficePhoto(input) {
+    if (input.files && input.files[0]) {
+        const removeInput = document.getElementById('remove_office_photo');
+        if (removeInput) removeInput.value = '0';
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.getElementById('prev-office-photo-img');
+            if (img) {
+                img.src = e.target.result;
+                img.style.display = 'block';
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Office Photo Clear / Remove
+function clearOfficePhoto() {
+    const fileInput = document.getElementById('office_photo_input');
+    if (fileInput) fileInput.value = '';
+
+    const removeInput = document.getElementById('remove_office_photo');
+    if (removeInput) removeInput.value = '1';
+
+    const img = document.getElementById('prev-office-photo-img');
+    if (img) {
+        img.src = '';
+        img.style.display = 'none';
     }
 }
 

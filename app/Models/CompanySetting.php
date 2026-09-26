@@ -139,6 +139,45 @@ class CompanySetting extends Model
         return asset('favicon.ico');
     }
 
+    public function getOfficePhotoUrlAttribute(): ?string
+    {
+        if (!empty($this->office_photo)) {
+            if (\Illuminate\Support\Str::startsWith($this->office_photo, ['http://', 'https://'])) {
+                return $this->office_photo;
+            }
+            if (\Illuminate\Support\Str::startsWith($this->office_photo, ['images/', 'img/'])) {
+                return asset($this->office_photo);
+            }
+            if (\Illuminate\Support\Str::startsWith($this->office_photo, 'storage/')) {
+                return asset($this->office_photo);
+            }
+            if (\Illuminate\Support\Str::startsWith($this->office_photo, 'branding/') || \Illuminate\Support\Facades\Storage::disk('public')->exists($this->office_photo)) {
+                return asset('storage/' . $this->office_photo);
+            }
+            if (file_exists(public_path('storage/' . $this->office_photo))) {
+                return asset('storage/' . $this->office_photo);
+            }
+            if (file_exists(public_path($this->office_photo))) {
+                return asset($this->office_photo);
+            }
+            return asset('storage/' . $this->office_photo);
+        }
+        return null;
+    }
+
+    public function getHasOfficePhotoAttribute(): bool
+    {
+        if (empty($this->office_photo)) {
+            return false;
+        }
+        if (\Illuminate\Support\Str::startsWith($this->office_photo, ['http://', 'https://'])) {
+            return true;
+        }
+        return file_exists(public_path('storage/' . $this->office_photo))
+            || file_exists(public_path($this->office_photo))
+            || \Illuminate\Support\Facades\Storage::disk('public')->exists($this->office_photo);
+    }
+
     public function getCleanWhatsappAttribute(): string
     {
         $phone = preg_replace('/[^0-9]/', '', $this->whatsapp ?? '085936666384');

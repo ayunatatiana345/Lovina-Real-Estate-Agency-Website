@@ -57,6 +57,19 @@ class BrandingImageService
     }
 
     /**
+     * Process and store an office photo upload.
+     * Example output filename: lovina-north-bali-real-estate-office-a82f.webp
+     */
+    public function processAndStoreOfficePhoto(UploadedFile $file): ?string
+    {
+        return $this->processAndStore(
+            $file,
+            'lovina-north-bali-real-estate-office',
+            2048
+        );
+    }
+
+    /**
      * Process and store a social share image upload.
      * Example output filename: lovina-north-bali-real-estate-social-share-a82f.webp
      */
@@ -158,12 +171,23 @@ class BrandingImageService
             return false;
         }
 
-        $disk = Storage::disk('public');
-        if ($disk->exists($path)) {
-            return $disk->delete($path);
+        if (Str::contains($path, '..')) {
+            return false;
         }
 
-        return false;
+        $deleted = false;
+        $disk = Storage::disk('public');
+        if ($disk->exists($path)) {
+            $deleted = $disk->delete($path);
+        }
+
+        $publicFilePath = public_path('storage/' . ltrim($path, '/'));
+        if (file_exists($publicFilePath) && is_file($publicFilePath)) {
+            @unlink($publicFilePath);
+            $deleted = true;
+        }
+
+        return $deleted;
     }
 
     /**

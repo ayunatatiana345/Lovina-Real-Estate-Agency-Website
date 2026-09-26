@@ -243,9 +243,22 @@
         <div class="office-map-grid">
             <div>
                 <h3 style="margin-bottom: 16px;">Our Office</h3>
-                <div style="height: 320px; border-radius: var(--radius-md); border: 1px solid #E5E7EB; background-color: #F3F4F6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; box-sizing: border-box;">
-                    <i data-lucide="building" style="width: 48px; height: 48px; color: #9CA3AF; stroke-width: 1.5px;"></i>
-                    <span style="color: #9CA3AF; font-size: 15px; font-weight: 500; font-family: 'Poppins', sans-serif;">Office Photo</span>
+                <div style="height: 320px; border-radius: var(--radius-md); border: 1px solid #E5E7EB; background-color: #F3F4F6; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; position: relative; box-sizing: border-box;">
+                    @if($settings->has_office_photo)
+                        <img src="{{ $settings->office_photo_url }}" 
+                             alt="{{ $settings->company_name ?? 'Lovina North Bali Real Estate' }} Office" 
+                             style="width: 100%; height: 100%; object-fit: cover; display: block;"
+                             onerror="this.style.display='none'; var fb = document.getElementById('office-photo-fallback'); if(fb) fb.style.display='flex';">
+                        <div id="office-photo-fallback" style="display: none; width: 100%; height: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 12px;">
+                            <i data-lucide="building" style="width: 48px; height: 48px; color: #9CA3AF; stroke-width: 1.5px;"></i>
+                            <span style="color: #9CA3AF; font-size: 15px; font-weight: 500; font-family: 'Poppins', sans-serif;">Office Photo</span>
+                        </div>
+                    @else
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;">
+                            <i data-lucide="building" style="width: 48px; height: 48px; color: #9CA3AF; stroke-width: 1.5px;"></i>
+                            <span style="color: #9CA3AF; font-size: 15px; font-weight: 500; font-family: 'Poppins', sans-serif;">Office Photo</span>
+                        </div>
+                    @endif
                 </div>
             </div>
 

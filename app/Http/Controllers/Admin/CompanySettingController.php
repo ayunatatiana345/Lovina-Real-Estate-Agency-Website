@@ -39,6 +39,8 @@ class CompanySettingController extends Controller
             'google_maps_direction_url' => 'nullable|string',
             'seo_meta_title' => 'nullable|string|max:255',
             'seo_meta_description' => 'nullable|string',
+            'office_photo' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
+            'remove_office_photo' => 'nullable|boolean',
         ]);
 
         if ($request->has('b_hours_mf')) {
@@ -80,6 +82,19 @@ class CompanySettingController extends Controller
                 $brandingService->deleteOldBrandingImage($settings->favicon);
                 $data['favicon'] = $processedPath;
             }
+        }
+
+        if ($request->hasFile('office_photo')) {
+            $processedPath = $brandingService->processAndStoreOfficePhoto($request->file('office_photo'));
+            if ($processedPath) {
+                $brandingService->deleteOldBrandingImage($settings->office_photo);
+                $data['office_photo'] = $processedPath;
+            }
+        } elseif ($request->boolean('remove_office_photo') || $request->input('remove_office_photo') === '1') {
+            if ($settings->office_photo) {
+                $brandingService->deleteOldBrandingImage($settings->office_photo);
+            }
+            $data['office_photo'] = null;
         }
 
         if ($request->hasFile('seo_social_image')) {

@@ -81,6 +81,7 @@ class LocationController extends Controller
             'name' => 'required|string|max:255|unique:locations,name,' . $id,
             'description' => 'required|string|max:2000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
+            'remove_image' => 'nullable|boolean',
             'is_popular' => 'nullable|boolean',
             'status' => 'required|in:active,inactive',
         ]);
@@ -106,6 +107,11 @@ class LocationController extends Controller
                     ->withInput()
                     ->with('error', 'Failed to process and optimize the uploaded location image.');
             }
+        } elseif ($request->boolean('remove_image') || $request->input('remove_image') === '1') {
+            if ($location->image) {
+                $imageService->deleteImage($location->image);
+            }
+            $validated['image'] = null;
         }
 
         $location->update($validated);

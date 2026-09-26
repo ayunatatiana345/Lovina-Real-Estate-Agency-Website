@@ -138,6 +138,7 @@
     <form action="{{ route('admin.locations.store') }}" method="POST" enctype="multipart/form-data" id="location-drawer-form" style="display: flex; flex-direction: column; height: calc(100% - 65px);">
         @csrf
         <div id="method-field-wrapper"></div>
+        <input type="hidden" name="remove_image" id="loc_remove_image" value="0">
         
         <div class="slide-panel-body" style="padding: 24px; overflow-y: auto; flex-grow: 1;">
             <!-- 1. Basic Information -->
@@ -150,8 +151,8 @@
 
             <div class="form-group" style="margin-bottom: 20px;">
                 <label class="form-label" for="locationDescInput">Description *</label>
-                <textarea name="description" id="locationDescInput" class="form-control" style="min-height: 120px; width: 100%; resize: vertical;" placeholder="Write location description..." maxlength="500" oninput="updateDrawerCounter(this)" required></textarea>
-                <div style="text-align: right; font-size: 11px; color: #64748B; margin-top: 4px;" id="charCounter">Characters: 0 / 500</div>
+                <textarea name="description" id="locationDescInput" class="form-control" style="min-height: 120px; width: 100%; resize: vertical;" placeholder="Write location description..." maxlength="2000" oninput="updateDrawerCounter(this)" required></textarea>
+                <div style="text-align: right; font-size: 11px; color: #64748B; margin-top: 4px;" id="charCounter">Characters: 0 / 2000</div>
             </div>
 
             <!-- 2. Location Image -->
@@ -161,13 +162,13 @@
                 <div style="border: 2px dashed #CBD5E1; border-radius: 8px; padding: 20px; text-align: center; background-color: #F8FAFC;">
                     <div style="font-size: 28px; color: #2563EB; margin-bottom: 8px;">☁️</div>
                     <div style="font-weight: 600; font-size: 13px; color: #0F172A; margin-bottom: 4px;">Click to upload image</div>
-                    <div style="font-size: 11px; color: #64748B; margin-bottom: 12px;">Recommended size: 1200 x 800px (JPG, PNG or WebP max 2MB)</div>
+                    <div style="font-size: 11px; color: #64748B; margin-bottom: 12px;">Recommended size: 1200 x 800px (JPG, PNG or WebP max 5MB)</div>
                     <input type="file" name="image" id="loc_image" class="form-control" accept="image/*" onchange="previewDrawerImage(this)">
                 </div>
                 
                 <div id="drawer-img-preview-wrap" style="display: none; margin-top: 12px; position: relative; width: 100%; height: 160px; border-radius: 6px; overflow: hidden; border: 1px solid #E2E8F0;">
                     <img src="" id="drawer-img-preview-tag" style="width: 100%; height: 100%; object-fit: cover;">
-                    <button type="button" onclick="removeDrawerImage()" style="position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-radius: 50%; border: none; background-color: rgba(220,38,38,0.9); color: white; cursor: pointer;">&times;</button>
+                    <button type="button" onclick="removeDrawerImage()" style="position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%; border: none; background-color: rgba(220,38,38,0.9); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold;" title="Remove image">&times;</button>
                 </div>
             </div>
 
@@ -403,12 +404,16 @@ function openLocationDrawer(mode, data = null) {
     const subtitle = document.getElementById('drawer-subtitle');
     const submitBtn = document.getElementById('drawer-submit-btn');
     const methodField = document.getElementById('method-field-wrapper');
+    const removeImgInput = document.getElementById('loc_remove_image');
 
     if (!drawer || !backdrop) return;
 
     // Reset Form
     form.reset();
-    removeDrawerImage();
+    if (removeImgInput) removeImgInput.value = '0';
+    document.getElementById('loc_image').value = '';
+    document.getElementById('drawer-img-preview-wrap').style.display = 'none';
+    document.getElementById('drawer-img-preview-tag').src = '';
 
     if (mode === 'add') {
         title.textContent = 'Add New Location';
@@ -416,6 +421,7 @@ function openLocationDrawer(mode, data = null) {
         submitBtn.textContent = 'Save Location';
         form.action = "{{ route('admin.locations.store') }}";
         methodField.innerHTML = '';
+        updateDrawerCounter(document.getElementById('locationDescInput'));
     } else if (mode === 'edit' && data) {
         title.textContent = 'Edit Location';
         subtitle.textContent = 'Update regional records and images.';
@@ -424,9 +430,9 @@ function openLocationDrawer(mode, data = null) {
         methodField.innerHTML = '<input type="hidden" name="_method" value="PUT">';
 
         // Fill Form
-        document.getElementById('loc_name').value = data.name;
-        document.getElementById('locationDescInput').value = data.description;
-        document.getElementById('loc_status').value = data.status;
+        document.getElementById('loc_name').value = data.name || '';
+        document.getElementById('locationDescInput').value = data.description || '';
+        document.getElementById('loc_status').value = data.status || 'active';
         document.getElementById('loc_is_popular').checked = !!data.is_popular;
 
         // Image Preview
@@ -475,14 +481,17 @@ function closeAllDrawers() {
 // Character counter inside Drawer
 function updateDrawerCounter(el) {
     const counter = document.getElementById('charCounter');
-    if (counter) {
-        counter.textContent = `Characters: ${el.value.length} / 500`;
+    if (counter && el) {
+        counter.textContent = `Characters: ${el.value.length} / 2000`;
     }
 }
 
 // Preview file input inside drawer
 function previewDrawerImage(input) {
     if (input.files && input.files[0]) {
+        const removeImgInput = document.getElementById('loc_remove_image');
+        if (removeImgInput) removeImgInput.value = '0';
+
         const reader = new FileReader();
         reader.onload = function(e) {
             const previewWrap = document.getElementById('drawer-img-preview-wrap');
@@ -498,7 +507,13 @@ function previewDrawerImage(input) {
 function removeDrawerImage() {
     const fileInput = document.getElementById('loc_image');
     if (fileInput) fileInput.value = '';
-    document.getElementById('drawer-img-preview-wrap').style.display = 'none';
+    const removeImgInput = document.getElementById('loc_remove_image');
+    if (removeImgInput) removeImgInput.value = '1';
+    
+    const previewWrap = document.getElementById('drawer-img-preview-wrap');
+    if (previewWrap) previewWrap.style.display = 'none';
+    const previewTag = document.getElementById('drawer-img-preview-tag');
+    if (previewTag) previewTag.src = '';
 }
 
 // View details slide-in drawer (matching style)

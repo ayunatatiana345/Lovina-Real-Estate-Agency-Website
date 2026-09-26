@@ -44,9 +44,9 @@ class LocationImageService
                 $cleanName = 'location';
             }
 
-            // 2. Deterministic SEO filename: {location-slug}-location-{seq}.webp
-            $formattedSeq = str_pad((string)$sequence, 2, '0', STR_PAD_LEFT);
-            $filename = "{$cleanName}-location-{$formattedSeq}.webp";
+            // 2. SEO-friendly filename with unique hash: {location-slug}-north-bali-location-{hash}.webp
+            $uniqueSuffix = substr(bin2hex(random_bytes(4)), 0, 4);
+            $filename = "{$cleanName}-north-bali-location-{$uniqueSuffix}.webp";
 
             $directory = 'locations';
             $relativeStoragePath = "{$directory}/{$filename}";
@@ -113,12 +113,24 @@ class LocationImageService
             return false;
         }
 
-        $disk = Storage::disk('public');
-        if ($disk->exists($path)) {
-            return $disk->delete($path);
+        if (Str::contains($path, '..')) {
+            return false;
         }
 
-        return false;
+        $deleted = false;
+        $disk = Storage::disk('public');
+        if ($disk->exists($path)) {
+            $deleted = $disk->delete($path);
+        }
+
+        // Also ensure public/storage file removal if directly mapped
+        $publicFilePath = public_path('storage/' . ltrim($path, '/'));
+        if (file_exists($publicFilePath) && is_file($publicFilePath)) {
+            @unlink($publicFilePath);
+            $deleted = true;
+        }
+
+        return $deleted;
     }
 
     /**
